@@ -1,0 +1,8 @@
+{
+  "name": "new-blog",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/Liubasara/newBlog.git",
+  "author": "liubasara <followliu@163.com>",
+  "license": "MIT"
+}
