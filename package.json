@@ -2,6 +2,13 @@
   "name": "new-blog",
   "version": "1.0.0",
   "main": "index.js",
+  "scripts": {
+    "build": "gulp",
+    "dev:frontend": "gulp frontendDev"
+  },
+  "devDependencies": {
+    "gulp": "^4.0.2"
+  },
   "repository": "https://github.com/Liubasara/newBlog.git",
   "author": "liubasara <followliu@163.com>",
   "license": "MIT"
