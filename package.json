@@ -8,6 +8,7 @@
     "dev:frontend": "gulp frontendDev"
   },
   "devDependencies": {
+    "del": "^6.0.0",
     "gulp": "^4.0.2",
     "gulp-markdown-to-json": "^1.1.0",
     "marked": "^2.1.3"
