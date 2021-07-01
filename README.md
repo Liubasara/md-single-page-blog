@@ -2,6 +2,8 @@
 
 技术栈：TypeScript + gulp + Vite + Vue3
 
+- node: v14.12.0
+
 TODOLIST：
 
 - Markdown 文章生成对应 JS
