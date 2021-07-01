@@ -1,15 +1,15 @@
 ---
-name: demoBlog2
-title: Demo博文tag2
-tags: ["tag1", "tag2"]
+name: demoBlog12
+title: Demo博文tag12
+tags: ["tag1", "tag12"]
 categories: demoCate
-info: "一篇 Demo 文章 tag2"
+info: "一篇 Demo 文章 tag12"
 time: 2021/7/1
-desc: 这是一篇 Demo 文章 tag2
+desc: 这是一篇 Demo 文章 tag12
 keywords: ['前端', 'blog', '博客']
 ---
 
-# Demo博文tag2
+# Demo博文tag12
 
 您好，这是一篇 Demo 文章，可以测试并实验以下功能：
 
