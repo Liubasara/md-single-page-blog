@@ -4,6 +4,7 @@ const marked = require('marked')
 const { src, dest, series, parallel } = require('gulp')
 const getAllArticlePaths = require('./utils/getAllArticlePaths')
 const getAllArticleImgPaths = require('./utils/getAllArticleImgPaths')
+const mkDirAndCreateFile = require('./utils/mkDirAndCreateFile')
 const { generateDelTask } = require('./helperTasks')
 
 const TARGET_PATH = path.resolve(__dirname, '..', 'article', 'dist')
@@ -18,7 +19,20 @@ const CLEAN_PATH = path.resolve(TARGET_PATH, '**')
 async function generateArticleToJsTask() {
   const allArticlePaths = await getAllArticlePaths(ARTICLE_PATH)
   console.log('getMarkdown', allArticlePaths)
-  return src(allArticlePaths, { base: ARTICLE_PATH }).pipe(markdownToJSON(marked)).pipe(dest(ALL_ARTICLE_PKG_TARGET_PATH))
+  const markdownTask = src(allArticlePaths, { base: ARTICLE_PATH }).pipe(markdownToJSON(marked))
+  const allContents = []
+  const directory = []
+  markdownTask.on('data', function (file) {
+    const contents = JSON.parse(file.contents.toString())
+    contents.url = path.relative(ALL_ARTICLE_PKG_TARGET_PATH, file.path)
+    allContents.push(contents)
+    directory.push({ ...contents, body: undefined })
+  })
+  markdownTask.on('end', () => {
+    mkDirAndCreateFile(ALL_ARTICLE_CONTENTS_TARGET_PATH, JSON.stringify(allContents))
+    mkDirAndCreateFile(ALL_ARTICLE_DIRECTORY_TARGET_PATH, JSON.stringify(directory))
+  })
+  return markdownTask.pipe(dest(ALL_ARTICLE_PKG_TARGET_PATH))
 }
 
 async function generateArticleImgTask() {
