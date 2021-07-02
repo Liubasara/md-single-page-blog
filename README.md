@@ -8,6 +8,7 @@ TODOLIST：
 
 - Markdown 文章生成对应 JS
   - directory
+    - directory中记录文章的相对路径，页面中通过 /static/article + 路径来访问
   - 所有文章内容（prefetch）
   - ~~单独文章内容~~
 
@@ -17,6 +18,7 @@ TODOLIST：
   - 分类功能
   - 搜索功能
   - preload/prefetch 优化
+  - 优化：service worker缓存全部文章内容？
 
 - 定时任务后台
   - 定时拉取文章
