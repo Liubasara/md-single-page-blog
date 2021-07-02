@@ -7,9 +7,9 @@
 TODOLIST：
 
 - Markdown 文章生成对应 JS
-  - directory
+  - ~~directory~~
     - directory中记录文章的相对路径，页面中通过 /static/article + 路径来访问
-  - 所有文章内容（prefetch）
+  - ~~所有文章内容（prefetch）~~
   - ~~单独文章内容~~
 
 - 博客静态页面
