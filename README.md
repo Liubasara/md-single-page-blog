@@ -3,6 +3,8 @@
 技术栈：TypeScript + gulp + Vite + Vue3
 
 - node: v14.12.0
+- npm: 6.14.8
+- yarn: 1.22.10
 
 TODOLIST：
 
