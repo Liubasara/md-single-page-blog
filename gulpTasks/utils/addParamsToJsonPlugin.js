@@ -38,7 +38,12 @@ const addRelativeUrl = (fileObj, file) => {
   (fileObj.url = path.relative(file.base, file.path))
 }
 
+const changeBodyToBase64 = (fileObj) => {
+  (fileObj.body = Buffer.from(fileObj.body).toString('base64'))
+}
+
 module.exports = {
   addParamsToJsonPlugin,
-  addRelativeUrl
+  addRelativeUrl,
+  changeBodyToBase64
 }
