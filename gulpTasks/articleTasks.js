@@ -1,7 +1,7 @@
 const path = require('path')
 const markdownToJSON = require('gulp-markdown-to-json')
 const marked = require('marked')
-const { src, dest, series, parallel } = require('gulp')
+const { src, dest, series, parallel, watch } = require('gulp')
 const getAllArticlePaths = require('./utils/getAllArticlePaths')
 const getAllArticleImgPaths = require('./utils/getAllArticleImgPaths')
 const mkDirAndCreateFile = require('./utils/mkDirAndCreateFile')
@@ -43,9 +43,16 @@ async function generateArticleImgTask() {
   return src(allArticleImgPaths, { base: ARTICLE_PATH }).pipe(dest(ALL_ARTICLE_PKG_TARGET_PATH))
 }
 
+const buildArticleTask = series(generateDelTask(CLEAN_PATH), parallel(generateArticleToJsTask, generateArticleImgTask))
+
 module.exports = {
-  generateArticleToJsTask: series(
-    generateDelTask(CLEAN_PATH),
-    parallel(generateArticleToJsTask, generateArticleImgTask)
-  )
+  buildArticleTask,
+  buildArticleTaskDev: function (cb) {
+    parallel(buildArticleTask)()
+    const watcher = watch([ARTICLE_PATH])
+    watcher.on('change', function () {
+      parallel(buildArticleTask)()
+    })
+    cb()
+  }
 }

@@ -4,8 +4,11 @@
   "main": "index.js",
   "scripts": {
     "build": "gulp",
-    "generate:article": "gulp generateArticleToJs",
-    "dev:frontend": "gulp frontendDev"
+    "dev": "gulp dev",
+    "build:frontend": "gulp frontend",
+    "build:generateArticle": "gulp generateArticleToJs",
+    "dev:frontend": "gulp frontendDev",
+    "dev:generateArticle": "gulp generateArticleToJsDev"
   },
   "devDependencies": {
     "del": "^6.0.0",

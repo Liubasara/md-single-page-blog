@@ -1,9 +1,15 @@
-const { parallel } = require('gulp')
+const { parallel, series } = require('gulp')
 const { frontendBuildTask, frontendDevTask } = require('./gulpTasks/frontendTasks')
-const { generateArticleToJsTask } = require('./gulpTasks/articleTasks')
+const { buildArticleTask, buildArticleTaskDev } = require('./gulpTasks/articleTasks')
 
-exports.default = parallel(frontendBuildTask)
+exports.default = series(buildArticleTask, frontendBuildTask)
+
+exports.dev = series(buildArticleTaskDev, frontendDevTask)
+
+exports.frontend = parallel(frontendBuildTask)
 
 exports.frontendDev = parallel(frontendDevTask)
 
-exports.generateArticleToJs = parallel(generateArticleToJsTask)
+exports.generateArticleToJs = parallel(buildArticleTask)
+
+exports.generateArticleToJsDev = series(buildArticleTaskDev)
