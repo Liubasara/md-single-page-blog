@@ -1,7 +1,11 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png" />
   <HelloWorld msg="Hello Vue 3 + TypeScript + Vite" />
-  <button @click="currentPage += 1">下一章</button>
+  <div>
+    <button @click="currentPage += 1">下一章</button>
+    <button @click="loadAllContents">loadAllContents</button>
+  </div>
+  
   <div ref="bodyRef" v-html="currentBlogBody" style="height: 200px"></div>
 </template>
 
@@ -27,6 +31,19 @@ export default defineComponent({
     const modules = import.meta.glob('/../article/dist/allArticle/**/*.*')
     const moduleKeys = Object.keys(modules)
     console.log(modules)
+
+    // preFetch 所有文章
+    const loadAllContents = async function () {
+      const { default: allContents } = await new Promise(resolve => {
+        // 主动延迟测试 idle 效果
+        setTimeout(async function load() {
+          const res = await import('articleDist/allContents/allContents.json')
+          resolve(res)
+        }, 2000)
+      })
+      console.log('allContents', allContents)
+    }
+    window.requestIdleCallback(loadAllContents)
 
     watch([allArticleBody, currentPage], (newVal, prevVal) => {
       const [newAllArticleBodyVal, newCurrentPageVal] = newVal
@@ -70,8 +87,6 @@ export default defineComponent({
     onBeforeMount(async () => {
       console.log('\n')
       console.log('directory', directory)
-      const { default: allContents } = await import('articleDist/allContents/allContents.json')
-      console.log('allContents', allContents)
 
       directory.forEach(async (articleObj) => {
         const articleModuleKey = moduleKeys.find((key) => new RegExp(articleObj.url).test(key))
@@ -85,7 +100,8 @@ export default defineComponent({
     return {
       currentBlogBody,
       currentPage,
-      bodyRef
+      bodyRef,
+      loadAllContents
     }
   }
 })
