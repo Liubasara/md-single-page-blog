@@ -35,15 +35,20 @@ function addParamsToJsonPlugin(...args) {
 }
 
 const addRelativeUrl = (fileObj, file) => {
-  (fileObj.url = path.relative(file.base, file.path))
+  fileObj.url = path.relative(file.base, file.path)
+}
+
+const addRelativeDirUrl = (fileObj, file) => {
+  fileObj.dirUrl = path.relative(file.base, path.dirname(file.path))
 }
 
 const changeBodyToBase64 = (fileObj) => {
-  (fileObj.body = Buffer.from(encodeURIComponent(fileObj.body)).toString('base64'))
+  fileObj.body = Buffer.from(encodeURIComponent(fileObj.body)).toString('base64')
 }
 
 module.exports = {
   addParamsToJsonPlugin,
   addRelativeUrl,
+  addRelativeDirUrl,
   changeBodyToBase64
 }

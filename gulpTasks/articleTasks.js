@@ -5,7 +5,12 @@ const { src, dest, series, parallel, watch } = require('gulp')
 const getAllArticlePaths = require('./utils/getAllArticlePaths')
 const getAllArticleImgPaths = require('./utils/getAllArticleImgPaths')
 const mkDirAndCreateFile = require('./utils/mkDirAndCreateFile')
-const { addParamsToJsonPlugin, addRelativeUrl, changeBodyToBase64 } = require('./utils/addParamsToJsonPlugin')
+const {
+  addParamsToJsonPlugin,
+  addRelativeUrl,
+  changeBodyToBase64,
+  addRelativeDirUrl
+} = require('./utils/addParamsToJsonPlugin')
 const { generateDelTask } = require('./helperTasks')
 
 const TARGET_PATH = path.resolve(__dirname, '..', 'article', 'dist')
@@ -22,7 +27,7 @@ async function generateArticleToJsTask() {
   console.log('getMarkdown', allArticlePaths)
   const markdownTask = src(allArticlePaths, { base: ARTICLE_PATH })
     .pipe(markdownToJSON(marked))
-    .pipe(addParamsToJsonPlugin(addRelativeUrl, changeBodyToBase64))
+    .pipe(addParamsToJsonPlugin(addRelativeUrl, changeBodyToBase64, addRelativeDirUrl))
   const allContents = []
   const directory = []
   markdownTask.on('data', function (file) {

@@ -2,13 +2,14 @@
   <img alt="Vue logo" src="./assets/logo.png" />
   <HelloWorld msg="Hello Vue 3 + TypeScript + Vite" />
   <button @click="currentPage += 1">下一章</button>
-  <div v-html="currentBlogBody" style="height: 200px;"></div>
+  <div ref="bodyRef" v-html="currentBlogBody" style="height: 200px"></div>
 </template>
 
 <script lang="ts">
-import { defineComponent, onBeforeMount, ref, watch, reactive } from 'vue'
+import { defineComponent, onBeforeMount, ref, watch, reactive, nextTick } from 'vue'
 import HelloWorld from '@/components/HelloWorld.vue'
 import directory from 'articleDist/directory/directory.json'
+import URIJS from 'urijs'
 
 export default defineComponent({
   name: 'App',
@@ -17,16 +18,54 @@ export default defineComponent({
   },
   setup() {
     const currentPage = ref(0)
-    const allArticleBody:Array<string> = reactive([])
+    const allArticleBody: Array<string> = reactive([])
+    let currentBlog: { url?: string; [key: string]: any } = reactive({})
     let currentBlogBody = ref('')
+    const bodyRef = ref()
+
+    // https://vitejs.dev/guide/features.html#glob-import vite 专有语法，打包固定文件
+    const modules = import.meta.glob('/../article/dist/allArticle/**/*.*')
+    const moduleKeys = Object.keys(modules)
+    console.log(modules)
+
     watch([allArticleBody, currentPage], (newVal, prevVal) => {
       const [newAllArticleBodyVal, newCurrentPageVal] = newVal
       let currentBlogBodyVal = newAllArticleBodyVal[newCurrentPageVal]
+      let currentBlogVal = directory[newCurrentPageVal]
       if (!currentBlogBodyVal) {
         currentPage.value = 0
       } else {
         currentBlogBody.value = currentBlogBodyVal
+        currentBlog = currentBlogVal
       }
+    })
+    watch(currentBlogBody, () => {
+      nextTick(() => {
+        const imgs = Array.from((bodyRef.value as HTMLElement).querySelectorAll('img'))
+        imgs.forEach(async (elm) => {
+          // 组合 elm 的 URL
+          const srcAttribute = elm.getAttribute('src')
+          console.log(currentBlog.url)
+          if (
+            currentBlog.url &&
+            srcAttribute &&
+            !/^(http|https):\/\//.test(srcAttribute) // 非相对路径的图片才需要进行处理
+          ) {
+            console.log(currentBlog.url, srcAttribute)
+            const relativeUrl = URIJS(currentBlog.dirUrl + '/' + srcAttribute)
+              .absoluteTo('/')
+              .toString()
+
+            const thisImgModuleKey = moduleKeys.find((key) => {
+              const reg = new RegExp(relativeUrl)
+              return reg.test(key)
+            })
+            if (!thisImgModuleKey) return
+            const { default: imgResource } = await modules[thisImgModuleKey]()
+            elm.setAttribute('src', imgResource)
+          }
+        })
+      })
     })
     onBeforeMount(async () => {
       console.log('\n')
@@ -34,12 +73,8 @@ export default defineComponent({
       const { default: allContents } = await import('articleDist/allContents/allContents.json')
       console.log('allContents', allContents)
 
-      // https://vitejs.dev/guide/features.html#glob-import vite 专有语法，打包固定文件
-      const modules = import.meta.glob('/../article/dist/allArticle/**/*.*')
-      const moduleKeys = Object.keys(modules)
-      console.log(modules)
-      directory.forEach(async <T extends { url: string }>(articleObj: T, index: number) => {
-        const articleModuleKey = moduleKeys.find(key => new RegExp(articleObj.url).test(key))
+      directory.forEach(async <T extends { url: string }>(articleObj: T) => {
+        const articleModuleKey = moduleKeys.find((key) => new RegExp(articleObj.url).test(key))
         if (!articleModuleKey) return
         const { default: article } = await modules[articleModuleKey]()
         console.log(article)
@@ -49,7 +84,8 @@ export default defineComponent({
     })
     return {
       currentBlogBody,
-      currentPage
+      currentPage,
+      bodyRef
     }
   }
 })

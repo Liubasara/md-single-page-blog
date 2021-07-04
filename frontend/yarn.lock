@@ -30,6 +30,11 @@
   resolved "https://registry.nlark.com/@types/node/download/@types/node-16.0.0.tgz#067a6c49dc7a5c2412a505628e26902ae967bf6f"
   integrity sha1-BnpsSdx6XCQSpQVijiaQKulnv28=
 
+"@types/urijs@^1.19.16":
+  version "1.19.16"
+  resolved "https://registry.nlark.com/@types/urijs/download/@types/urijs-1.19.16.tgz#156658c47438fa867db5dce4d2949fe1ca0878e2"
+  integrity sha1-FWZYxHQ4+oZ9tdzk0pSf4coIeOI=
+
 "@vitejs/plugin-vue@^1.2.3":
   version "1.2.4"
   resolved "https://registry.nlark.com/@vitejs/plugin-vue/download/@vitejs/plugin-vue-1.2.4.tgz#a7aa6e6a31c556a8b781de730316deeecf7f56f2"
@@ -581,6 +586,11 @@ unzipper@0.10.11:
     listenercount "~1.0.1"
     readable-stream "~2.3.6"
     setimmediate "~1.0.4"
+
+urijs@^1.19.6:
+  version "1.19.6"
+  resolved "https://registry.npm.taobao.org/urijs/download/urijs-1.19.6.tgz#51f8cb17ca16faefb20b9a31ac60f84aa2b7c870"
+  integrity sha1-UfjLF8oW+u+yC5oxrGD4SqK3yHA=
 
 util-deprecate@^1.0.2, util-deprecate@~1.0.1:
   version "1.0.2"
