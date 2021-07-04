@@ -5,7 +5,7 @@
     <button @click="currentPage += 1">下一章</button>
     <button @click="loadAllContents">loadAllContents</button>
   </div>
-  
+
   <div ref="bodyRef" v-html="currentBlogBody" style="height: 200px"></div>
 </template>
 
@@ -34,7 +34,7 @@ export default defineComponent({
 
     // preFetch 所有文章
     const loadAllContents = async function () {
-      const { default: allContents } = await new Promise(resolve => {
+      const { default: allContents } = await new Promise((resolve) => {
         // 主动延迟测试 idle 效果
         setTimeout(async function load() {
           const res = await import('articleDist/allContents/allContents.json')
@@ -69,9 +69,11 @@ export default defineComponent({
             !/^(http|https):\/\//.test(srcAttribute) // 非相对路径的图片才需要进行处理
           ) {
             console.log(currentBlog.url, srcAttribute)
-            const relativeUrl = URIJS(currentBlog.dirUrl + '/' + srcAttribute)
-              .absoluteTo('/')
-              .toString()
+            const relativeUrl = decodeURIComponent(
+              URIJS(currentBlog.dirUrl + '/' + srcAttribute)
+                .absoluteTo('/')
+                .toString()
+            )
 
             const thisImgModuleKey = moduleKeys.find((key) => {
               const reg = new RegExp(relativeUrl)
