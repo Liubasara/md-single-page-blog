@@ -58,7 +58,7 @@ export default defineComponent({
     })
     watch(currentBlogBody, () => {
       nextTick(() => {
-        const imgs = Array.from((bodyRef.value as HTMLElement).querySelectorAll('img'))
+        const imgs = Array.from((bodyRef.value as HTMLElement)?.querySelectorAll?.('img') || [])
         imgs.forEach(async (elm) => {
           // 组合 elm 的 URL
           const srcAttribute = elm.getAttribute('src')
