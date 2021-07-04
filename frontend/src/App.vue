@@ -73,7 +73,7 @@ export default defineComponent({
       const { default: allContents } = await import('articleDist/allContents/allContents.json')
       console.log('allContents', allContents)
 
-      directory.forEach(async <T extends { url: string }>(articleObj: T) => {
+      directory.forEach(async (articleObj) => {
         const articleModuleKey = moduleKeys.find((key) => new RegExp(articleObj.url).test(key))
         if (!articleModuleKey) return
         const { default: article } = await modules[articleModuleKey]()
