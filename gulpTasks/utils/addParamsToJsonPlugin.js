@@ -39,7 +39,7 @@ const addRelativeUrl = (fileObj, file) => {
 }
 
 const changeBodyToBase64 = (fileObj) => {
-  (fileObj.body = Buffer.from(fileObj.body).toString('base64'))
+  (fileObj.body = Buffer.from(encodeURIComponent(fileObj.body)).toString('base64'))
 }
 
 module.exports = {

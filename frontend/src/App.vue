@@ -1,10 +1,12 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png" />
   <HelloWorld msg="Hello Vue 3 + TypeScript + Vite" />
+  <button @click="currentPage += 1">下一章</button>
+  <div v-html="currentBlogBody" style="height: 200px;"></div>
 </template>
 
 <script lang="ts">
-import { defineComponent, onBeforeMount } from 'vue'
+import { defineComponent, onBeforeMount, ref, watch, reactive } from 'vue'
 import HelloWorld from '@/components/HelloWorld.vue'
 import directory from 'articleDist/directory/directory.json'
 
@@ -14,6 +16,18 @@ export default defineComponent({
     HelloWorld
   },
   setup() {
+    const currentPage = ref(0)
+    const allArticleBody:Array<string> = reactive([])
+    let currentBlogBody = ref('')
+    watch([allArticleBody, currentPage], (newVal, prevVal) => {
+      const [newAllArticleBodyVal, newCurrentPageVal] = newVal
+      let currentBlogBodyVal = newAllArticleBodyVal[newCurrentPageVal]
+      if (!currentBlogBodyVal) {
+        currentPage.value = 0
+      } else {
+        currentBlogBody.value = currentBlogBodyVal
+      }
+    })
     onBeforeMount(async () => {
       console.log('\n')
       console.log('directory', directory)
@@ -24,15 +38,19 @@ export default defineComponent({
       const modules = import.meta.glob('/../article/dist/allArticle/**/*.*')
       const moduleKeys = Object.keys(modules)
       console.log(modules)
-      directory.forEach(async <T extends { url: string }>(articleObj: T) => {
+      directory.forEach(async <T extends { url: string }>(articleObj: T, index: number) => {
         const articleModuleKey = moduleKeys.find(key => new RegExp(articleObj.url).test(key))
         if (!articleModuleKey) return
         const { default: article } = await modules[articleModuleKey]()
         console.log(article)
+        allArticleBody.push(decodeURIComponent(window.atob(article.body as string)))
       })
       console.log('\n')
     })
-    
+    return {
+      currentBlogBody,
+      currentPage
+    }
   }
 })
 </script>
