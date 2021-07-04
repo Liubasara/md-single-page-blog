@@ -46,9 +46,15 @@ const changeBodyToBase64 = (fileObj) => {
   fileObj.body = Buffer.from(encodeURIComponent(fileObj.body)).toString('base64')
 }
 
+const ensureTimeExist = (fileObj) => {
+  if (fileObj.time) return
+  fileObj.time = new Date().toLocaleDateString()
+}
+
 module.exports = {
   addParamsToJsonPlugin,
   addRelativeUrl,
   addRelativeDirUrl,
-  changeBodyToBase64
+  changeBodyToBase64,
+  ensureTimeExist
 }

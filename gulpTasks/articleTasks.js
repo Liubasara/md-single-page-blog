@@ -9,7 +9,8 @@ const {
   addParamsToJsonPlugin,
   addRelativeUrl,
   changeBodyToBase64,
-  addRelativeDirUrl
+  addRelativeDirUrl,
+  ensureTimeExist
 } = require('./utils/addParamsToJsonPlugin')
 const { generateDelTask } = require('./helperTasks')
 
@@ -27,7 +28,14 @@ async function generateArticleToJsTask() {
   console.log('getMarkdown', allArticlePaths)
   const markdownTask = src(allArticlePaths, { base: ARTICLE_PATH })
     .pipe(markdownToJSON(marked))
-    .pipe(addParamsToJsonPlugin(addRelativeUrl, changeBodyToBase64, addRelativeDirUrl))
+    .pipe(
+      addParamsToJsonPlugin(
+        addRelativeUrl, // 添加 url 属性
+        changeBodyToBase64, // 将 body 属性修改为 base64 防止打包失败
+        addRelativeDirUrl, // 添加 dirUrl 属性
+        ensureTimeExist // 确保 time 属性存在，若不存在则创建
+      )
+    )
   const allContents = []
   const directory = []
   markdownTask.on('data', function (file) {
@@ -36,6 +44,12 @@ async function generateArticleToJsTask() {
     directory.push({ ...contents, body: undefined })
   })
   markdownTask.on('end', () => {
+    // 以降序排序
+    [allContents, directory].forEach(arr => {
+      arr.sort((a, b) => {
+        return +new Date(b.time) - new Date(a.time)
+      })
+    })
     mkDirAndCreateFile(ALL_ARTICLE_CONTENTS_TARGET_PATH, JSON.stringify(allContents))
     mkDirAndCreateFile(ALL_ARTICLE_DIRECTORY_TARGET_PATH, JSON.stringify(directory))
   })

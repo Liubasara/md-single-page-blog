@@ -6,9 +6,9 @@
     "build": "gulp",
     "dev": "gulp dev",
     "build:frontend": "gulp frontend",
-    "build:generateArticle": "gulp generateArticleToJs",
+    "build:article": "gulp generateArticleToJs",
     "dev:frontend": "gulp frontendDev",
-    "dev:generateArticle": "gulp generateArticleToJsDev"
+    "dev:article": "gulp generateArticleToJsDev"
   },
   "devDependencies": {
     "del": "^6.0.0",
