@@ -21,6 +21,12 @@ TODOLIST：
   - 搜索功能
   - preload/prefetch 优化
   - 优化：service worker缓存全部文章内容？
+  - 优化：
+    > https://www.ruanyifeng.com/blog/2019/09/getting-started-with-github-actions.html
+
+    使用github action进行ci/cd触发部署？？是否可行：
+    - 在某条分支上提交dist文件夹，每次本地构建后进行部署？
+    - 或者进一步在 article 仓库加actions，article push 之后触发博客的 push 钩子进行构建？
 
 - 定时任务后台
   - 定时拉取文章
