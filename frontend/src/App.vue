@@ -23,7 +23,6 @@ export default defineComponent({
   setup() {
     const currentPage = ref(0)
     const allArticleBody: Array<string> = reactive([])
-    let currentBlog: { url?: string; [key: string]: any } = reactive({})
     let currentBlogBody = ref('')
     const bodyRef = ref()
 
@@ -45,47 +44,52 @@ export default defineComponent({
     }
     window.requestIdleCallback(loadAllContents)
 
-    watch([allArticleBody, currentPage], (newVal, prevVal) => {
+    watch([allArticleBody, currentPage], (newVal) => {
       const [newAllArticleBodyVal, newCurrentPageVal] = newVal
       let currentBlogBodyVal = newAllArticleBodyVal[newCurrentPageVal]
-      let currentBlogVal = directory[newCurrentPageVal]
       if (!currentBlogBodyVal) {
         currentPage.value = 0
       } else {
         currentBlogBody.value = currentBlogBodyVal
-        currentBlog = currentBlogVal
       }
     })
-    watch(currentBlogBody, () => {
-      nextTick(() => {
-        const imgs = Array.from((bodyRef.value as HTMLElement)?.querySelectorAll?.('img') || [])
-        imgs.forEach(async (elm) => {
-          // 组合 elm 的 URL
-          const srcAttribute = elm.getAttribute('src')
-          console.log(currentBlog.url)
-          if (
-            currentBlog.url &&
-            srcAttribute &&
-            !/^(http|https):\/\//.test(srcAttribute) // 非相对路径的图片才需要进行处理
-          ) {
-            console.log(currentBlog.url, srcAttribute)
-            const relativeUrl = decodeURIComponent(
-              URIJS(currentBlog.dirUrl + '/' + srcAttribute)
-                .absoluteTo('/')
-                .toString()
-            )
+    const handleImgs = async (bodyString: string, currentArticleObj: articleType): Promise<string> => {
+      const tmpParent = document.createElement('div')
+      // const tmpParent = document.createDocumentFragment().ownerDocument.createElement('div')
 
-            const thisImgModuleKey = moduleKeys.find((key) => {
-              const reg = new RegExp(relativeUrl)
-              return reg.test(key)
-            })
-            if (!thisImgModuleKey) return
-            const { default: imgResource } = await modules[thisImgModuleKey]()
-            elm.setAttribute('src', imgResource)
-          }
-        })
+      tmpParent.innerHTML = bodyString
+
+      const imgs = Array.from(tmpParent?.querySelectorAll?.('img') || [])
+      const loadAllImgPromises = imgs.map(async (elm) => {
+        // 组合 elm 的 URL
+        const srcAttribute = elm.getAttribute('src')
+        console.log(currentArticleObj.dirUrl)
+        if (
+          currentArticleObj.dirUrl &&
+          srcAttribute &&
+          !/^(http|https):\/\//.test(srcAttribute) // 非相对路径的图片才需要进行处理
+        ) {
+          console.log(currentArticleObj.dirUrl, srcAttribute)
+          const relativeUrl = decodeURIComponent(
+            URIJS(currentArticleObj.dirUrl + '/' + srcAttribute)
+              .absoluteTo('/')
+              .toString()
+          )
+
+          const thisImgModuleKey = moduleKeys.find((key) => {
+            const reg = new RegExp(relativeUrl)
+            return reg.test(key)
+          })
+          if (!thisImgModuleKey) return
+          const { default: imgResource } = await modules[thisImgModuleKey]()
+          elm.setAttribute('src', imgResource)
+          return imgResource
+        }
+        return
       })
-    })
+      await Promise.all(loadAllImgPromises)
+      return tmpParent.innerHTML
+    }
     onBeforeMount(async () => {
       console.log('\n')
       console.log('directory', directory)
@@ -95,7 +99,7 @@ export default defineComponent({
         if (!articleModuleKey) return
         const { default: article } = await modules[articleModuleKey]()
         console.log(article)
-        allArticleBody.push(decodeURIComponent(window.atob(article.body as string)))
+        allArticleBody.push(await handleImgs(decodeURIComponent(window.atob(article.body as string)), articleObj))
       })
       console.log('\n')
     })
