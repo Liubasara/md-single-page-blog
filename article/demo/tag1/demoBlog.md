@@ -33,7 +33,7 @@ keywords: ['前端', 'blog', '博客']
 
 图片：
 
-![demo-image.png](./images/demo-image.png)
+![demo-image1.png](./images/demo-image1.png)
 
 - 无序列表1
   - 无序子列表1
