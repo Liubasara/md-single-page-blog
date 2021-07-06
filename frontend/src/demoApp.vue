@@ -1,8 +1,8 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Hello Vue 3 + TypeScript + Vite" />
+  {{aa.b}}
   <div>
-    <button @click="currentPage += 1">下一章</button>
+    <button @click="() => { currentPage += 1; aa?.b ? aa.b += 1 : aa.b = 1; }">下一章</button>
     <button @click="loadAllContents">loadAllContents</button>
   </div>
 
@@ -11,16 +11,13 @@
 
 <script lang="ts">
 import { defineComponent, onBeforeMount, ref, watch, reactive, nextTick } from 'vue'
-import HelloWorld from '@/components/HelloWorld.vue'
 import directory from 'articleDist/directory/directory.json'
 import URIJS from 'urijs'
 
 export default defineComponent({
   name: 'App',
-  components: {
-    HelloWorld
-  },
   setup() {
+    const aa = {}
     const currentPage = ref(0)
     const allArticleBody: Array<string> = reactive([])
     let currentBlogBody = ref('')
@@ -104,6 +101,7 @@ export default defineComponent({
       console.log('\n')
     })
     return {
+      aa,
       currentBlogBody,
       currentPage,
       bodyRef,
