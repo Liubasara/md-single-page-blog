@@ -50,7 +50,7 @@ export default defineComponent({
         currentBlogBody.value = currentBlogBodyVal
       }
     })
-    const handleImgs = async (bodyString: string, currentArticleObj: articleType): Promise<string> => {
+    const handleImgs = async (bodyString: string, currentArticleObj: articleTypeDirectory): Promise<string> => {
       const tmpParent = document.createElement('div')
       // const tmpParent = document.createDocumentFragment().ownerDocument.createElement('div')
 
@@ -94,9 +94,9 @@ export default defineComponent({
       directory.forEach(async (articleObj) => {
         const articleModuleKey = moduleKeys.find((key) => new RegExp(articleObj.url).test(key))
         if (!articleModuleKey) return
-        const { default: article } = await modules[articleModuleKey]()
+        const { default: article } = await modules[articleModuleKey]() as { default: articleType }
         console.log(article)
-        allArticleBody.push(await handleImgs(decodeURIComponent(window.atob(article.body as string)), articleObj))
+        allArticleBody.push(await handleImgs(decodeURIComponent(window.atob(article.body)), articleObj))
       })
       console.log('\n')
     })

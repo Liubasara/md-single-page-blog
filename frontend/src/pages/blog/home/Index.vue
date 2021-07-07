@@ -1,5 +1,7 @@
 <template>
-  blogHome
+  blogHome: 
+  <div>directory</div>
+  {{ $store.state.article.directory }}
 </template>
 
 <script lang="ts">

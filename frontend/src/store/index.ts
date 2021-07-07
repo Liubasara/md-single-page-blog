@@ -1,20 +1,13 @@
 import { createStore } from 'vuex'
+import article from '@/store/modules/article/index'
 
-interface stateInterface {
-  count: number;
+export interface RootStateInterface {
+  [key: string]: any;
 }
 
-const store = createStore<stateInterface>({
-  state () {
-    const _state: stateInterface = {
-      count: 0
-    }
-    return _state
-  },
-  mutations: {
-    increment (state) {
-      state.count++
-    }
+const store = createStore<RootStateInterface>({
+  modules: {
+    article
   }
 })
 
