@@ -1,14 +1,30 @@
 import type { Module } from 'vuex'
 import type { RootStateInterface } from '@/store/index'
-import directory from 'articleDist/directory/directory.json'
+import { getArticleDirectory, getAllContents } from '@/service'
 
 interface ArticlestateInterface {
   directory: Array<articleTypeDirectory>;
+  allContents: Array<articleType>;
 }
 
-const module: Module<ArticlestateInterface, RootStateInterface> = {
+type ArticleModule = Module<ArticlestateInterface, RootStateInterface>
+
+const module: ArticleModule = {
+  namespaced: true,
   state: {
-    directory
+    directory: getArticleDirectory(),
+    allContents: []
+  },
+  mutations: {
+    setAllContents(state, payload) {
+      state.allContents = payload
+    }
+  },
+  actions: {
+    async fetchAllContents ({ commit }) {
+      const res = await getAllContents()
+      commit('setAllContents', res)
+    }
   }
 }
 

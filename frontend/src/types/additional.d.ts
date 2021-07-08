@@ -18,6 +18,19 @@ type articleTypeDirectory = {
 
 type articleType = articleTypeDirectory & { body: string };
 declare module 'articleDist/*.json' {
-  const value: Array<articleType> | Array<articleTypeDirectory>
+  const value: {
+    [key: string]: any;
+  }
   export default value
 }
+
+declare module 'articleDist/directory/directory.json' {
+  const value: Array<articleTypeDirectory>
+  export default value
+}
+
+declare module 'articleDist/allContents/allContents.json' {
+  const value: Array<articleType>
+  export default value
+}
+
