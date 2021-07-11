@@ -17,7 +17,9 @@ import URIJS from 'urijs'
 export default defineComponent({
   name: 'App',
   setup() {
-    const aa = {}
+    const aa: {
+      b?: number;
+    } = {}
     const currentPage = ref(0)
     const allArticleBody: Array<string> = reactive([])
     let currentBlogBody = ref('')
