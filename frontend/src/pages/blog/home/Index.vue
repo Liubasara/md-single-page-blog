@@ -1,7 +1,10 @@
 <template>
-  blogHome:
-  <div>directory</div>
-  {{ testArticleObj }}
+  <div>
+    blogHome:
+    <div>directory</div>
+    <!-- {{ testArticleObj }} -->
+    <div v-html="testArticleObj.body"></div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -9,10 +12,10 @@ import { defineComponent, onBeforeMount, ref } from 'vue'
 import type { Ref } from 'vue'
 import { useStore } from 'vuex'
 
-async function useGetArticleDetail(articleObj: articleTypeDirectory) {
+function useGetArticleDetail(articleObj: articleTypeDirectory | undefined) {
+  if (!articleObj) return ''
   const gettersFunc = useStore().getters['article/getArticleDetailFunc']
-  const res = await gettersFunc(articleObj) as Promise<articleType>
-  return res
+  return gettersFunc(articleObj)
 }
 
 export default defineComponent({
@@ -20,10 +23,9 @@ export default defineComponent({
   setup() {
     const store = useStore()
     store.dispatch('article/fetchAllContents')
-    let testArticleObj: Ref<null> | Ref<articleType> = ref(null)
+    let testArticleObj: Ref<''> | Ref<articleType> = ref('')
     onBeforeMount(async () => {
       testArticleObj.value = await useGetArticleDetail(store.state.article.directory[0])
-      console.log(testArticleObj)
     })
     return {
       store,
