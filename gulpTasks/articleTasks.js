@@ -42,7 +42,24 @@ async function generateArticleToJsTask() {
   marked.setOptions({
     renderer: rendererMD,
     highlight: function (code, language) {
-      return hljs.highlight(code, { language }).value
+      try {
+        return hljs.highlight(code, { language }).value
+      } catch (e) {
+        const languageMap = {
+          conf: ['nginx', 'ini']
+        }
+        if (languageMap[language]) {
+          for (let tryExt of languageMap[language]) {
+            try {
+              const res = hljs.highlight(code, { language: tryExt }).value
+              console.log(`highlight: not found language ${language}, use ${tryExt} instead`)
+              return res
+            } catch (e) {}
+          }
+        }
+        console.log(`highlight: not found language ${language}, use txt instead`)
+        return hljs.highlight(code, { language: 'txt' }).value
+      }
     },
     gfm: true, //默认为true。 允许 Git Hub标准的markdown.
     tables: true, //默认为true。 允许支持表格语法。该选项要求 gfm 为true。
