@@ -11,10 +11,12 @@
 import { defineComponent, onBeforeMount, ref } from 'vue'
 import type { Ref } from 'vue'
 import { useStore } from 'vuex'
+import type { getArticleDetailGettersType } from '@/store/modules/article/index'
+import type { Store } from 'vuex'
 
-function useGetArticleDetail(articleObj: articleTypeDirectory | undefined) {
-  if (!articleObj) return ''
-  const gettersFunc = useStore().getters['article/getArticleDetailFunc']
+function useGetArticleDetail(store: Store<any>, articleObj: articleTypeDirectory | undefined) {
+  if (!articleObj) return Promise.reject()
+  const gettersFunc = store.getters['article/getArticleDetailFunc'] as getArticleDetailGettersType
   return gettersFunc(articleObj)
 }
 
@@ -24,8 +26,11 @@ export default defineComponent({
     const store = useStore()
     store.dispatch('article/fetchAllContents')
     let testArticleObj: Ref<''> | Ref<articleType> = ref('')
-    onBeforeMount(async () => {
-      testArticleObj.value = await useGetArticleDetail(store.state.article.directory[0])
+    onBeforeMount(() => {
+      setTimeout(async () => {
+        const res = await useGetArticleDetail(store, store.state.article.directory[0])
+        res && (testArticleObj.value = res)
+      }, 2000)
     })
     return {
       store,

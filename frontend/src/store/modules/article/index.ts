@@ -21,6 +21,27 @@ async function parseArticleBody(article: articleType): Promise<string> {
   return decodedBody
 }
 
+const getArticleDetailFunc = <T extends ArticleStateInterface>(state: T) => async (
+  articleObj: articleTypeDirectory
+) => {
+  let currentContent!: articleType | undefined
+  if (state.allContentsLoaded) {
+    // 以 url 和名称作为联合标识符
+    currentContent = state.allContents.find(
+      (article) =>
+        article.name === articleObj.name && article.url === articleObj.url
+    )
+  } else {
+    currentContent = (await getResourceDetail(
+      articleObj.url
+    )) as articleType
+  }
+  currentContent && (currentContent.body = await parseArticleBody(currentContent))
+  return currentContent
+}
+
+export type getArticleDetailGettersType = ReturnType<typeof getArticleDetailFunc>
+
 async function handleImgs(decodedBody: string, article: articleType) {
   const tmpParentElm = document.createElement('div')
   tmpParentElm.innerHTML = decodedBody
@@ -73,24 +94,7 @@ const module: ArticleModule = {
     }
   },
   getters: {
-    getArticleDetailFunc: (state) => async (
-      articleObj: articleTypeDirectory
-    ) => {
-      let currentContent!: articleType | undefined
-      if (state.allContentsLoaded) {
-        // 以 url 和名称作为联合标识符
-        currentContent = state.allContents.find(
-          (article) =>
-            article.name === articleObj.name && article.url === articleObj.url
-        )
-      } else {
-        currentContent = (await getResourceDetail(
-          articleObj.url
-        )) as articleType
-      }
-      currentContent && (currentContent.body = await parseArticleBody(currentContent))
-      return currentContent
-    }
+    getArticleDetailFunc
   }
 }
 
