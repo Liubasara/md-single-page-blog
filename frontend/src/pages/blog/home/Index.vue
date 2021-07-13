@@ -3,7 +3,7 @@
     blogHome:
     <div>directory</div>
     <!-- {{ testArticleObj }} -->
-    <div v-html="testArticleObj.body"></div>
+    <div v-html="testArticleObj.body" class="raw-markdown-html"></div>
   </div>
 </template>
 
@@ -30,7 +30,7 @@ export default defineComponent({
       setTimeout(async () => {
         const res = await useGetArticleDetail(store, store.state.article.directory[0])
         res && (testArticleObj.value = res)
-      }, 2000)
+      }, 0)
     })
     return {
       store,
@@ -39,3 +39,12 @@ export default defineComponent({
   }
 })
 </script>
+
+<style lang="scss">
+.raw-markdown-html {
+  @import 'highlight.js/scss/atom-one-dark.scss';
+  .hljs {
+    display: block;
+  }
+}
+</style>
