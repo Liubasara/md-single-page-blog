@@ -3,7 +3,7 @@
     blogHome:
     <div>directory</div>
     <!-- {{ testArticleObj }} -->
-    <div v-html="testArticleObj.body" class="raw-markdown-html"></div>
+    <div class="raw-markdown-html" v-html="testArticleObj.body"></div>
   </div>
 </template>
 
@@ -42,9 +42,6 @@ export default defineComponent({
 
 <style lang="scss">
 .raw-markdown-html {
-  @import 'highlight.js/scss/atom-one-dark.scss';
-  .hljs {
-    display: block;
-  }
+  @import '@/assets/style/markdown/index.scss';
 }
 </style>
