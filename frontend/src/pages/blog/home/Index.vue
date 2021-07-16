@@ -35,7 +35,7 @@ export default defineComponent({
   setup() {
     const store = useStore()
     store.dispatch('article/fetchAllContents')
-    let testArticleObj: Ref<''> | Ref<articleType> = ref('')
+    let testArticleObj: Ref<{ body: string}> | Ref<articleType> = ref({ body: '' })
     onBeforeMount(() => {
       setTimeout(async () => {
         const res = await useGetArticleDetail(store, store.state.article.directory[0])
