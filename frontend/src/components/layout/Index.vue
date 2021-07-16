@@ -78,6 +78,7 @@ export default defineComponent({
     .header {
       width: 4.16667%;
       min-width: 4.16667%;
+      transition: .5s ease reverse;
     }
     .asider {
       width: 25%;
@@ -96,6 +97,7 @@ export default defineComponent({
       right: 0;
       top: 0;
       bottom: auto;
+      height: 53px; // header 的默认高度
       width: 100%;
       z-index: 1050;
     }
@@ -105,6 +107,7 @@ export default defineComponent({
     .main {
       margin-left: 0;
       margin-right: 0;
+      margin-top: 53px; // header 的默认高度
     }
   }
 }
