@@ -19,17 +19,39 @@ export default defineComponent({
 .wrapper {
   display: flex;
   .header {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    display: block;
+    padding: 0;
+    overflow-y: auto;
     width: 16.66667%;
     min-width: 16.66667%;
+    transition: .5s ease;
   }
   .asider {
     width: 21%;
     min-width: 21%;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: auto;
+    right: 0;
+    display: block;
+    padding: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    transition: .5s ease;
   }
   .main {
     flex: 1;
     min-height: 100vh;
     padding: 15px;
+    margin-left: 16.66667%;
+    margin-right: 21%;
+    transition: .5s ease;
   }
   @media screen and (min-width: 1440px) {
   }
@@ -38,29 +60,31 @@ export default defineComponent({
       width: 23%;
       min-width: 23%;
     }
+    .main {
+      margin-right: 23%;
+    }
   }
-  @media screen and (min-width: 992px) and (max-width: 1119px) {
+  @media screen and (min-width: 992px) and (max-width: 1199px) {
     .asider {
       width: 25%;
       min-width: 25%;
     }
+    .main {
+      margin-right: 25%;
+    }
   }
   @media screen and (min-width: 768px) and (max-width: 991px) {
     .header {
-      position: fixed;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      z-index: 1000;
-      display: block;
-      padding: 0;
       width: 4.16667%;
       min-width: 4.16667%;
-      overflow-y: auto;
-      // border-right: 1px solid #f6f6f6;
+    }
+    .asider {
+      width: 25%;
+      min-width: 25%;
     }
     .main {
-      padding: 15px 15px 15px calc(4.16667% + 15px);
+      margin-left: 4.16667%;
+      margin-right: 25%;
     }
   }
   @media screen and (max-width: 767px) {
@@ -70,11 +94,16 @@ export default defineComponent({
       left: 0;
       right: 0;
       top: 0;
+      bottom: auto;
       width: 100%;
       z-index: 1050;
     }
     .asider {
       display: none;
+    }
+    .main {
+      margin-left: 0;
+      margin-right: 0;
     }
   }
 }
