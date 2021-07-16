@@ -16,6 +16,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/style/screenMixins.scss';
 .wrapper {
   display: flex;
   .header {
@@ -53,9 +54,9 @@ export default defineComponent({
     margin-right: 21%;
     transition: .5s ease;
   }
-  @media screen and (min-width: 1440px) {
+  @include desktopLargeScreen {
   }
-  @media screen and (min-width: 1200px) and (max-width: 1439px) {
+  @include desktopMediumScreen {
     .asider {
       width: 23%;
       min-width: 23%;
@@ -64,7 +65,7 @@ export default defineComponent({
       margin-right: 23%;
     }
   }
-  @media screen and (min-width: 992px) and (max-width: 1199px) {
+  @include desktopSmallScreen {
     .asider {
       width: 25%;
       min-width: 25%;
@@ -73,7 +74,7 @@ export default defineComponent({
       margin-right: 25%;
     }
   }
-  @media screen and (min-width: 768px) and (max-width: 991px) {
+  @include desktopTinyScreen {
     .header {
       width: 4.16667%;
       min-width: 4.16667%;
@@ -87,7 +88,7 @@ export default defineComponent({
       margin-right: 25%;
     }
   }
-  @media screen and (max-width: 767px) {
+  @include mobileScreen {
     flex-direction: column;
     .header {
       position: fixed;

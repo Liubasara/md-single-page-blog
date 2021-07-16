@@ -1,0 +1,28 @@
+@mixin desktopLargeScreen {
+  @media screen and (min-width: 1440px) {
+    @content;
+  }
+}
+@mixin desktopMediumScreen {
+  @media screen and (min-width: 1200px) and (max-width: 1439px) {
+    @content;
+  }
+}
+
+@mixin desktopSmallScreen {
+  @media screen and (min-width: 992px) and (max-width: 1199px) {
+    @content;
+  }
+}
+
+@mixin desktopTinyScreen {
+  @media screen and (min-width: 768px) and (max-width: 991px) {
+    @content;
+  }
+}
+
+@mixin mobileScreen {
+  @media screen and (max-width: 767px) {
+    @content;
+  }
+}
