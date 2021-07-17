@@ -36,7 +36,7 @@ const getArticleDetailFunc = <T extends ArticleStateInterface>(state: T) => asyn
       articleObj.url
     )) as articleType
   }
-  currentContent && (currentContent.body = await parseArticleBody(currentContent))
+  currentContent && (currentContent = { ...currentContent, body: await parseArticleBody(currentContent)})
   return currentContent
 }
 

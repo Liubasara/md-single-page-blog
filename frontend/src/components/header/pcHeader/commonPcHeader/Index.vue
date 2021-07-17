@@ -1,6 +1,9 @@
 <template>
   <div class="header-container">
-    CommonPcHeader
+    <router-link class="link" :to="{ path: '/blog/home' }">Home</router-link>
+    <router-link class="link" :to="{ path: `/blog/post/${'test'}` }">Post</router-link>
+    <router-link class="link" :to="{ path: '/blog/tags' }">Tags</router-link>
+    <router-link class="link" :to="{ path: '/blog/cate' }">Cate</router-link>
   </div>
 </template>
 
@@ -22,7 +25,9 @@ export default defineComponent({
   height: 100%;
   background-color: #fbfbfb;
   border-right: 1px solid #f6f6f6;
+  .link {
+    display: block;
+  }
 }
-
 </style>
 

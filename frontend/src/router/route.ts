@@ -20,6 +20,21 @@ const routes: RouteRecordRaw[] = [
         path: '/blog/home',
         name: 'BlogHome',
         component: () => import('@/pages/blog/home/Index.vue')
+      },
+      {
+        path: '/blog/post/:name',
+        name: 'BlogPost',
+        component: () => import('@/pages/blog/post/Index.vue')
+      },
+      {
+        path: '/blog/tags',
+        name: 'BlogTags',
+        component: () => import('@/pages/blog/tags/Index.vue')
+      },
+      {
+        path: '/blog/cate',
+        name: 'BlogCate',
+        component: () => import('@/pages/blog/cate/Index.vue')
       }
     ]
   }
