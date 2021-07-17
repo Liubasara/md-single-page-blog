@@ -1,21 +1,10 @@
 <template>
-  <Layout>
-    <template v-slot:header>
-      <Header></Header>
-    </template>
-    <div class="raw-markdown-html" v-html="testArticleObj.body"></div>
-    <template v-slot:asider>
-      <div class="aside">Aside</div>
-    </template>
-    <!-- {{ testArticleObj }} -->
-  </Layout>
+  <div class="raw-markdown-html" v-html="testArticleObj.body"></div>
 </template>
 
 <script lang="ts">
 import { defineComponent, onBeforeMount, ref } from 'vue'
 import { useStore } from 'vuex'
-import Layout from '@/components/layout/Index.vue'
-import Header from '@/components/header/Index.vue'
 import type { Ref } from 'vue'
 import type { getArticleDetailGettersType } from '@/store/modules/article/index'
 import type { Store } from 'vuex'
@@ -28,10 +17,6 @@ function useGetArticleDetail(store: Store<any>, articleObj: articleTypeDirectory
 
 export default defineComponent({
   name: 'BlogHome',
-  components: {
-    Layout,
-    Header
-  },
   setup() {
     const store = useStore()
     store.dispatch('article/fetchAllContents')
