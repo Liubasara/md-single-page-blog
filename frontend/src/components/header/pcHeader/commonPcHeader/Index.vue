@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts">
-import Icon from '@/components/icon/Index'
+import Icon from '@/components/icon/Index.vue'
 import { defineComponent } from 'vue'
 
 export default defineComponent({

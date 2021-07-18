@@ -1,3 +1,4 @@
+<script lang="tsx">
 import { defineComponent, PropType, h } from 'vue'
 
 type IconFontType =
@@ -45,3 +46,4 @@ export default defineComponent({
     }
   }
 })
+</script>
