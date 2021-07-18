@@ -1,9 +1,9 @@
 <template>
   <div class="header-container">
-    <router-link class="link" :to="{ path: '/blog/home' }">Home</router-link>
+    <router-link class="link" :to="{ path: '/blog/home' }"><span class="iconfont icon-home"></span>Home</router-link>
     <router-link class="link" :to="{ path: `/blog/post/${'test'}` }">Post</router-link>
-    <router-link class="link" :to="{ path: '/blog/tags' }">Tags</router-link>
-    <router-link class="link" :to="{ path: '/blog/cate' }">Cate</router-link>
+    <router-link class="link" :to="{ path: '/blog/tags' }"><span class="iconfont icon-tag"></span>Tags</router-link>
+    <router-link class="link" :to="{ path: '/blog/cate' }"><span class="iconfont icon-Category"></span>Cate</router-link>
   </div>
 </template>
 
