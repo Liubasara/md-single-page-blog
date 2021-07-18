@@ -1,20 +1,20 @@
 <template>
   <div class="header-container">
-    <router-link class="link" :to="{ path: '/blog/home' }"><span class="iconfont icon-home"></span>Home</router-link>
+    <router-link class="link" :to="{ path: '/blog/home' }"><Icon type="home"></Icon>Home</router-link>
     <router-link class="link" :to="{ path: `/blog/post/${'test'}` }">Post</router-link>
-    <router-link class="link" :to="{ path: '/blog/tags' }"><span class="iconfont icon-tag"></span>Tags</router-link>
-    <router-link class="link" :to="{ path: '/blog/cate' }"><span class="iconfont icon-Category"></span>Cate</router-link>
+    <router-link class="link" :to="{ path: '/blog/tags' }"><Icon type="tag"></Icon>Tags</router-link>
+    <router-link class="link" :to="{ path: '/blog/cate' }"><Icon type="Category"></Icon>Cate</router-link>
   </div>
 </template>
 
 <script lang="ts">
+import Icon from '@/components/icon/Index'
 import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'CommonPcHeader',
-  setup() {
-    
-  },
+  components: { Icon },
+  setup() {}
 })
 </script>
 
