@@ -1,7 +1,7 @@
 <template>
   <Layout>
     <template v-slot:header>
-      <Header v-bind="header"></Header>
+      <Header v-bind="header.data"></Header>
     </template>
     <router-view></router-view>
     <template v-slot:asider>
@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs, ref } from 'vue'
+import { defineComponent, reactive, toRefs } from 'vue'
 import Layout from '@/components/layout/Index.vue'
 import Header from '@/components/header/Index.vue'
 
@@ -20,17 +20,21 @@ function useHeader() {
   const data: {
     name?: string
   } = reactive({
-    name: 'Liubasara'
+    // name: 'Liubasara'
   })
 
   function changeName(_name: string) {
+    if (data.name === 'ddd') {
+      data.name = 'Liubasara'
+      return
+    }
     data.name = _name
   }
 
-  return reactive({
-    ...toRefs(data),
+  return {
+    data,
     changeName
-  })
+  }
 }
 
 export default defineComponent({

@@ -1,17 +1,16 @@
 <template>
   <div class="pc-header">
-    <PCHeader v-bind="headerProps"></PCHeader>
+    <PCHeader v-bind="$attrs"></PCHeader>
   </div>
   <div class="mobile-header">
-    <MobileHeader v-bind="headerProps"></MobileHeader>
+    <MobileHeader v-bind="$attrs"></MobileHeader>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, watch } from 'vue'
+import { defineComponent } from 'vue'
 import PCHeader from '@/components/header/pcHeader/Index.vue'
 import MobileHeader from '@/components/header/mobileHeader/Index.vue'
-import headerProps from '@/components/header/useProps'
 
 export default defineComponent({
   name: 'Header',
@@ -19,12 +18,7 @@ export default defineComponent({
     PCHeader,
     MobileHeader
   },
-  props: headerProps,
-  setup(props) {
-    return {
-      headerProps: props
-    }
-  }
+  setup() {}
 })
 </script>
 

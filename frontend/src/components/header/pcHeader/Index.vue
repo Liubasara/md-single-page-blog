@@ -1,9 +1,9 @@
 <template>
   <div class="common-pc-header">
-    <CommonPcHeader v-bind="headerProps"></CommonPcHeader>
+    <CommonPcHeader v-bind="$attrs"></CommonPcHeader>
   </div>
   <div class="tiny-pc-header">
-    <TinyPcHeader v-bind="headerProps"></TinyPcHeader>
+    <TinyPcHeader v-bind="$attrs"></TinyPcHeader>
   </div>
 </template>
 
@@ -11,7 +11,6 @@
 import { defineComponent } from 'vue'
 import CommonPcHeader from '@/components/header/pcHeader/commonPcHeader/Index.vue'
 import TinyPcHeader from '@/components/header/pcHeader/tinyPcHeader/Index.vue'
-import headerProps from '@/components/header/useProps'
 
 export default defineComponent({
   name: 'PCHeader',
@@ -19,12 +18,7 @@ export default defineComponent({
     CommonPcHeader,
     TinyPcHeader
   },
-  props: headerProps,
-  setup(props) {
-    return {
-      headerProps: props
-    }
-  }
+  setup() {}
 })
 </script>
 
