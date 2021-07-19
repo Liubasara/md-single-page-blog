@@ -1,19 +1,37 @@
 <template>
   <Layout>
     <template v-slot:header>
-      <Header></Header>
+      <Header v-bind="header"></Header>
     </template>
     <router-view></router-view>
     <template v-slot:asider>
+      <button @click="header.changeName('ddd')">123</button>
       <div class="aside">Aside</div>
     </template>
   </Layout>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, reactive, toRefs, ref } from 'vue'
 import Layout from '@/components/layout/Index.vue'
 import Header from '@/components/header/Index.vue'
+
+function useHeader() {
+  const data: {
+    name?: string
+  } = reactive({
+    name: 'Liubasara'
+  })
+
+  function changeName(_name: string) {
+    data.name = _name
+  }
+
+  return reactive({
+    ...toRefs(data),
+    changeName
+  })
+}
 
 export default defineComponent({
   name: 'BlogPage',
@@ -21,7 +39,12 @@ export default defineComponent({
     Layout,
     Header
   },
-  setup() {}
+  setup() {
+    const headerInstance = useHeader()
+    return {
+      header: headerInstance,
+    }
+  }
 })
 </script>
 

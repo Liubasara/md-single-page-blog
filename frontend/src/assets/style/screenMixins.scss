@@ -15,6 +15,13 @@
   }
 }
 
+// 涵盖 Large/Medium/Small 三种情况下的屏幕
+@mixin desktopCommonScreen {
+  @media screen and (min-width: 992px) {
+    @content;
+  }
+}
+
 @mixin desktopTinyScreen {
   @media screen and (min-width: 768px) and (max-width: 991px) {
     @content;
