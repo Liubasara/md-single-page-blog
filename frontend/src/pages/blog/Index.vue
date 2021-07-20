@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs } from 'vue'
+import { defineComponent, reactive } from 'vue'
 import Layout from '@/components/layout/Index.vue'
 import Header from '@/components/header/Index.vue'
 
@@ -46,7 +46,7 @@ export default defineComponent({
   setup() {
     const headerInstance = useHeader()
     return {
-      header: headerInstance,
+      header: headerInstance
     }
   }
 })
