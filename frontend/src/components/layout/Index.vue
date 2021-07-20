@@ -18,7 +18,6 @@ export default defineComponent({
 <style lang="scss" scoped>
 @import '@/assets/style/screenMixins.scss';
 .wrapper {
-  display: flex;
   .header {
     position: fixed;
     top: 0;
@@ -47,11 +46,12 @@ export default defineComponent({
     transition: .5s ease;
   }
   .main {
-    flex: 1;
     min-height: 100vh;
     padding: 15px;
     margin-left: 16.66667%;
     margin-right: 21%;
+    word-break: break-all;
+    white-space: normal;
     transition: .5s ease;
   }
   @include desktopLargeScreen {
@@ -90,7 +90,6 @@ export default defineComponent({
     }
   }
   @include mobileScreen {
-    flex-direction: column;
     .header {
       position: fixed;
       left: 0;
