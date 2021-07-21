@@ -61,3 +61,60 @@ export const getPostsByTagsMaps = <T extends tagsMapType, K extends keyof T>(
   }
   return Array.from(new Set(allSelectedTagsArticle))
 }
+
+type catesMapType = {
+  [key: string]: {
+    num: number,
+    articles: Array<allArticleType>
+  }
+}
+
+/**
+ * @description 返回所有的Categories
+ */
+ export const getAllCates = (allPosts: Array<allArticleType>) => {
+  const catesMap: catesMapType = {}
+  for (let post of allPosts) {
+    const { categories: cate } = post
+    if (catesMap[cate]) {
+      catesMap[cate].num = catesMap[cate].articles.push(post)
+      continue
+    }
+    catesMap[cate] = {
+      articles: [post],
+      num: 1
+    }
+  }
+  return {
+    allCates: Object.keys(catesMap),
+    catesMap
+  }
+}
+
+/**
+ * @description 按分类查询文章
+ * @param {Array} tags
+ */
+ export const getAllPostsByCate = (
+  allPosts: Array<allArticleType>,
+  cate: string
+) => {
+  const categoriesResult = allPosts.filter(item => {
+    return item.categories === cate
+  })
+  return categoriesResult
+}
+
+/**
+ * @description 按 Tag 查询文章 Better Performance
+ * @param {Array} tags
+ */
+ export const getPostsByCatesMaps = <T extends catesMapType, K extends keyof T>(
+  catesMaps: T,
+  cate: K
+) => {
+  const allCatesArticle: Array<allArticleType> = catesMaps?.[cate]?.articles || []
+  return allCatesArticle
+}
+
+
