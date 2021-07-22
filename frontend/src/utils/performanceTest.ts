@@ -3,7 +3,7 @@ function performanceTest<T extends (...args: Array<any>) => any>(fn: T) {
     ...args: infer V
   ) => any
     ? V
-    : never
+    : any
   type fnReturn = ReturnType<T>
   return function (this: any, ...args: fnArguments<T>): fnReturn {
     const t0 = performance.now()
