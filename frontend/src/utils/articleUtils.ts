@@ -2,7 +2,7 @@ type allArticleType = articleType | articleTypeDirectory
 
 type tagsMapType = {
   [key: string]: {
-    num: number,
+    num: number
     articles: Array<allArticleType>
   }
 }
@@ -10,9 +10,7 @@ type tagsMapType = {
 /**
  * @description 返回所有的Tag
  */
-export const getAllTags = (
-  allPosts: Array<allArticleType>
-) => {
+export const getAllTags = (allPosts: Array<allArticleType>) => {
   const tagsMap: tagsMapType = {}
   for (let post of allPosts) {
     for (let tag of post.tags) {
@@ -64,7 +62,7 @@ export const getPostsByTagsMaps = <T extends tagsMapType, K extends keyof T>(
 
 type catesMapType = {
   [key: string]: {
-    num: number,
+    num: number
     articles: Array<allArticleType>
   }
 }
@@ -72,7 +70,7 @@ type catesMapType = {
 /**
  * @description 返回所有的Categories
  */
- export const getAllCates = (allPosts: Array<allArticleType>) => {
+export const getAllCates = (allPosts: Array<allArticleType>) => {
   const catesMap: catesMapType = {}
   for (let post of allPosts) {
     const { categories: cate } = post
@@ -95,11 +93,11 @@ type catesMapType = {
  * @description 按分类查询文章
  * @param {Array} tags
  */
- export const getAllPostsByCate = (
+export const getAllPostsByCate = (
   allPosts: Array<allArticleType>,
   cate: string
 ) => {
-  const categoriesResult = allPosts.filter(item => {
+  const categoriesResult = allPosts.filter((item) => {
     return item.categories === cate
   })
   return categoriesResult
@@ -109,12 +107,54 @@ type catesMapType = {
  * @description 按 Tag 查询文章 Better Performance
  * @param {Array} tags
  */
- export const getPostsByCatesMaps = <T extends catesMapType, K extends keyof T>(
+export const getPostsByCatesMaps = <T extends catesMapType, K extends keyof T>(
   catesMaps: T,
   cate: K
 ) => {
-  const allCatesArticle: Array<allArticleType> = catesMaps?.[cate]?.articles || []
+  const allCatesArticle: Array<allArticleType> =
+    catesMaps?.[cate]?.articles || []
   return allCatesArticle
 }
 
+/**
+ * 在 str 中查找 Item 并以 width 为前后宽度进行切割
+ * eg. str: '哈哈你好哈哈哈哈你好啊好啊好哈' item: '你好' { width: 1 }
+ *     return: 哈你好哈...... || ......哈你好啊
+ * @param str 
+ * @param item 
+ * @param param2 
+ * @returns 
+ */
+export const sliceItemInStrByWidth = (
+  str: string,
+  item: string,
+  { width = 10 } = { width: 10 }
+) => {
+  let strArray = []
+  let index = str.indexOf(item)
+  while (index > -1) {
+    strArray.push(
+      str.slice(
+        index - width < 0 ? 0 : index - width,
+        index + width + item.length
+      )
+    )
+    index = str.indexOf(item, index + 1)
+  }
+  return strArray.join('...... || ......')
+}
 
+/**
+ * @description 按给出的字符搜索文章
+ * @param {String} str
+ */
+export const getAllPostBySearch = (
+  allPosts: Array<articleType>,
+  str: string
+) => {
+  const contentResult = allPosts.filter((item) => {
+    const contents = decodeURIComponent(window.atob(item.body))
+    return contents.indexOf(`${str}`) >= 0
+  })
+  return contentResult
+}
