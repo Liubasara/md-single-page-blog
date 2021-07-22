@@ -1,7 +1,19 @@
 const { spawn } = require('child_process')
 const path = require('path')
+const { series } = require('gulp')
 
 const frontendPath = path.resolve(__dirname, '..', 'frontend')
+
+function frontendInstallTask(cb) {
+  process.chdir(frontendPath)
+  const install = spawn('yarn', ['install', '--frozen-lockfile'])
+  install.stdout.on('data', (data) => {
+    console.log(Buffer.from(data).toString())
+  })
+  install.on('close', () => {
+    cb()
+  })
+}
 
 function frontendBuildTask(cb) {
   process.chdir(frontendPath)
@@ -26,6 +38,6 @@ function frontendDevTask(cb) {
 }
 
 module.exports = {
-  frontendBuildTask,
-  frontendDevTask
+  frontendBuildTask: series(frontendInstallTask, frontendBuildTask),
+  frontendDevTask: series(frontendInstallTask, frontendDevTask)
 }
