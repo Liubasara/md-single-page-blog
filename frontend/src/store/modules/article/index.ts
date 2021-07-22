@@ -1,4 +1,4 @@
-import type { Module } from 'vuex'
+import type { Module, Getter } from 'vuex'
 import type { RootStateInterface } from '@/store/index'
 import {
   getArticleDirectory,
@@ -6,6 +6,7 @@ import {
   getResourceDetail
 } from '@/service'
 import URIJS from 'urijs'
+import { getAllPostBySearch } from '@/utils/articleUtils'
 
 interface ArticleStateInterface {
   directory: Array<articleTypeDirectory>
@@ -15,13 +16,15 @@ interface ArticleStateInterface {
 
 type ArticleModule = Module<ArticleStateInterface, RootStateInterface>
 
+type ArticleModuleGetter = Getter<ArticleStateInterface, RootStateInterface>
+
 async function parseArticleBody(article: articleType): Promise<string> {
   let decodedBody = decodeURIComponent(window.atob(article.body))
   decodedBody = await handleImgs(decodedBody, article)
   return decodedBody
 }
 
-const getArticleDetailFunc = <T extends ArticleStateInterface>(state: T) => async (
+const getArticleDetailFunc: ArticleModuleGetter = (state, getters, rootState) => async (
   articleObj: articleTypeDirectory
 ) => {
   let currentContent!: articleType | undefined
@@ -38,6 +41,14 @@ const getArticleDetailFunc = <T extends ArticleStateInterface>(state: T) => asyn
   }
   currentContent && (currentContent = { ...currentContent, body: await parseArticleBody(currentContent)})
   return currentContent
+}
+
+const allArticleContentsWithSearch: ArticleModuleGetter = (state, getters, rootState) => {
+  const allContents = state.allContents
+  if (rootState.searchData) {
+    return getAllPostBySearch(allContents, rootState.searchData)
+  }
+  return allContents
 }
 
 export type getArticleDetailGettersType = ReturnType<typeof getArticleDetailFunc>
@@ -94,7 +105,8 @@ const module: ArticleModule = {
     }
   },
   getters: {
-    getArticleDetailFunc
+    getArticleDetailFunc,
+    allArticleContentsWithSearch
   }
 }
 

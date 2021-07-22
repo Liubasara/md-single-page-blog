@@ -1,15 +1,19 @@
-import { createStore } from 'vuex'
+import { createStore, StoreOptions } from 'vuex'
 import article from '@/store/modules/article/index'
 
 export interface RootStateInterface {
-  article: typeof article;
-  [key: string]: any;
+  searchData: string
 }
 
-const store = createStore<RootStateInterface>({
+const storeOptions: StoreOptions<RootStateInterface> = {
   modules: {
     article
+  },
+  state: {
+    searchData: ''
   }
-})
+}
+
+const store = createStore<RootStateInterface>(storeOptions)
 
 export default store
