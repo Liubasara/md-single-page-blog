@@ -5,9 +5,14 @@
         <img src="@/assets/img/avatar.jpeg" alt="avatar">
       </router-link>
       <p class="name">{{ props.name }}</p>
+      <p>{{ props.introduction }}</p>
+      <p>
+        <Icon type="location" as="span"></Icon>
+        <span>GuangZhou, China</span>
+      </p>
     </div>
     <router-link class="link" :to="{ path: '/blog/home' }"><Icon type="home"></Icon>Home</router-link>
-    <router-link class="link" :to="{ path: `/blog/post/${'test'}` }">Post</router-link>
+    <!-- <router-link class="link" :to="{ path: `/blog/post/${'test'}` }">Post</router-link> -->
     <router-link class="link" :to="{ path: '/blog/tags' }"><Icon type="tag"></Icon>Tags</router-link>
     <router-link class="link" :to="{ path: '/blog/cate' }"><Icon type="Category"></Icon>Cate</router-link>
   </div>
@@ -16,7 +21,7 @@
 <script lang="ts">
 import Icon from '@/components/icon/Index.vue'
 import { defineComponent } from 'vue'
-import headerProps from '@/components/header/useProps'
+import headerProps from '@/components/header/props'
 
 export default defineComponent({
   name: 'CommonPcHeader',

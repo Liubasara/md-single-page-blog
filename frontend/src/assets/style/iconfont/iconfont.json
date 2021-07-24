@@ -1,0 +1,86 @@
+{
+  "id": "2682471",
+  "name": "Blog项目",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "2207679",
+      "name": "icon-location",
+      "font_class": "location",
+      "unicode": "e640",
+      "unicode_decimal": 58944
+    },
+    {
+      "icon_id": "17964137",
+      "name": "folder",
+      "font_class": "folder",
+      "unicode": "e66e",
+      "unicode_decimal": 58990
+    },
+    {
+      "icon_id": "21730726",
+      "name": "github",
+      "font_class": "github",
+      "unicode": "e657",
+      "unicode_decimal": 58967
+    },
+    {
+      "icon_id": "348851",
+      "name": "tag",
+      "font_class": "tag",
+      "unicode": "ec33",
+      "unicode_decimal": 60467
+    },
+    {
+      "icon_id": "1418249",
+      "name": "search",
+      "font_class": "search",
+      "unicode": "e61b",
+      "unicode_decimal": 58907
+    },
+    {
+      "icon_id": "7826088",
+      "name": "menu",
+      "font_class": "baseline-menu-px",
+      "unicode": "e615",
+      "unicode_decimal": 58901
+    },
+    {
+      "icon_id": "15269829",
+      "name": "resume",
+      "font_class": "resume",
+      "unicode": "e655",
+      "unicode_decimal": 58965
+    },
+    {
+      "icon_id": "17104430",
+      "name": "cup-fill",
+      "font_class": "cup-fill",
+      "unicode": "e7e9",
+      "unicode_decimal": 59369
+    },
+    {
+      "icon_id": "17173825",
+      "name": "friends",
+      "font_class": "friends",
+      "unicode": "e656",
+      "unicode_decimal": 58966
+    },
+    {
+      "icon_id": "17963944",
+      "name": "Category",
+      "font_class": "Category",
+      "unicode": "e639",
+      "unicode_decimal": 58937
+    },
+    {
+      "icon_id": "1084672",
+      "name": "home",
+      "font_class": "home",
+      "unicode": "e64a",
+      "unicode_decimal": 58954
+    }
+  ]
+}

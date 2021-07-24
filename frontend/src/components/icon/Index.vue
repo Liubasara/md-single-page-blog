@@ -1,23 +1,21 @@
 <script lang="tsx">
-import { defineComponent, PropType, h } from 'vue'
+import { defineComponent, h } from 'vue'
+import iconfontDesc from '@/assets/style/iconfont/iconfont.json'
 
-type IconFontType =
-  | 'folder'
-  | 'github'
-  | 'tag'
-  | 'search'
-  | 'baseline-menu-px'
-  | 'resume'
-  | 'cup-fill'
-  | 'friends'
-  | 'Category'
-  | 'home'
+const fontClasses = iconfontDesc.glyphs.map(item => item.font_class)
 
 export default defineComponent({
   props: {
     type: {
-      type: String as PropType<IconFontType>,
-      default: ''
+      type: String,
+      default: '',
+      validator: (value: string) => {
+        const isUsableIcon = !!~fontClasses.indexOf(value)
+        if (!isUsableIcon) {
+          console.error(`Icon: ${value || "\'\'"} is not a usable icon, please verify in iconfont.json`)
+        }
+        return isUsableIcon
+      }
     },
     as: {
       type: String,

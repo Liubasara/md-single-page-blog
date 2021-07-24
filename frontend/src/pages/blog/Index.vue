@@ -15,14 +15,9 @@
 import { defineComponent, reactive } from 'vue'
 import Layout from '@/components/layout/Index.vue'
 import Header from '@/components/header/Index.vue'
+import type { HeaderProps } from '@/components/header/props'
 
 function useHeader() {
-  const data: {
-    name?: string
-  } = reactive({
-    // name: 'Liubasara'
-  })
-
   function changeName(_name: string) {
     if (data.name === 'ddd') {
       data.name = 'Liubasara'
@@ -30,6 +25,10 @@ function useHeader() {
     }
     data.name = _name
   }
+  const data = reactive<HeaderProps>({
+    name: 'Liubasara',
+    introduction: 'Web Developer & Designer'
+  })
 
   return {
     data,
