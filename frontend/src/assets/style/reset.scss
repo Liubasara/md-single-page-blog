@@ -47,3 +47,12 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+a {
+	text-decoration: none;
+	color: inherit;
+}
+.btn, button, input, select, textarea {
+	outline: none;
+  border: none;
+	box-sizing: border-box;
+}
