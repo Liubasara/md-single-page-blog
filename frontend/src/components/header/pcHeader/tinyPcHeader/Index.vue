@@ -16,7 +16,7 @@
 <script lang="ts">
 import { defineComponent, reactive } from 'vue'
 import { useRouter } from 'vue-router'
-import { useSearch } from '@/components/header/pcHeader/commonPcHeader/Index.vue'
+import { useSearch } from '@/components/search/index'
 import Icon from '@/components/icon/Index.vue'
 
 export default defineComponent({
@@ -26,10 +26,19 @@ export default defineComponent({
   },
   setup() {
     const router = useRouter()
-    const { handleSearchClick } = useSearch()
+    const { handleSearchClick, instance: searchInstance } = useSearch()
     const icons = reactive([
       { type: 'home', action: () => router.push({ path: '/blog/home' }) },
-      { type: 'search', action: ($evt: Event) => { handleSearchClick($evt) } },
+      {
+        type: 'search',
+        action: ($evt: Event) => {
+          handleSearchClick($evt)
+          // FIXME: tmp logic
+          setTimeout(() => {
+            searchInstance.value?.remove?.()
+          }, 1000)
+        }
+      },
       { type: 'tag', action: () => router.push({ path: '/blog/tags' }) },
       { type: 'Category', action: () => router.push({ path: '/blog/cate' }) }
     ])

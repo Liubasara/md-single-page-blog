@@ -17,13 +17,14 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 @import '@/assets/style/screenMixins.scss';
+@import '@/assets/style/zIndex.scss';
 .wrapper {
   .header {
     position: fixed;
     top: 0;
     bottom: 0;
     left: 0;
-    z-index: 1000;
+    z-index: $zindex0;
     display: block;
     padding: 0;
     overflow-y: auto;
@@ -98,7 +99,7 @@ export default defineComponent({
       bottom: auto;
       height: 53px; // header 的默认高度
       width: 100%;
-      z-index: 1050;
+      z-index: $zindex1;
     }
     .asider {
       display: none;
