@@ -37,7 +37,7 @@ import Icon from '@/components/icon/Index.vue'
 import { defineComponent } from 'vue'
 import headerProps from '@/components/header/props'
 
-function useSearch() {
+export function useSearch() {
   function handleSearchClick(evt: Event) {
     evt.preventDefault()
     console.log('TODO: 调起搜索弹框')

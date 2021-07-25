@@ -12,7 +12,7 @@ export default defineComponent({
       validator: (value: string) => {
         const isUsableIcon = !!~fontClasses.indexOf(value)
         if (!isUsableIcon) {
-          console.error(`Icon: ${value || "\'\'"} is not a usable icon, please verify in iconfont.json`)
+          console.error(`Icon: '${value || ''}' is not a usable icon, please verify in iconfont.json`)
         }
         return isUsableIcon
       }
