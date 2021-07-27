@@ -1,7 +1,8 @@
 import createPopover from '@/components/popover/index'
 import Search from '@/components/search/Search.vue'
-import type { PopoverInstance } from '@/components/popover/index'
 import { ref } from 'vue'
+import type { PopoverInstance } from '@/components/popover/index'
+import type { SearchProps } from '@/components/search/props'
 import type { App } from 'vue'
 
 Search.install = function (_Vue: App) {
@@ -10,10 +11,17 @@ Search.install = function (_Vue: App) {
 
 export function useSearch() {
   const instance = ref<PopoverInstance>()
-  const createSearch = createPopover(Search)
+  const createSearch = createPopover(Search, {
+    customOnPopoverMaskClick: (done: Function) => {
+      console.log('customMaskClick')
+      done()
+    }
+  })
   function handleSearchClick(evt: Event) {
     evt.preventDefault()
-    instance.value = createSearch()
+    instance.value = createSearch<SearchProps>({
+      name: 'searchName'
+    })
   }
   return {
     handleSearchClick,

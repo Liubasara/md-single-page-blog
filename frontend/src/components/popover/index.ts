@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
-import type { ComponentOptions, ComponentPublicInstance } from 'vue'
 import PopoverConstructor from '@/components/popover/Index.vue'
+import type { ComponentOptions, ComponentPublicInstance } from 'vue'
+import type { DialogProps } from '@/components/popover/props'
 
 export type PopoverInstance =
   | (ComponentPublicInstance & {
@@ -8,9 +9,20 @@ export type PopoverInstance =
     })
   | undefined
 
-export default function createPopover(opt: ComponentOptions) {
+export default function createPopover(
+  opt: ComponentOptions,
+  dialogProps: DialogProps = {
+    width: 540,
+    height: 380
+  }
+) {
+  const _dialogProps: DialogProps = {
+    width: 540,
+    height: 380,
+    ...dialogProps,
+  }
   let $inst: PopoverInstance
-  return function (...args: any[]) {
+  return function <K extends object>(componentProps: K = {} as K) {
     if ($inst) return $inst
     const mountNode = document.createElement('div')
     mountNode.classList.add('popover')
@@ -21,11 +33,12 @@ export default function createPopover(opt: ComponentOptions) {
       $inst = void 0
     }
     const app = createApp(PopoverConstructor, {
-      dialogOpts: opt,
-      dialogExtractBind: {
-        onClose: remove
+      componentOpts: opt,
+      componentBind: {
+        onClose: remove,
+        ...componentProps
       },
-      ...args
+      ..._dialogProps
     })
     $inst = app.mount(mountNode)
     $inst.remove = remove
