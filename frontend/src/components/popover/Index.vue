@@ -68,6 +68,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 @import '@/assets/style/zIndex.scss';
+@import '@/assets/style/screenMixins.scss';
 
 .dialog-wrapper {
   position: fixed;
@@ -91,7 +92,6 @@ export default defineComponent({
 
 .popover-content {
   position: fixed;
-  z-index: $zindex1;
   top: 50%;
   left: 50%;
   height: v-bind(heightPx);
@@ -99,5 +99,17 @@ export default defineComponent({
   width: v-bind(widthPx);
   margin-left: v-bind(halfWidthPx);
   z-index: $zindex2;
+  // transition: 1s ease-in-out;
+  @media screen and (max-width: 559px), screen and (max-height: 479px) {
+    width: 100%;
+    height: 100%;
+    bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: 0;
+    margin-top: 0;
+    margin-left: 0;
+  }
 }
 </style>

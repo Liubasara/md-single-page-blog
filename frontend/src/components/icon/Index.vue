@@ -5,6 +5,7 @@ import iconfontDesc from '@/assets/style/iconfont/iconfont.json'
 const fontClasses = iconfontDesc.glyphs.map(item => item.font_class)
 
 export default defineComponent({
+  name: 'Icon',
   props: {
     type: {
       type: String,
