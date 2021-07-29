@@ -6,12 +6,21 @@ import {
   getResourceDetail
 } from '@/service'
 import URIJS from 'urijs'
-import { getAllPostBySearch } from '@/utils/articleUtils'
+import {
+  getAllPostBySearch,
+  getAllCates,
+  getAllTags
+} from '@/utils/articleUtils'
 
+const directory = getArticleDirectory() || []
+const tags = getAllTags(directory) || []
+const cates = getAllCates(directory) || []
 interface ArticleStateInterface {
   directory: Array<articleTypeDirectory>
   allContents: Array<articleType>
-  allContentsLoaded: boolean
+  allContentsLoaded: boolean,
+  tags: typeof tags,
+  cates: typeof cates
 }
 
 type ArticleModule = Module<ArticleStateInterface, RootStateInterface>
@@ -24,9 +33,11 @@ async function parseArticleBody(article: articleType): Promise<string> {
   return decodedBody
 }
 
-const getArticleDetailFunc: ArticleModuleGetter = (state, getters, rootState) => async (
-  articleObj: articleTypeDirectory
-) => {
+const getArticleDetailFunc: ArticleModuleGetter = (
+  state,
+  getters,
+  rootState
+) => async (articleObj: articleTypeDirectory) => {
   let currentContent!: articleType | undefined
   if (state.allContentsLoaded) {
     // 以 url 和名称作为联合标识符
@@ -35,15 +46,21 @@ const getArticleDetailFunc: ArticleModuleGetter = (state, getters, rootState) =>
         article.name === articleObj.name && article.url === articleObj.url
     )
   } else {
-    currentContent = (await getResourceDetail(
-      articleObj.url
-    )) as articleType
+    currentContent = (await getResourceDetail(articleObj.url)) as articleType
   }
-  currentContent && (currentContent = { ...currentContent, body: await parseArticleBody(currentContent)})
+  currentContent &&
+    (currentContent = {
+      ...currentContent,
+      body: await parseArticleBody(currentContent)
+    })
   return currentContent
 }
 
-const allArticleContentsWithSearch: ArticleModuleGetter = (state, getters, rootState) => {
+const allArticleContentsWithSearch: ArticleModuleGetter = (
+  state,
+  getters,
+  rootState
+) => {
   const allContents = state.allContents
   if (rootState.searchData) {
     return getAllPostBySearch(allContents, rootState.searchData)
@@ -51,7 +68,9 @@ const allArticleContentsWithSearch: ArticleModuleGetter = (state, getters, rootS
   return allContents
 }
 
-export type getArticleDetailGettersType = ReturnType<typeof getArticleDetailFunc>
+export type getArticleDetailGettersType = ReturnType<
+  typeof getArticleDetailFunc
+>
 
 async function handleImgs(decodedBody: string, article: articleType) {
   const tmpParentElm = document.createElement('div')
@@ -72,7 +91,7 @@ async function handleImgs(decodedBody: string, article: articleType) {
           .absoluteTo('/')
           .toString()
       )
-      const imgResource = await getResourceDetail(relativeUrl) as string
+      const imgResource = (await getResourceDetail(relativeUrl)) as string
       elm.setAttribute('src', imgResource)
       return imgResource
     }
@@ -85,7 +104,9 @@ async function handleImgs(decodedBody: string, article: articleType) {
 const module: ArticleModule = {
   namespaced: true,
   state: {
-    directory: getArticleDirectory(),
+    directory,
+    tags,
+    cates,
     allContents: [],
     allContentsLoaded: false
   },

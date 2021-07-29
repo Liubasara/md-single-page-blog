@@ -2,6 +2,10 @@ const searchProps = {
   name: {
     type: String,
     default: ''
+  },
+  articleItems: {
+    type: Array,
+    default: () => <Array<articleTypeDirectory> | Array<articleType>>[]
   }
 }
 

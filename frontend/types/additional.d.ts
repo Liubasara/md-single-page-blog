@@ -18,16 +18,6 @@ type articleTypeDirectory = {
 
 type articleType = articleTypeDirectory & { body: string }
 
-/**
- * 根据 Props 定义的 defaults 来推断其属性生成输入 props 的对应类型
- */
-declare type releaseTypeToStateByDefault<
-  T extends { [key: string]: { type: any; default?: any } | any }
-> = Partial<
-  {
-    [P in keyof T]: T[P]['default'];
-  }
->
 declare module 'articleDist/*.json' {
   const value: {
     [key: string]: any

@@ -2,7 +2,7 @@
   <div class="search-wrapper">
     <div class="search-input-wrapper" ref="searchInputRef">
       <div class="search-input-container">
-        <input type="text" placeholder="想要查找什么..." />
+        <input type="text" placeholder="想要查找什么..." v-model="keyword" @input="onSearchInput" />
         <button type="button" class="close-btn" @click="close">x</button>
       </div>
     </div>
@@ -36,6 +36,7 @@
 import { defineComponent, ref, computed } from 'vue'
 import searchProps from '@/components/search/props'
 import Icon from '@/components/icon/Index.vue'
+import debounce from 'lodash/debounce'
 
 export default defineComponent({
   name: 'Search',
@@ -44,6 +45,10 @@ export default defineComponent({
     Icon
   },
   setup(props, { emit }) {
+    const keyword = ref('')
+    const onSearchInput = debounce(function () {
+      console.log('search', keyword.value)
+    }, 500)
     const close = () => {
       console.log(props.name)
       emit('close')
@@ -53,6 +58,8 @@ export default defineComponent({
       return searchInputRef.value?.offsetHeight || 0
     })
     return {
+      keyword,
+      onSearchInput,
       close,
       searchInputRef,
       searchInputRefHeight

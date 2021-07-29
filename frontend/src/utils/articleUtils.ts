@@ -145,7 +145,7 @@ export const sliceItemInStrByWidth = (
 }
 
 /**
- * @description 按给出的字符搜索文章
+ * @description 按给出的字符搜索文章(包括内容、标签、分类)
  * @param {String} str
  */
 export const getAllPostBySearch = (
@@ -154,7 +154,9 @@ export const getAllPostBySearch = (
 ) => {
   const contentResult = allPosts.filter((item) => {
     const contents = decodeURIComponent(window.atob(item.body))
-    return contents.indexOf(`${str}`) >= 0
+    return ~contents.indexOf(str) || // 内容
+           ~item.tags.findIndex(tag => ~tag.indexOf(str)) || // 标签
+           ~item.categories.indexOf(str) // 分类
   })
   return contentResult
 }

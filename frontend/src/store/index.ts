@@ -11,6 +11,11 @@ const storeOptions: StoreOptions<RootStateInterface> = {
   },
   state: {
     searchData: ''
+  },
+  mutations: {
+    setSearchData(state, name) {
+      state.searchData = name || ''
+    }
   }
 }
 
