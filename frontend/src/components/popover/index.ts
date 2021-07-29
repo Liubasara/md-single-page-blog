@@ -1,6 +1,6 @@
 import { createApp } from 'vue'
 import PopoverConstructor from '@/components/popover/Index.vue'
-import type { ComponentOptions, ComponentPublicInstance } from 'vue'
+import type { Component, ComponentPublicInstance } from 'vue'
 import type { DialogProps } from '@/components/popover/props'
 
 export type PopoverInstance =
@@ -10,7 +10,7 @@ export type PopoverInstance =
   | undefined
 
 export default function createPopover(
-  opt: ComponentOptions,
+  opt: Component,
   dialogProps: DialogProps = {
     width: 540,
     height: 380
