@@ -268,6 +268,11 @@
   resolved "https://registry.nlark.com/@types/estree/download/@types/estree-0.0.48.tgz?cache=0&sync_timestamp=1622612258692&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40types%2Festree%2Fdownload%2F%40types%2Festree-0.0.48.tgz#18dc8091b285df90db2f25aa7d906cfc394b7f74"
   integrity sha1-GNyAkbKF35DbLyWqfZBs/DlLf3Q=
 
+"@types/lodash@^4.14.171":
+  version "4.14.171"
+  resolved "https://registry.nlark.com/@types/lodash/download/@types/lodash-4.14.171.tgz?cache=0&sync_timestamp=1625609589008&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40types%2Flodash%2Fdownload%2F%40types%2Flodash-4.14.171.tgz#f01b3a5fe3499e34b622c362a46a609fdb23573b"
+  integrity sha1-8Bs6X+NJnjS2IsNipGpgn9sjVzs=
+
 "@types/node@^16.0.0":
   version "16.0.0"
   resolved "https://registry.nlark.com/@types/node/download/@types/node-16.0.0.tgz#067a6c49dc7a5c2412a505628e26902ae967bf6f"
@@ -825,6 +830,11 @@ lodash.camelcase@^4.3.0:
   version "4.3.0"
   resolved "https://registry.npm.taobao.org/lodash.camelcase/download/lodash.camelcase-4.3.0.tgz#b28aa6288a2b9fc651035c7711f65ab6190331a6"
   integrity sha1-soqmKIorn8ZRA1x3EfZathkDMaY=
+
+lodash@^4.17.21:
+  version "4.17.21"
+  resolved "https://registry.nlark.com/lodash/download/lodash-4.17.21.tgz?cache=0&sync_timestamp=1624543041613&other_urls=https%3A%2F%2Fregistry.nlark.com%2Flodash%2Fdownload%2Flodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
+  integrity sha1-Z5WRxWTDv/quhFTPCz3zcMPWkRw=
 
 lru-cache@^5.1.1:
   version "5.1.1"

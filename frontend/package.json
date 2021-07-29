@@ -7,7 +7,9 @@
     "serve": "vite preview"
   },
   "dependencies": {
+    "@types/lodash": "^4.14.171",
     "highlight.js": "^11.1.0",
+    "lodash": "^4.17.21",
     "urijs": "^1.19.6",
     "vue": "^3.0.5",
     "vue-router": "4",
