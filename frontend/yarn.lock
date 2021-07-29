@@ -283,7 +283,7 @@
   resolved "https://registry.nlark.com/@types/urijs/download/@types/urijs-1.19.16.tgz#156658c47438fa867db5dce4d2949fe1ca0878e2"
   integrity sha1-FWZYxHQ4+oZ9tdzk0pSf4coIeOI=
 
-"@vitejs/plugin-vue-jsx@^1.1.6":
+"@vitejs/plugin-vue-jsx@1.1.6":
   version "1.1.6"
   resolved "https://registry.nlark.com/@vitejs/plugin-vue-jsx/download/@vitejs/plugin-vue-jsx-1.1.6.tgz#c9e7b63d1ebf537a24a0b4b3b31f4beb8055cef6"
   integrity sha1-yee2PR6/U3okoLSzsx9L64BVzvY=
@@ -295,7 +295,7 @@
     "@vue/babel-plugin-jsx" "^1.0.6"
     hash-sum "^2.0.0"
 
-"@vitejs/plugin-vue@^1.2.3":
+"@vitejs/plugin-vue@1.2.4":
   version "1.2.4"
   resolved "https://registry.nlark.com/@vitejs/plugin-vue/download/@vitejs/plugin-vue-1.2.4.tgz#a7aa6e6a31c556a8b781de730316deeecf7f56f2"
   integrity sha1-p6puajHFVqi3gd5zAxbe7s9/VvI=
@@ -339,9 +339,9 @@
     "@vue/compiler-core" "3.1.2"
     "@vue/shared" "3.1.2"
 
-"@vue/compiler-sfc@^3.0.5":
+"@vue/compiler-sfc@3.1.2":
   version "3.1.2"
-  resolved "https://registry.nlark.com/@vue/compiler-sfc/download/@vue/compiler-sfc-3.1.2.tgz?cache=0&sync_timestamp=1624387509258&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40vue%2Fcompiler-sfc%2Fdownload%2F%40vue%2Fcompiler-sfc-3.1.2.tgz#23ff1e366d887b964899568bffcb11e3d0511fc4"
+  resolved "https://registry.nlark.com/@vue/compiler-sfc/download/@vue/compiler-sfc-3.1.2.tgz#23ff1e366d887b964899568bffcb11e3d0511fc4"
   integrity sha1-I/8eNm2Ie5ZImVaL/8sR49BRH8Q=
   dependencies:
     "@babel/parser" "^7.13.9"
@@ -1143,7 +1143,7 @@ util-deprecate@^1.0.2, util-deprecate@~1.0.1:
   resolved "https://registry.npm.taobao.org/util-deprecate/download/util-deprecate-1.0.2.tgz#450d4dc9fa70de732762fbd2d4a28981419a0ccf"
   integrity sha1-RQ1Nyfpw3nMnYvvS1KKJgUGaDM8=
 
-vite@^2.3.8:
+vite@2.3.8:
   version "2.3.8"
   resolved "https://registry.nlark.com/vite/download/vite-2.3.8.tgz#42e3e03953859fd410e4e6ab3d1cca0aab2adc3c"
   integrity sha1-QuPgOVOFn9QQ5OarPRzKCqsq3Dw=
@@ -1162,14 +1162,14 @@ vue-router@4:
   dependencies:
     "@vue/devtools-api" "^6.0.0-beta.14"
 
-vue-tsc@^0.0.24:
+vue-tsc@0.0.24:
   version "0.0.24"
   resolved "https://registry.nlark.com/vue-tsc/download/vue-tsc-0.0.24.tgz#0cd90db679f53ea1694254b8663fdb3d624a0872"
   integrity sha1-DNkNtnn1PqFpQlS4Zj/bPWJKCHI=
   dependencies:
     unzipper "0.10.11"
 
-vue@^3.0.5:
+vue@3.1.2:
   version "3.1.2"
   resolved "https://registry.nlark.com/vue/download/vue-3.1.2.tgz#647f8e3949a3d600771dca25d50225dc3e594c64"
   integrity sha1-ZH+OOUmj1gB3Hcol1QIl3D5ZTGQ=
@@ -1178,7 +1178,7 @@ vue@^3.0.5:
     "@vue/runtime-dom" "3.1.2"
     "@vue/shared" "3.1.2"
 
-vuex@^4.0.2:
+vuex@4.0.2:
   version "4.0.2"
   resolved "https://registry.nlark.com/vuex/download/vuex-4.0.2.tgz#f896dbd5bf2a0e963f00c67e9b610de749ccacc9"
   integrity sha1-+Jbb1b8qDpY/AMZ+m2EN50nMrMk=
