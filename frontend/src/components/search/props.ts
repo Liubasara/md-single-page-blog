@@ -1,11 +1,28 @@
+import { ref } from 'vue'
+import type { PropType, Ref, ComputedRef } from 'vue'
+import type {
+  GetAllCatesFnReturn,
+  GetAllTagsFnReturn
+} from '@/utils/articleUtils'
+
 const searchProps = {
-  name: {
-    type: String,
-    default: ''
-  },
   articleItems: {
-    type: Array,
+    type: Object as PropType<
+      ComputedRef<Array<articleTypeDirectory> | Array<articleType>>
+    >,
     default: () => <Array<articleTypeDirectory> | Array<articleType>>[]
+  },
+  tagItems: {
+    type: Object as PropType<ComputedRef<GetAllTagsFnReturn['allTags']>>,
+    default: () => <GetAllTagsFnReturn['allTags']>[]
+  },
+  cateItems: {
+    type: Object as PropType<ComputedRef<GetAllCatesFnReturn['allCates']>>,
+    default: () => <GetAllCatesFnReturn['allCates']>[]
+  },
+  keywordRef: {
+    type: Object as PropType<Ref<string>>,
+    default: () => ref('')
   }
 }
 

@@ -12,9 +12,9 @@ import {
   getAllTags
 } from '@/utils/articleUtils'
 
-const directory = getArticleDirectory() || []
-const tags = getAllTags(directory) || []
-const cates = getAllCates(directory) || []
+const directory = getArticleDirectory()
+const tags: ReturnType<typeof getAllTags> = getAllTags(directory)
+const cates: ReturnType<typeof getAllCates> = getAllCates(directory)
 interface ArticleStateInterface {
   directory: Array<articleTypeDirectory>
   allContents: Array<articleType>

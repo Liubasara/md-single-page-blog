@@ -6,26 +6,26 @@
         <button type="button" class="close-btn" @click="close">x</button>
       </div>
     </div>
-    <div class="ins-section-container">
-      <section class="ins-section">
+    <div class="ins-section-container" v-if="ifShowSearchRes">
+      <section class="ins-section" v-if="articleItems.length > 0">
         <header class="ins-section-header">文章</header>
-        <div class="ins-search-item" v-for="(item, index) in [1, 2, 3]" :key="index">
-          <header><Icon type="file" class="mg-r-8"></Icon>这里是文章的标题</header>
-          <p class="ins-search-preview">
-            这是文章的简介这是文章的简介这是文章的简介这是文章的简介这是文章的简介这是文章的简介
+        <div class="ins-search-item" v-for="(item, index) in articleItems" :key="index">
+          <header><Icon type="file" class="mg-r-8"></Icon>{{ item.title }}</header>
+          <p class="ins-search-preview" v-if="!!item.info.trim()">
+            {{ item.info }}
           </p>
         </div>
       </section>
-      <section class="ins-section">
+      <section class="ins-section" v-if="tagItems.length > 0">
         <header class="ins-section-header">标签</header>
-        <div class="ins-search-item" v-for="(item, index) in [1, 2, 3]" :key="index">
-          <header><Icon type="tag" class="mg-r-8"></Icon>标签{{ item }}</header>
+        <div class="ins-search-item" v-for="(item, index) in tagItems" :key="index">
+          <header><Icon type="tag" class="mg-r-8"></Icon>{{ item }}</header>
         </div>
       </section>
-      <section class="ins-section">
+      <section class="ins-section" v-if="cateItems.length > 0">
         <header class="ins-section-header">分类</header>
-        <div class="ins-search-item" v-for="(item, index) in [1, 2, 3]" :key="index">
-          <header><Icon type="Category" class="mg-r-8"></Icon>分类{{ item }}</header>
+        <div class="ins-search-item" v-for="(item, index) in cateItems" :key="index">
+          <header><Icon type="Category" class="mg-r-8"></Icon>{{ item }}</header>
         </div>
       </section>
     </div>
@@ -45,24 +45,30 @@ export default defineComponent({
     Icon
   },
   setup(props, { emit }) {
-    const keyword = ref('')
+    const { articleItems, keywordRef, cateItems, tagItems } = props
     const onSearchInput = debounce(function () {
-      console.log('search', keyword.value)
+      console.log('search', keywordRef.value)
     }, 500)
     const close = () => {
-      console.log(props.name)
       emit('close')
     }
     const searchInputRef = ref<HTMLElement>()
     const searchInputRefHeight = computed(() => {
       return searchInputRef.value?.offsetHeight || 0
     })
+    const ifShowSearchRes = computed(() => {
+      return articleItems.value.length > 0 || tagItems.value.length > 0 || cateItems.value.length > 0
+    })
     return {
-      keyword,
+      keyword: keywordRef,
       onSearchInput,
       close,
       searchInputRef,
-      searchInputRefHeight
+      searchInputRefHeight,
+      articleItems,
+      cateItems,
+      tagItems,
+      ifShowSearchRes
     }
   }
 })
@@ -73,7 +79,6 @@ export default defineComponent({
   position: relative;
   height: 100%;
   width: 100%;
-  background: #fff;
 }
 .search-input-wrapper {
   position: relative;
@@ -128,6 +133,7 @@ export default defineComponent({
   line-height: 16px;
   overflow: auto;
   height: calc(100% - v-bind(searchInputRefHeight) * 1px);
+  background: #fff;
 }
 .ins-section-header {
   color: #9a9a9a;

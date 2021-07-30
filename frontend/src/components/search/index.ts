@@ -1,6 +1,7 @@
 import createPopover from '@/components/popover/index'
 import Search from '@/components/search/Search.vue'
-import { ref, computed, ComputedRef } from 'vue'
+import { getAllPostBySearch, getAllTagsBySearch, getAllCatesBySearch } from '@/utils/articleUtils'
+import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import type { PopoverInstance } from '@/components/popover/index'
 import type { SearchProps } from '@/components/search/props'
@@ -13,11 +14,26 @@ Search.install = function (_Vue: App) {
 export function useSearch() {
   const instance = ref<PopoverInstance>()
   const store = useStore()
-  const directory = store.state.article.directory
-  const searchData = computed(() => store.state.searchData)
-  const commitSearchData = (_searchData: string = '') => {
-    store.commit('setSearchData', _searchData)
-  }
+  const searchKeyWord = ref('')
+  const searchArticleItems = computed(() => {
+    if (!searchKeyWord.value.trim()) {
+      // 文章限定初始只显示 3 个
+      return store.state.article.directory.slice(0, 3)
+    }
+    return getAllPostBySearch(store.state.article.allContents as Array<articleType>, searchKeyWord.value)
+  })
+  const searchTagItems = computed(() => {
+    if (!searchKeyWord.value.trim()) {
+      return store.state.article.tags.allTags
+    }
+    return getAllTagsBySearch(store.state.article.directory, searchKeyWord.value).allTags
+  })
+  const searchCateItems = computed(() => {
+    if (!searchKeyWord.value.trim()) {
+      return store.state.article.tags.allTags
+    }
+    return getAllCatesBySearch(store.state.article.directory, searchKeyWord.value).allCates
+  })
 
   const createSearch = createPopover(Search, {
     // 自定义点击遮罩层的方法, 入参 done 为关闭弹出层函数
@@ -26,12 +42,11 @@ export function useSearch() {
   function handleSearchClick(evt: Event) {
     evt.preventDefault()
 
-    setTimeout(() => {
-      commitSearchData('wowow')
-    }, 1000)
     instance.value = createSearch<SearchProps>({
-      name: searchData,
-      articleItems: []
+      articleItems: searchArticleItems,
+      tagItems: searchTagItems,
+      cateItems: searchCateItems,
+      keywordRef: searchKeyWord
     })
   }
   return {

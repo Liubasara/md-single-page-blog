@@ -30,6 +30,32 @@ export const getAllTags = (allPosts: Array<allArticleType>) => {
   }
 }
 
+export type GetAllTagsFnReturn = ReturnType<typeof getAllTags>
+
+/**
+ * @description 按给出的字符搜索 Tags
+ * @param allPosts
+ * @param str
+ */
+export const getAllTagsBySearch = (
+  allPosts: Array<allArticleType>,
+  str: string
+) => {
+  const allTagsObj = getAllTags(allPosts)
+  const { allTags, tagsMap } = allTagsObj
+  const targetObj: GetAllTagsFnReturn = {
+    allTags: [],
+    tagsMap: {}
+  }
+  for (let tag of allTags) {
+    if (~tag.indexOf(str)) {
+      targetObj.tagsMap[tag] = tagsMap[tag]
+      targetObj.allTags.push(tag)
+    }
+  }
+  return targetObj
+}
+
 /**
  * @description 按 Tag 查询文章
  * @param {Array} tags
@@ -89,6 +115,33 @@ export const getAllCates = (allPosts: Array<allArticleType>) => {
   }
 }
 
+export type GetAllCatesFnReturn = ReturnType<typeof getAllCates>
+
+/**
+ * @description 按给出的字符搜索 Cate
+ * @param allPosts 
+ * @param str 
+ * @returns 
+ */
+export const getAllCatesBySearch = (
+  allPosts: Array<allArticleType>,
+  str: string
+) => {
+  const allCatesObj = getAllCates(allPosts)
+  const { allCates, catesMap } = allCatesObj
+  const targetObj: ReturnType<typeof getAllCates> = {
+    allCates: [],
+    catesMap: {}
+  }
+  for (let cate of allCates) {
+    if (~cate.indexOf(str)) {
+      targetObj.allCates.push(cate)
+      targetObj.catesMap[cate] = catesMap[cate]
+    }
+  }
+  return targetObj
+}
+
 /**
  * @description 按分类查询文章
  * @param {Array} tags
@@ -120,10 +173,10 @@ export const getPostsByCatesMaps = <T extends catesMapType, K extends keyof T>(
  * 在 str 中查找 Item 并以 width 为前后宽度进行切割
  * eg. str: '哈哈你好哈哈哈哈你好啊好啊好哈' item: '你好' { width: 1 }
  *     return: 哈你好哈...... || ......哈你好啊
- * @param str 
- * @param item 
- * @param param2 
- * @returns 
+ * @param str
+ * @param item
+ * @param param2
+ * @returns
  */
 export const sliceItemInStrByWidth = (
   str: string,
@@ -145,7 +198,7 @@ export const sliceItemInStrByWidth = (
 }
 
 /**
- * @description 按给出的字符搜索文章(包括内容、标签、分类)
+ * @description 按给出的字符搜索文章(包括内容、简介、标题)
  * @param {String} str
  */
 export const getAllPostBySearch = (
@@ -155,8 +208,10 @@ export const getAllPostBySearch = (
   const contentResult = allPosts.filter((item) => {
     const contents = decodeURIComponent(window.atob(item.body))
     return ~contents.indexOf(str) || // 内容
-           ~item.tags.findIndex(tag => ~tag.indexOf(str)) || // 标签
-           ~item.categories.indexOf(str) // 分类
+           ~item.info.indexOf(str) || // 简介
+           ~item.title.indexOf(str) // 标题
+        // ~item.tags.findIndex(tag => ~tag.indexOf(str)) || // 标签
+        // ~item.categories.indexOf(str) // 分类
   })
   return contentResult
 }
