@@ -13,12 +13,14 @@ export default function createPopover(
   opt: Component,
   dialogProps: DialogProps = {
     width: 540,
-    height: 380
+    top: 100,
+    bottom: 100
   }
 ) {
   const _dialogProps: DialogProps = {
     width: 540,
-    height: 380,
+    top: 100,
+    bottom: 100,
     ...dialogProps,
   }
   let $inst: PopoverInstance

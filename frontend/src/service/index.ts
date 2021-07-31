@@ -16,7 +16,12 @@ export const getAllContents = async () => {
   } catch (e) {
     console.error(e)
   }
-  return allContents
+  // return allContents
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve(allContents)
+    }, 10000)
+  })
 }
 
 export const getResourceDetail = async (url: string) => {

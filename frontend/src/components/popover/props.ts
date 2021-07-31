@@ -3,9 +3,15 @@ const dialogProps = {
     type: Number,
     default: 540
   },
-  height: {
+  // 弹窗距离浏览器上边界的距离
+  top: {
     type: Number,
-    default: 380
+    default: 100
+  },
+  // 弹窗距离浏览器下边界的距离
+  bottom: {
+    type: Number,
+    default: 100
   },
   customOnPopoverMaskClick: Function
 }

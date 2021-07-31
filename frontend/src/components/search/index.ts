@@ -39,15 +39,18 @@ export function useSearch() {
     // 自定义点击遮罩层的方法, 入参 done 为关闭弹出层函数
     customOnPopoverMaskClick: (done: Function) => {}
   })
-  function handleSearchClick(evt: Event) {
-    evt.preventDefault()
 
+  const showSearchDialog = async () => {
     instance.value = createSearch<SearchProps>({
       articleItems: searchArticleItems,
       tagItems: searchTagItems,
       cateItems: searchCateItems,
       keywordRef: searchKeyWord
     })
+  }
+  function handleSearchClick(evt: Event) {
+    evt.preventDefault()
+    showSearchDialog()
   }
   return {
     handleSearchClick,

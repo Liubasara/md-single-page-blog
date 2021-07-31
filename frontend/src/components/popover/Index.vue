@@ -1,5 +1,5 @@
 <template>
-  <div class="dialog-wrapper">
+  <div class="dialog-wrapper" ref="dialogWrapper">
     <div class="popover-content">
       <component ref="currentPopover" :is="props.componentOpts" v-bind="props.componentBind"></component>
     </div>
@@ -30,7 +30,10 @@ export default defineComponent({
   },
   setup(props) {
     const {
-      componentBind: { onClose }
+      componentBind: { onClose },
+      width,
+      top,
+      bottom
     } = props
     const currentPopover = ref<ComponentPublicInstance & { customOnPopoverMaskClick?: Function }>()
     const onMaskClick = function() {
@@ -41,26 +44,13 @@ export default defineComponent({
         onClose()
       }
     }
-    const widthPx = computed(() => {
-      return props.width + 'px'
-    })
-    const halfWidthPx = computed(() => {
-      return '-' + props.width / 2 + 'px'
-    })
-    const heightPx = computed(() => {
-      return props.height + 'px'
-    })
-    const halfHeightPx = computed(() => {
-      return '-' + props.height / 2 + 'px'
-    })
     return {
       props,
       onMaskClick,
       currentPopover,
-      widthPx,
-      halfWidthPx,
-      heightPx,
-      halfHeightPx
+      themeWidth: width,
+      themeTop: top,
+      themeBottom: bottom
     }
   }
 })
@@ -92,12 +82,11 @@ export default defineComponent({
 
 .popover-content {
   position: fixed;
-  top: 50%;
+  top: calc(v-bind(themeTop) * 1px);
   left: 50%;
-  height: v-bind(heightPx);
-  margin-top: v-bind(halfHeightPx);
-  width: v-bind(widthPx);
-  margin-left: v-bind(halfWidthPx);
+  bottom: calc(v-bind(themeBottom) * 1px);
+  width: calc(v-bind(themeWidth) * 1px);
+  margin-left: calc(v-bind(themeWidth) / 2 * -1px);
   z-index: $zindex2;
   // transition: 1s ease-in-out;
   @media screen and (max-width: 559px), screen and (max-height: 479px) {
