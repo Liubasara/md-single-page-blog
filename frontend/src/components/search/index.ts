@@ -14,7 +14,9 @@ Search.install = function (_Vue: App) {
 export function useSearch() {
   const instance = ref<PopoverInstance>()
   const store = useStore()
+  store.dispatch('article/fetchAllContents')
   const searchKeyWord = ref('')
+  const searchArticleItemsIsLoading = computed(() => !store.state.article.allContentsLoaded)
   const searchArticleItems = computed(() => {
     if (!searchKeyWord.value.trim()) {
       // 文章限定初始只显示 3 个
@@ -45,7 +47,8 @@ export function useSearch() {
       articleItems: searchArticleItems,
       tagItems: searchTagItems,
       cateItems: searchCateItems,
-      keywordRef: searchKeyWord
+      keywordRef: searchKeyWord,
+      articleItemsIsLoading: searchArticleItemsIsLoading
     })
   }
   function handleSearchClick(evt: Event) {

@@ -16,6 +16,12 @@
           </p>
         </div>
       </section>
+      <section class="ins-section" v-if="articleItems.length === 0 && articleItemsIsLoading">
+        <header class="ins-section-header">文章</header>
+        <div class="ins-search-item">
+          <p class="ins-search-preview">文章搜索中, 请稍候...</p>
+        </div>
+      </section>
       <section class="ins-section" v-if="tagItems.length > 0">
         <header class="ins-section-header">标签</header>
         <div class="ins-search-item" v-for="(item, index) in tagItems" :key="index">
@@ -45,7 +51,7 @@ export default defineComponent({
     Icon
   },
   setup(props, { emit }) {
-    const { articleItems, keywordRef, cateItems, tagItems } = props
+    const { articleItems, keywordRef, cateItems, tagItems, articleItemsIsLoading } = props
     const onSearchInput = debounce(function () {
       console.log('search', keywordRef.value)
     }, 500)
@@ -57,7 +63,7 @@ export default defineComponent({
       return searchInputRef.value?.offsetHeight || 0
     })
     const ifShowSearchRes = computed(() => {
-      return articleItems.value.length > 0 || tagItems.value.length > 0 || cateItems.value.length > 0
+      return articleItems.value.length > 0 || tagItems.value.length > 0 || cateItems.value.length > 0 || articleItemsIsLoading.value
     })
     return {
       keyword: keywordRef,
@@ -68,7 +74,8 @@ export default defineComponent({
       articleItems,
       cateItems,
       tagItems,
-      ifShowSearchRes
+      ifShowSearchRes,
+      articleItemsIsLoading
     }
   }
 })

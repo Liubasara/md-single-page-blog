@@ -12,6 +12,10 @@ const searchProps = {
     >,
     default: () => <Array<articleTypeDirectory> | Array<articleType>>[]
   },
+  articleItemsIsLoading: {
+    type: Object as PropType<ComputedRef<boolean>>,
+    default: () => ref(true)
+  },
   tagItems: {
     type: Object as PropType<ComputedRef<GetAllTagsFnReturn['allTags']>>,
     default: () => <GetAllTagsFnReturn['allTags']>[]
