@@ -63,7 +63,12 @@ export default defineComponent({
       return searchInputRef.value?.offsetHeight || 0
     })
     const ifShowSearchRes = computed(() => {
-      return articleItems.value.length > 0 || tagItems.value.length > 0 || cateItems.value.length > 0 || articleItemsIsLoading.value
+      return (
+        articleItems.value.length > 0 ||
+        tagItems.value.length > 0 ||
+        cateItems.value.length > 0 ||
+        articleItemsIsLoading.value
+      )
     })
     return {
       keyword: keywordRef,
@@ -86,6 +91,9 @@ export default defineComponent({
   position: relative;
   height: 100%;
   width: 100%;
+  @media screen and (max-width: 559px), screen and (max-height: 479px) {
+    background: #fff;
+  }
 }
 .search-input-wrapper {
   position: relative;

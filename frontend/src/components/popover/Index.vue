@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, h, computed, ref } from 'vue'
+import { defineComponent, h, ref } from 'vue'
 import dialogProps from '@/components/popover/props'
 import type { ComponentPublicInstance } from 'vue'
 
@@ -36,7 +36,7 @@ export default defineComponent({
       bottom
     } = props
     const currentPopover = ref<ComponentPublicInstance & { customOnPopoverMaskClick?: Function }>()
-    const onMaskClick = function() {
+    const onMaskClick = function () {
       const customOnPopoverMaskClick = props.customOnPopoverMaskClick || currentPopover.value?.customOnPopoverMaskClick
       if (customOnPopoverMaskClick) {
         customOnPopoverMaskClick(onClose)
@@ -91,7 +91,6 @@ export default defineComponent({
   // transition: 1s ease-in-out;
   @media screen and (max-width: 559px), screen and (max-height: 479px) {
     width: 100%;
-    height: 100%;
     bottom: 0;
     top: 0;
     left: 0;

@@ -2,6 +2,8 @@ declare interface Window {
   requestIdleCallback: <T extends Function>(callback: T, options?: object) => {}
 }
 
+type Overwrite<T, U> = Pick<T, Exclude<keyof T, keyof U>> & U;
+
 type articleTypeDirectory = {
   name: string
   title: string

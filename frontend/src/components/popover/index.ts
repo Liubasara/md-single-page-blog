@@ -29,10 +29,17 @@ export default function createPopover(
     const mountNode = document.createElement('div')
     mountNode.classList.add('popover')
     document.body.appendChild(mountNode)
-    function remove() {
-      app?.unmount?.()
-      document.body.removeChild(mountNode)
-      $inst = void 0
+    function remove(this: any) {
+      function done() {
+        app?.unmount?.()
+        document.body.removeChild(mountNode)
+        $inst = void 0
+      }
+      if (_dialogProps.customCloseFunc) {
+        _dialogProps.customCloseFunc.call(this, done)
+      } else {
+        done()
+      }
     }
     const app = createApp(PopoverConstructor, {
       componentOpts: opt,

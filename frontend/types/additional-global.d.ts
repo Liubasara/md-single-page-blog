@@ -1,5 +1,5 @@
 export {}
-import type { Ref, ComputedRef } from 'vue'
+import type { Ref, ComputedRef, PropType } from 'vue'
 declare global {
   type typeOrRef<T> = T | Ref<T> | ComputedRef<T>
   /**

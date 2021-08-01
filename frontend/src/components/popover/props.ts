@@ -13,9 +13,15 @@ const dialogProps = {
     type: Number,
     default: 100
   },
-  customOnPopoverMaskClick: Function
+  customOnPopoverMaskClick: Function,
+  customCloseFunc: Function
 }
 
-export type DialogProps = releaseTypeToStateByDefault<typeof dialogProps>
+export type DialogProps = Partial<
+  Overwrite<
+    releaseTypeToStateByDefault<typeof dialogProps>,
+    { customOnPopoverMaskClick?: Function; customCloseFunc?: Function }
+  >
+>
 
 export default dialogProps

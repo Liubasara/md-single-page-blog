@@ -3,6 +3,7 @@ import Search from '@/components/search/Search.vue'
 import { getAllPostBySearch, getAllTagsBySearch, getAllCatesBySearch } from '@/utils/articleUtils'
 import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
+import { useRouter, useRoute } from 'vue-router'
 import type { PopoverInstance } from '@/components/popover/index'
 import type { SearchProps } from '@/components/search/props'
 import type { App } from 'vue'
@@ -14,10 +15,13 @@ Search.install = function (_Vue: App) {
 export function useSearch() {
   const instance = ref<PopoverInstance>()
   const store = useStore()
+  const router = useRouter()
+  const route = useRoute()
   store.dispatch('article/fetchAllContents')
   const searchKeyWord = ref('')
   const searchArticleItemsIsLoading = computed(() => !store.state.article.allContentsLoaded)
   const searchArticleItems = computed(() => {
+    console.log(router, route)
     if (!searchKeyWord.value.trim()) {
       // 文章限定初始只显示 3 个
       return store.state.article.directory.slice(0, 3)
@@ -39,7 +43,12 @@ export function useSearch() {
 
   const createSearch = createPopover(Search, {
     // 自定义点击遮罩层的方法, 入参 done 为关闭弹出层函数
-    customOnPopoverMaskClick: (done: Function) => {}
+    customOnPopoverMaskClick: (done: Function) => {},
+    // 自定义关闭函数
+    customCloseFunc: (done: Function) => {
+      searchKeyWord.value = ''
+      done()
+    }
   })
 
   const showSearchDialog = async () => {
