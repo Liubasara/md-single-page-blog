@@ -5,7 +5,7 @@ import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
 import type { PopoverInstance } from '@/components/popover/index'
-import type { SearchProps } from '@/components/search/props'
+import type { SearchProps, SearchEventHandler } from '@/components/search/props'
 import type { App } from 'vue'
 
 Search.install = function (_Vue: App) {
@@ -16,6 +16,7 @@ export function useSearch() {
   const instance = ref<PopoverInstance>()
   const store = useStore()
   const route = useRoute()
+  const router = useRouter()
   store.dispatch('article/fetchAllContents')
   const searchKeyWord = ref('')
   const searchPlaceHolder = ref('')
@@ -36,6 +37,7 @@ export function useSearch() {
         return getAllPostBySearch(getAllPostsByCate(allContents, routeCate), searchKeyWord.value)
       }
     }
+    searchPlaceHolder.value = ''
     if (!searchKeyWord.value.trim()) {
       // 文章限定初始只显示 3 个
       return store.state.article.directory.slice(0, 3)
@@ -73,13 +75,22 @@ export function useSearch() {
   })
 
   const showSearchDialog = async () => {
-    instance.value = createSearch<SearchProps>({
+    instance.value = createSearch<SearchProps & SearchEventHandler>({
       articleItems: searchArticleItems,
       tagItems: searchTagItems,
       cateItems: searchCateItems,
       keywordRef: searchKeyWord,
       articleItemsIsLoading: searchArticleItemsIsLoading,
-      searchPlaceHolder: searchPlaceHolder
+      searchPlaceHolder: searchPlaceHolder,
+      onArticleClick: (data: articleType | articleTypeDirectory) => {
+        router.push({ name: 'BlogPost', params: { name: data.name } })
+      },
+      onTagClick: (data: string) => {
+        router.push({ name: 'BlogTags', query: { tags: data } })
+      },
+      onCateClick: (data: string) => {
+        router.push({ name: 'BlogCate', query: { cate: data } })
+      }
     })
   }
   function handleSearchClick(evt: Event) {

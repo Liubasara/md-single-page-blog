@@ -34,6 +34,12 @@ const searchProps = {
   }
 }
 
+export type SearchEventHandler = {
+  onTagClick: Function,
+  onArticleClick: Function,
+  onCateClick: Function,
+}
+
 export type SearchProps = releaseTypeToStateByDefault<typeof searchProps>
 
 export default searchProps

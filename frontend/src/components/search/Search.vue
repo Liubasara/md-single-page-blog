@@ -9,7 +9,7 @@
     <div class="ins-section-container" v-if="ifShowSearchRes">
       <section class="ins-section" v-if="articleItems.length > 0">
         <header class="ins-section-header">文章</header>
-        <div class="ins-search-item" v-for="(item, index) in articleItems" :key="index">
+        <div class="ins-search-item" v-for="(item, index) in articleItems" :key="index" @click="$emit('article-click', item)">
           <header><Icon type="file" class="mg-r-8"></Icon>{{ item.title }}</header>
           <p class="ins-search-preview" v-if="!!item.info.trim()">
             {{ item.info }}
@@ -24,13 +24,13 @@
       </section>
       <section class="ins-section" v-if="tagItems.length > 0">
         <header class="ins-section-header">标签</header>
-        <div class="ins-search-item" v-for="(item, index) in tagItems" :key="index">
+        <div class="ins-search-item" v-for="(item, index) in tagItems" :key="index" @click="$emit('tag-click', item)">
           <header><Icon type="tag" class="mg-r-8"></Icon>{{ item }}</header>
         </div>
       </section>
       <section class="ins-section" v-if="cateItems.length > 0">
         <header class="ins-section-header">分类</header>
-        <div class="ins-search-item" v-for="(item, index) in cateItems" :key="index">
+        <div class="ins-search-item" v-for="(item, index) in cateItems" :key="index" @click="$emit('cate-click', item)">
           <header><Icon type="Category" class="mg-r-8"></Icon>{{ item }}</header>
         </div>
       </section>
