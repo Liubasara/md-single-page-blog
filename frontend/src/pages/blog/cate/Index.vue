@@ -1,7 +1,8 @@
 <template>
   <div>
-    <div>{{ cate.allCates }}</div>
-    <div>{{ cate.catesMap }}</div>
+    {{ $route.query.cate }}
+    <!-- <div>{{ cate.allCates }}</div>
+    <div>{{ cate.catesMap }}</div> -->
   </div>
 </template>
 

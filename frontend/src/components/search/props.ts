@@ -27,6 +27,10 @@ const searchProps = {
   keywordRef: {
     type: Object as PropType<Ref<string>>,
     default: () => ref('')
+  },
+  searchPlaceHolder: {
+    type: Object as PropType<Ref<string>>,
+    default: () => ref('')
   }
 }
 

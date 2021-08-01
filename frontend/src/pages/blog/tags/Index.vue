@@ -1,7 +1,8 @@
 <template>
   <div>
-    <div>{{ tag.allTags }}</div>
-    <div>{{ tag.tagsMap }}</div>
+    {{ $route.query.tags }}
+    <!-- <div>{{ tag.allTags }}</div>
+    <div>{{ tag.tagsMap }}</div> -->
   </div>
 </template>
 

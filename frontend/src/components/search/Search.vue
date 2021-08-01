@@ -2,7 +2,7 @@
   <div class="search-wrapper">
     <div class="search-input-wrapper" ref="searchInputRef">
       <div class="search-input-container">
-        <input type="text" placeholder="想要查找什么..." v-model="keyword" @input="onSearchInput" />
+        <input type="text" :placeholder="searchPlaceHolder || '想要查找什么...'" v-model="keyword" @input="onSearchInput" />
         <button type="button" class="close-btn" @click="close">x</button>
       </div>
     </div>
@@ -51,7 +51,7 @@ export default defineComponent({
     Icon
   },
   setup(props, { emit }) {
-    const { articleItems, keywordRef, cateItems, tagItems, articleItemsIsLoading } = props
+    const { articleItems, keywordRef, cateItems, tagItems, articleItemsIsLoading, searchPlaceHolder } = props
     const onSearchInput = debounce(function () {
       console.log('search', keywordRef.value)
     }, 500)
@@ -80,7 +80,8 @@ export default defineComponent({
       cateItems,
       tagItems,
       ifShowSearchRes,
-      articleItemsIsLoading
+      articleItemsIsLoading,
+      searchPlaceHolder
     }
   }
 })

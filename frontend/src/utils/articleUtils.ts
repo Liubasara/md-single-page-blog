@@ -60,8 +60,8 @@ export const getAllTagsBySearch = (
  * @description 按 Tag 查询文章
  * @param {Array} tags
  */
-export const getAllPostsByTags = (
-  allPosts: Array<allArticleType>,
+export const getAllPostsByTags = <T extends allArticleType>(
+  allPosts: Array<T>,
   tags: Array<string>
 ) => {
   const tagResult = allPosts.filter((post) => {
@@ -96,7 +96,7 @@ type catesMapType = {
 /**
  * @description 返回所有的Categories
  */
-export const getAllCates = (allPosts: Array<allArticleType>) => {
+export const getAllCates = <T extends allArticleType>(allPosts: Array<T>) => {
   const catesMap: catesMapType = {}
   for (let post of allPosts) {
     const { categories: cate } = post
@@ -146,8 +146,8 @@ export const getAllCatesBySearch = (
  * @description 按分类查询文章
  * @param {Array} tags
  */
-export const getAllPostsByCate = (
-  allPosts: Array<allArticleType>,
+export const getAllPostsByCate = <T extends allArticleType>(
+  allPosts: Array<T>,
   cate: string
 ) => {
   const categoriesResult = allPosts.filter((item) => {
