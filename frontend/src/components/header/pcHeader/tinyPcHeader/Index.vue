@@ -33,10 +33,6 @@ export default defineComponent({
         type: 'search',
         action: ($evt: Event) => {
           handleSearchClick($evt)
-          // FIXME: tmp logic
-          setTimeout(() => {
-            searchInstance.value?.remove?.()
-          }, 1000)
         }
       },
       { type: 'tag', action: () => router.push({ path: '/blog/tags' }) },
