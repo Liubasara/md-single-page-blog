@@ -85,7 +85,6 @@ async function handleImgs(decodedBody: string, article: articleType) {
       srcAttribute &&
       !/^(http|https):\/\//.test(srcAttribute) // 非相对路径的图片才需要进行处理
     ) {
-      console.log(article.dirUrl, srcAttribute)
       const relativeUrl = decodeURIComponent(
         URIJS(article.dirUrl + '/' + srcAttribute)
           .absoluteTo('/')

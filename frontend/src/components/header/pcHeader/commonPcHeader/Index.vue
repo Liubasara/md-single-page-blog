@@ -140,6 +140,9 @@ export default defineComponent({
       width: 1%;
       cursor: pointer;
       text-align: center;
+      i {
+        color: #999;
+      }
     }
   }
 }
