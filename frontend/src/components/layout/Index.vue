@@ -97,7 +97,8 @@ export default defineComponent({
       right: 0;
       top: 0;
       bottom: auto;
-      height: 53px; // header 的默认高度
+      // height: 53px; // header 的默认高度
+      overflow: visible;
       width: 100%;
       z-index: $zindex1;
     }
