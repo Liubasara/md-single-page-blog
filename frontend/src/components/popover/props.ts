@@ -17,11 +17,13 @@ const dialogProps = {
   customCloseFunc: Function
 }
 
-export type DialogProps = Partial<
-  Overwrite<
-    releaseTypeToStateByDefault<typeof dialogProps>,
-    { customOnPopoverMaskClick?: Function; customCloseFunc?: Function }
-  >
->
+// export type DialogProps = Partial<
+//   Overwrite<
+//     releaseTypeToStateByDefault<typeof dialogProps>,
+//     { customOnPopoverMaskClick?: Function; customCloseFunc?: Function }
+//   >
+// >
+
+export type DialogProps = releaseTypeToStateByDefault<typeof dialogProps>
 
 export default dialogProps

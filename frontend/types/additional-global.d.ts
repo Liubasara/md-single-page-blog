@@ -1,5 +1,5 @@
 export {}
-import type { Ref, ComputedRef, PropType } from 'vue'
+import type { Ref, ComputedRef } from 'vue'
 declare global {
   type typeOrRef<T> = T | Ref<T> | ComputedRef<T>
   /**
@@ -9,13 +9,21 @@ declare global {
     T extends { [key: string]: { type: any; default?: any } | any }
   > = Partial<
     {
-      [P in keyof T]: T[P]['default'] extends (...args: Array<any>) => infer V
-        ? V extends Array<infer K>
-          ? typeOrRef<Array<K>>
-          : V extends { [D in keyof V]: V[D] }
-          ? typeOrRef<{ [D in keyof V]: V[D] }>
+      [P in keyof T]: T[P] extends {
+        type: any
+        default: any
+        [key: string]: any
+      }
+        ? T[P]['default'] extends (...args: Array<any>) => infer V
+          ? V extends Array<infer K>
+            ? typeOrRef<Array<K>>
+            : V extends { [D in keyof V]: V[D] }
+            ? typeOrRef<{ [D in keyof V]: V[D] }>
+            : typeOrRef<T[P]['default']>
           : typeOrRef<T[P]['default']>
-        : typeOrRef<T[P]['default']>
+        : T[P] extends { type: any; [key: string]: any }
+        ? ReturnType<T[P]['type']>
+        : ReturnType<T[P]>
     }
   >
 }
