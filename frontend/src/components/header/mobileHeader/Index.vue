@@ -18,21 +18,42 @@
     </div>
     <div :class="navBarClasses">
       <div class="navbar-container" ref="navbarContainer">
-        <div>item</div>
-        <div>item</div>
-        <div>item</div>
+        <a class="menu-item" @click.prevent.stop="routerPush('/blog/home')">
+          <Icon type="home"></Icon>
+          <span class="route-name">Home</span>
+        </a>
+
+        <a class="menu-item" @click.prevent.stop="routerPush('/blog/tags')">
+          <Icon type="tag"></Icon>
+          <span class="route-name">Tags</span>
+        </a>
+
+        <a class="menu-item" @click.prevent.stop="routerPush('/blog/cate')">
+          <Icon type="Category"></Icon>
+          <span class="route-name">Cate</span>
+        </a>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, reactive, computed, onMounted } from 'vue'
+import { defineComponent, ref, reactive, computed, onMounted, nextTick } from 'vue'
 import Icon from '@/components/icon/Index.vue'
 import { useSearch } from '@/components/search/index'
+import { useRouter } from 'vue-router'
 
 function useMenuNavbar() {
   const isExpandMenu = ref(false)
+  const closeMenu = () => {
+    isExpandMenu.value = false
+  }
+  const expandMenu = () => {
+    isExpandMenu.value = true
+  }
+  const menuClick = () => {
+    isExpandMenu.value = !isExpandMenu.value
+  }
   const navBarClasses = reactive({
     collapsing: true,
     'navbar-wrapper': true,
@@ -49,15 +70,14 @@ function useMenuNavbar() {
     resizeObserver.observe(navbarContainer.value as HTMLDivElement)
   })
 
-  const menuClick = () => {
-    isExpandMenu.value = !isExpandMenu.value
-  }
   return {
     isExpandMenu,
     navbarContainer,
     navBarClasses,
     navbarContainerHeight,
-    menuClick
+    menuClick,
+    closeMenu,
+    expandMenu
   }
 }
 
@@ -69,9 +89,17 @@ export default defineComponent({
   setup() {
     const { handleSearchClick } = useSearch()
     const menuNavBar = useMenuNavbar()
+    const router = useRouter()
+    const routerPush = (path: string) => {
+      router.push(path)
+      nextTick(() => {
+        menuNavBar.isExpandMenu.value = false
+      })
+    }
     return {
       handleSearchClick,
-      ...menuNavBar
+      ...menuNavBar,
+      routerPush
     }
   }
 })
@@ -167,5 +195,18 @@ export default defineComponent({
   transition-duration: 0.35s;
   -webkit-transition-timing-function: ease;
   transition-timing-function: ease;
+}
+.menu-item {
+  display: block;
+  padding: 10px 20px;
+  line-height: 21px;
+  color: #555;
+  cursor: pointer;
+  &:hover {
+    background-color: #eee;
+  }
+}
+.route-name {
+  margin-left: 15px;
 }
 </style>

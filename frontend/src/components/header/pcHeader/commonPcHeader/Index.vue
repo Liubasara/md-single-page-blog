@@ -19,16 +19,19 @@
         <div class="search-btn"><Icon type="search"></Icon></div>
       </div>
     </div>
-    <router-link class="link menu-item" :to="{ path: '/blog/home' }"
-      ><Icon type="home"></Icon><span class="route-name">Home</span></router-link
-    >
+    <router-link class="link menu-item" :to="{ path: '/blog/home' }">
+      <Icon type="home"></Icon>
+      <span class="route-name">Home</span>
+    </router-link>
     <!-- <router-link class="link" :to="{ path: `/blog/post/${'test'}` }">Post</router-link> -->
-    <router-link class="link menu-item" :to="{ path: '/blog/tags' }"
-      ><Icon type="tag"></Icon><span class="route-name">Tags</span></router-link
-    >
-    <router-link class="link menu-item" :to="{ path: '/blog/cate' }"
-      ><Icon type="Category"></Icon><span class="route-name">Cate</span></router-link
-    >
+    <router-link class="link menu-item" :to="{ path: '/blog/tags' }">
+      <Icon type="tag"></Icon>
+      <span class="route-name">Tags</span>
+    </router-link>
+    <router-link class="link menu-item" :to="{ path: '/blog/cate' }">
+      <Icon type="Category"></Icon>
+      <span class="route-name">Cate</span>
+    </router-link>
   </div>
 </template>
 
