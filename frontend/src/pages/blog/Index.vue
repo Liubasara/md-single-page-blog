@@ -5,8 +5,7 @@
     </template>
     <router-view></router-view>
     <template v-slot:asider>
-      <button @click="header.changeName('ddd')">123</button>
-      <div class="aside">Aside</div>
+      <Asider></Asider>
     </template>
   </Layout>
 </template>
@@ -15,24 +14,17 @@
 import { defineComponent, reactive } from 'vue'
 import Layout from '@/components/layout/Index.vue'
 import Header from '@/components/header/Index.vue'
+import Asider from '@/components/asider/Index.vue'
 import type { HeaderProps } from '@/components/header/props'
 
 function useHeader() {
-  function changeName(_name: string) {
-    if (data.name === 'ddd') {
-      data.name = 'Liubasara'
-      return
-    }
-    data.name = _name
-  }
   const data = reactive<HeaderProps>({
     name: 'Liubasara',
     introduction: 'Web Developer & Designer'
   })
 
   return {
-    data,
-    changeName
+    data
   }
 }
 
@@ -40,7 +32,8 @@ export default defineComponent({
   name: 'BlogPage',
   components: {
     Layout,
-    Header
+    Header,
+    Asider
   },
   setup() {
     const headerInstance = useHeader()
