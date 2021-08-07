@@ -93,6 +93,7 @@ export default defineComponent({
 .cate-list {
   margin-bottom: 10.5px;
   line-height: 1.75;
+  font-size: 14px;
 }
 .tag-list-item,
 .cate-list-item {
