@@ -19,6 +19,6 @@ const storeOptions: StoreOptions<RootStateInterface> = {
   }
 }
 
-const store = createStore<RootStateInterface>(storeOptions)
+const store = createStore(storeOptions)
 
 export default store

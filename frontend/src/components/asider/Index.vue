@@ -31,29 +31,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue'
+import { defineComponent } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
-import type { Router, RouteLocationNormalizedLoaded } from 'vue-router'
-
-const navigateToTagsPage = (tag: string, router: Router, route: RouteLocationNormalizedLoaded) => {
-  const routeTags = computed(() => decodeURIComponent(route.query?.tags as string || ''))
-  const routeTagsArr = routeTags.value !== '' && routeTags.value.split(',').length > 0 ? routeTags.value.split(',') : []
-  const tagIndex = routeTagsArr.indexOf(tag)
-  if (~tagIndex) {
-    routeTagsArr.splice(tagIndex, 1)
-  } else {
-    routeTagsArr.push(tag)
-  }
-  
-  const tagQuery = encodeURIComponent(routeTagsArr.join(',')) || undefined
-  router.push({ name: 'BlogTags', query: { tags: tagQuery } })
-}
-
-const isTagActive = (tag: string, route: RouteLocationNormalizedLoaded): boolean => {
-  const routeTags = computed(() => decodeURIComponent(route.query?.tags as string || ''))
-  return !!~routeTags.value.indexOf(tag)
-}
+import { navigateToTagsPage, isTagActive } from '@/logic/tags'
+import { navigateToCatesPage, isCateActive } from '@/logic/cates'
 
 export default defineComponent({
   name: 'Asider',
@@ -68,10 +50,7 @@ export default defineComponent({
       navigateToTagsPage(tag, router, route)
     }
     const cateClick = (cate: string) => {
-      console.log(cate)
-    }
-    const isCateActive = (cate: string): boolean => {
-      return true
+      navigateToCatesPage(cate, router)
     }
     return {
       allTags,
@@ -79,9 +58,9 @@ export default defineComponent({
       allCates,
       catesMap,
       tagClick,
-      isTagActive: (tag: string) => isTagActive(tag, route),
+      isTagActive: (tag: string): boolean => isTagActive(tag, route),
       cateClick,
-      isCateActive
+      isCateActive: (cate: string): boolean => isCateActive(cate, route)
     }
   }
 })
