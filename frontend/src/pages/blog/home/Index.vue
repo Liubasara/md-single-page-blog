@@ -1,13 +1,17 @@
 <template>
   <div>
-    <button @click="directoryIndex++">下一章</button>
-    <div class="raw-markdown-html" v-html="testArticleObj.body"></div>
+    <Scroll @loadNextPage="loadNextPageArticle">
+      <button @click="directoryIndex++">下一章</button>
+      <div class="raw-markdown-html" v-html="testArticleObj.body"></div>
+    </Scroll>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, onBeforeMount, ref, watch } from 'vue'
 import { useStore } from 'vuex'
+import Scroll from '@/components/scroll/Index.vue'
+import type { Ref } from 'vue'
 import type { getArticleDetailGettersType } from '@/store/modules/article/index'
 import type { Store } from 'vuex'
 
@@ -19,6 +23,7 @@ function useGetArticleDetail(store: Store<any>, articleObj: articleTypeDirectory
 
 export default defineComponent({
   name: 'BlogHome',
+  components: { Scroll },
   setup() {
     const store = useStore()
     store.dispatch('article/fetchAllContents')
@@ -40,10 +45,14 @@ export default defineComponent({
         }
       })
     })
+    const loadNextPageArticle = (page: Ref<number>) => {
+      console.log(page.value)
+    }
     return {
       store,
       directoryIndex,
-      testArticleObj
+      testArticleObj,
+      loadNextPageArticle
     }
   }
 })
