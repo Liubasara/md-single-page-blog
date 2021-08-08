@@ -15,15 +15,10 @@ import type { SearchProps, SearchEventHandler } from '@/components/search/props'
 import type { App, Ref } from 'vue'
 import type { Store } from 'vuex'
 import type { Router, RouteLocationNormalizedLoaded } from 'vue-router'
-import type { ArticleStateInterface } from '@/store/modules/article'
+import type { StoreArticleModuleState } from '@/store/modules/article'
 
 Search.install = function (_Vue: App) {
   _Vue.component(Search.name, Search)
-}
-
-type StoreArticleModuleState = {
-  article: ArticleStateInterface
-  [key: string]: any
 }
 
 export const getSearchProps = <T extends StoreArticleModuleState>(

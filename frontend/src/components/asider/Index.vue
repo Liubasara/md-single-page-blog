@@ -6,11 +6,9 @@
         <li class="tag-list-item" v-for="(item, index) in allTags" :key="index">
           <a
             :class="['tag-list-link', { active: isTagActive(item) }]"
-            @click.prevent.stop="tagClick(item, tagsMap[item])"
+            @click.prevent.stop="tagClick(item)"
             >{{ item }}</a
           >
-
-          
           <span class="tag-list-count">{{ tagsMap[item].num }}</span>
         </li>
       </ul>
@@ -22,7 +20,7 @@
         <li class="cate-list-item" v-for="(item, index) in allCates" :key="index">
           <a
             :class="['cate-list-link', { active: isCateActive(item) }]"
-            @click.prevent.stop="cateClick(item, catesMap[item])"
+            @click.prevent.stop="cateClick(item)"
             >{{ item }}</a
           >
           <span class="cate-list-count">{{ catesMap[item].num }}</span>
@@ -38,11 +36,12 @@ import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
 import { navigateToTagsPage, isTagActive } from '@/logic/tags'
 import { navigateToCatesPage, isCateActive } from '@/logic/cates'
+import type { StoreArticleModuleState } from '@/store/modules/article'
 
 export default defineComponent({
   name: 'Asider',
   setup() {
-    const store = useStore()
+    const store = useStore<StoreArticleModuleState>()
     const router = useRouter()
     const route = useRoute()
     const { allTags, tagsMap } = store.state.article.tags

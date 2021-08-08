@@ -23,6 +23,11 @@ export interface ArticleStateInterface {
   cates: typeof cates
 }
 
+export type StoreArticleModuleState = {
+  article: ArticleStateInterface
+  [key: string]: any
+}
+
 type ArticleModule = Module<ArticleStateInterface, RootStateInterface>
 
 type ArticleModuleGetter = Getter<ArticleStateInterface, RootStateInterface>
