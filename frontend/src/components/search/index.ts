@@ -38,7 +38,8 @@ export const getSearchProps = <T extends StoreArticleModuleState>(
   const searchArticleItems = computed(() => {
     let allContents: Array<articleType> = store.state.article.allContents
     if (route.name === 'BlogTags') {
-      const routeTags = (route.query?.tags as string)?.split?.(',') || []
+      const decodeTags = decodeURIComponent((route.query?.tags as string) || '')
+      const routeTags = decodeTags && decodeTags.split?.(',') || []
       searchPlaceHolder.value =
         routeTags.length === 0
           ? '在所有标签的文章中进行搜索'
@@ -51,7 +52,7 @@ export const getSearchProps = <T extends StoreArticleModuleState>(
       }
       return getAllPostBySearch(allContents, searchKeyWord.value)
     } else if (route.name === 'BlogCate') {
-      const routeCate = (route.query?.cate as string) || ''
+      const routeCate = decodeURIComponent((route.query?.cate as string) || '')
       searchPlaceHolder.value = !routeCate.trim()
         ? '在所有分类的文章中进行搜索'
         : `在分类为 ${routeCate} 的文章中搜索`
@@ -103,11 +104,11 @@ export const getSearchProps = <T extends StoreArticleModuleState>(
     instance.value?.remove?.()
   }
   const onTagClick = (data: string) => {
-    router.push({ name: 'BlogTags', query: { tags: data } })
+    router.push({ name: 'BlogTags', query: { tags: encodeURIComponent(data) } })
     instance.value?.remove?.()
   }
   const onCateClick = (data: string) => {
-    router.push({ name: 'BlogCate', query: { cate: data } })
+    router.push({ name: 'BlogCate', query: { cate: encodeURIComponent(data) } })
     instance.value?.remove?.()
   }
   return {
