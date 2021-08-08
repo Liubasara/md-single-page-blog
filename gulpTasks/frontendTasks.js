@@ -6,7 +6,10 @@ const frontendPath = path.resolve(__dirname, '..', 'frontend')
 
 function frontendInstallTask(cb) {
   process.chdir(frontendPath)
-  const install = spawn('yarn', ['install', '--frozen-lockfile'])
+  process.env.FORCE_COLOR = true
+  const install = spawn('yarn', ['install', '--frozen-lockfile'], {
+    env: process.env
+  })
   install.stdout.on('data', (data) => {
     console.log(Buffer.from(data).toString())
   })
@@ -17,7 +20,10 @@ function frontendInstallTask(cb) {
 
 function frontendBuildTask(cb) {
   process.chdir(frontendPath)
-  const build = spawn('yarn', ['build'])
+  process.env.FORCE_COLOR = true
+  const build = spawn('yarn', ['build'], {
+    env: process.env
+  })
   build.stdout.on('data', (data) => {
     console.log(Buffer.from(data).toString())
   })
@@ -28,7 +34,10 @@ function frontendBuildTask(cb) {
 
 function frontendDevTask(cb) {
   process.chdir(frontendPath)
-  const build = spawn('yarn', ['dev'])
+  process.env.FORCE_COLOR = true
+  const build = spawn('yarn', ['dev'], {
+    env: process.env
+  })
   build.stdout.on('data', (data) => {
     console.log(Buffer.from(data).toString())
   })

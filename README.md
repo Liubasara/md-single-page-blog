@@ -31,3 +31,15 @@ TODOLIST：
 - 定时任务后台
   - 定时拉取文章
   - 定时构建并推送 githubPage 仓库
+
+> **参考资料**：
+>
+> 样式功能原型参考：
+>
+> - [Cofess - Web Developer & Designer](https://blog.cofess.com/)
+>
+> 如何使用 spawn 子进程并保留原输出颜色：
+>
+> - [node.js - preserve color when executing child_process.spawn - Stack Overflow](https://stackoverflow.com/questions/7725809/preserve-color-when-executing-child-process-spawn#answer-43375301)
+> - [在 spawn 的子进程中保持命令行颜色](https://kohpoll.github.io/blog/2016/09/15/spawn-and-terminal-color/)
+

@@ -9,6 +9,8 @@
             @click.prevent.stop="tagClick(item, tagsMap[item])"
             >{{ item }}</a
           >
+
+          
           <span class="tag-list-count">{{ tagsMap[item].num }}</span>
         </li>
       </ul>
