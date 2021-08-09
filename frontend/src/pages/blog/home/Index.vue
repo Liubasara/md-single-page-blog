@@ -1,8 +1,9 @@
 <template>
   <div>
     <Scroll @loadNextPage="loadNextPageArticle">
-      <button @click="directoryIndex++">下一章</button>
-      <div class="raw-markdown-html" v-html="testArticleObj.body"></div>
+      <template v-for="(item, index) in store.state.article.directory" :key="index">
+        <BlogHomeArticleCard></BlogHomeArticleCard>
+      </template>
     </Scroll>
   </div>
 </template>
@@ -11,8 +12,9 @@
 import { defineComponent, onBeforeMount, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import Scroll from '@/components/scroll/Index.vue'
+import BlogHomeArticleCard from '@/pages/blog/home/components/articleCard/Index.vue'
 import type { Ref } from 'vue'
-import type { getArticleDetailGettersType } from '@/store/modules/article/index'
+import type { getArticleDetailGettersType, StoreArticleModuleState } from '@/store/modules/article/index'
 import type { Store } from 'vuex'
 
 function useGetArticleDetail(store: Store<any>, articleObj: articleTypeDirectory | undefined) {
@@ -23,9 +25,9 @@ function useGetArticleDetail(store: Store<any>, articleObj: articleTypeDirectory
 
 export default defineComponent({
   name: 'BlogHome',
-  components: { Scroll },
+  components: { Scroll, BlogHomeArticleCard },
   setup() {
-    const store = useStore()
+    const store = useStore<StoreArticleModuleState>()
     store.dispatch('article/fetchAllContents')
     let testArticleObj = ref<{ body: string } | articleType>({ body: '' })
     let directoryIndex = ref<number>(0)
