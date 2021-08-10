@@ -40,6 +40,4 @@ export type SearchEventHandler = {
   onCateClick: Function,
 }
 
-export type SearchProps = releaseTypeToStateByDefault<typeof searchProps>
-
 export default searchProps

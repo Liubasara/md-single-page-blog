@@ -2,20 +2,12 @@ import { createStore, StoreOptions } from 'vuex'
 import article from '@/store/modules/article/index'
 
 export interface RootStateInterface {
-  searchData: string
+  [key: string]: any;
 }
 
 const storeOptions: StoreOptions<RootStateInterface> = {
   modules: {
     article
-  },
-  state: {
-    searchData: ''
-  },
-  mutations: {
-    setSearchData(state, name) {
-      state.searchData = name || ''
-    }
   }
 }
 

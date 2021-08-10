@@ -9,6 +9,4 @@ const props = {
   }
 }
 
-export type HeaderProps = releaseTypeToStateByDefault<typeof props>
-
 export default props

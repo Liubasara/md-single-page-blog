@@ -4,11 +4,9 @@
       <h3 class="title">标签</h3>
       <ul class="tag-list">
         <li class="tag-list-item" v-for="(item, index) in allTags" :key="index">
-          <a
-            :class="['tag-list-link', { active: isTagActive(item) }]"
-            @click.prevent.stop="tagClick(item)"
-            >{{ item }}</a
-          >
+          <a :class="['tag-list-link', { active: isTagActive(item) }]" @click.prevent.stop="tagClick(item)">{{
+            item
+          }}</a>
           <span class="tag-list-count">{{ tagsMap[item].num }}</span>
         </li>
       </ul>
@@ -18,11 +16,9 @@
       <h3 class="title">分类</h3>
       <ul class="cate-list">
         <li class="cate-list-item" v-for="(item, index) in allCates" :key="index">
-          <a
-            :class="['cate-list-link', { active: isCateActive(item) }]"
-            @click.prevent.stop="cateClick(item)"
-            >{{ item }}</a
-          >
+          <a :class="['cate-list-link', { active: isCateActive(item) }]" @click.prevent.stop="cateClick(item)">{{
+            item
+          }}</a>
           <span class="cate-list-count">{{ catesMap[item].num }}</span>
         </li>
       </ul>
@@ -32,36 +28,25 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { useStore } from 'vuex'
-import { useRouter, useRoute } from 'vue-router'
-import { navigateToTagsPage, isTagActive } from '@/logic/tags'
-import { navigateToCatesPage, isCateActive } from '@/logic/cates'
-import type { StoreArticleModuleState } from '@/store/modules/article'
+import AsiderProps from '@/components/asider/props'
 
 export default defineComponent({
   name: 'Asider',
-  setup() {
-    const store = useStore<StoreArticleModuleState>()
-    const router = useRouter()
-    const route = useRoute()
-    const { allTags, tagsMap } = store.state.article.tags
-    const { allCates, catesMap } = store.state.article.cates
+  props: AsiderProps,
+  setup(props) {
+    const { allTags, tagsMap } = props.tags
+    const { allCates, catesMap } = props.cates
+    const { tagClick, cateClick, isTagActive, isCateActive } = props
 
-    const tagClick = (tag: string) => {
-      navigateToTagsPage(tag, router, route)
-    }
-    const cateClick = (cate: string) => {
-      navigateToCatesPage(cate, router)
-    }
     return {
       allTags,
       tagsMap,
       allCates,
       catesMap,
       tagClick,
-      isTagActive: (tag: string): boolean => isTagActive(tag, route),
+      isTagActive,
       cateClick,
-      isCateActive: (cate: string): boolean => isCateActive(cate, route)
+      isCateActive
     }
   }
 })

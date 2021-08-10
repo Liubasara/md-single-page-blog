@@ -1,5 +1,6 @@
 import createPopover from '@/components/popover/index'
 import Search from '@/components/search/Search.vue'
+import SearchProps from '@/components/search/props'
 import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
@@ -11,8 +12,8 @@ import {
   getAllPostsByCate
 } from '@/utils/articleUtils'
 import type { PopoverInstance } from '@/components/popover/index'
-import type { SearchProps, SearchEventHandler } from '@/components/search/props'
-import type { App, Ref } from 'vue'
+import type { SearchEventHandler } from '@/components/search/props'
+import type { App, Ref, ExtractPropTypes } from 'vue'
 import type { Store } from 'vuex'
 import type { Router, RouteLocationNormalizedLoaded } from 'vue-router'
 import type { StoreArticleModuleState } from '@/store/modules/article'
@@ -26,20 +27,14 @@ export const getSearchProps = <T extends StoreArticleModuleState>(
   route: RouteLocationNormalizedLoaded,
   router: Router,
   instance: Ref<PopoverInstance>
-): Overwrite<
-  SearchEventHandler & SearchProps,
-  {
-    keywordRef: Ref<string>
-    searchPlaceHolder: Ref<string>
-  }
-> => {
+): SearchEventHandler & ExtractPropTypes<typeof SearchProps> => {
   const searchKeyWord = ref('')
   const searchPlaceHolder = ref('')
   const searchArticleItems = computed(() => {
     let allContents: Array<articleType> = store.state.article.allContents
     if (route.name === 'BlogTags') {
       const decodeTags = decodeURIComponent((route.query?.tags as string) || '')
-      const routeTags = decodeTags && decodeTags.split?.(',') || []
+      const routeTags = (decodeTags && decodeTags.split?.(',')) || []
       searchPlaceHolder.value =
         routeTags.length === 0
           ? '在所有标签的文章中进行搜索'

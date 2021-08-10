@@ -24,6 +24,4 @@ const dialogProps = {
 //   >
 // >
 
-export type DialogProps = releaseTypeToStateByDefault<typeof dialogProps>
-
 export default dialogProps

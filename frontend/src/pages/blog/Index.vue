@@ -5,24 +5,59 @@
     </template>
     <router-view></router-view>
     <template v-slot:asider>
-      <Asider></Asider>
+      <Asider v-bind="asider.data"></Asider>
     </template>
   </Layout>
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive } from 'vue'
+import { useStore } from 'vuex'
+import { useRouter, useRoute } from 'vue-router'
 import Layout from '@/components/layout/Index.vue'
 import Header from '@/components/header/Index.vue'
+import HeaderProps from '@/components/header/props'
 import Asider from '@/components/asider/Index.vue'
-import type { HeaderProps } from '@/components/header/props'
+import AsiderProps from '@/components/asider/props'
+import { navigateToTagsPage, isTagActive } from '@/logic/tags'
+import { navigateToCatesPage, isCateActive } from '@/logic/cates'
+import type { ExtractPropTypes } from 'vue'
+import type { StoreArticleModuleState } from '@/store/modules/article'
 
-function useHeader() {
-  const data = reactive<HeaderProps>({
+function useHeaderInSetup() {
+  const data = reactive<ExtractPropTypes<typeof HeaderProps>>({
     name: 'Liubasara',
     introduction: 'Web Developer & Designer'
   })
+  return {
+    data
+  }
+}
 
+function useAsiderInSetup() {
+  const store = useStore<StoreArticleModuleState>()
+  const router = useRouter()
+  const route = useRoute()
+  const tagClick = (tag: string) => {
+    navigateToTagsPage(tag, router, route)
+  }
+  const cateClick = (cate: string) => {
+    navigateToCatesPage(cate, router)
+  }
+  const _isTagActive = (tag: string): boolean => {
+    return isTagActive(tag, route)
+  }
+  const _isCateActive = (cate: string): boolean => {
+    return isCateActive(cate, route)
+  }
+  const data = reactive<ExtractPropTypes<typeof AsiderProps>>({
+    tags: store.state.article.tags,
+    cates: store.state.article.cates,
+    tagClick,
+    cateClick,
+    isTagActive: _isTagActive,
+    isCateActive: _isCateActive
+  })
   return {
     data
   }
@@ -36,9 +71,11 @@ export default defineComponent({
     Asider
   },
   setup() {
-    const headerInstance = useHeader()
+    const headerInstance = useHeaderInSetup()
+    const asiderInstance = useAsiderInSetup()
     return {
-      header: headerInstance
+      header: headerInstance,
+      asider: asiderInstance
     }
   }
 })
