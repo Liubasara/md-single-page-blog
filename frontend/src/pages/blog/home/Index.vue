@@ -1,26 +1,54 @@
 <template>
   <div>
-    <Scroll @loadNextPage="loadNextPageArticle">
-      <template v-for="(item, index) in store.state.article.directory" :key="index">
-        <BlogHomeArticleCard></BlogHomeArticleCard>
+    <Scroll v-model:page="page">
+      <template v-for="(item, index) in pageDirectory" :key="index">
+        <BlogHomeArticleCard
+          v-bind="useArticleCard.getProps(item)"
+          @cate-click="cate => useArticleCard.handleCateClick(cate, item)"
+          @tag-click="tag => useArticleCard.handleTagClick(tag, item)"
+          @name-click="useArticleCard.handleArticleClick(item)"
+          @date-click="useArticleCard.handleArticleClick(item)"
+        />
       </template>
     </Scroll>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, onBeforeMount, ref, watch } from 'vue'
+import { computed, defineComponent, ref } from 'vue'
 import { useStore } from 'vuex'
 import Scroll from '@/components/scroll/Index.vue'
 import BlogHomeArticleCard from '@/pages/blog/home/components/articleCard/Index.vue'
-import type { Ref } from 'vue'
-import type { getArticleDetailGettersType, StoreArticleModuleState } from '@/store/modules/article/index'
-import type { Store } from 'vuex'
+import articleCardProps from '@/pages/blog/home/components/articleCard/props'
+import type { ExtractPropTypes } from 'vue'
+import type { StoreArticleModuleState } from '@/store/modules/article/index'
 
-function useGetArticleDetail(store: Store<any>, articleObj: articleTypeDirectory | undefined) {
-  if (!articleObj) return Promise.reject()
-  const gettersFunc = store.getters['article/getArticleDetailFunc'] as getArticleDetailGettersType
-  return gettersFunc(articleObj)
+const PAGE_SIZE = 20
+
+function useBlogHomeArticleCard() {
+  function handleCateClick(cate: string, item: articleTypeDirectory) {
+    console.log(cate, item)
+  }
+  function handleTagClick(tag: string, item: articleTypeDirectory) {
+    console.log(tag, item)
+  }
+  function handleArticleClick(item: articleTypeDirectory) {
+    console.log(item)
+  }
+  function getProps(item: articleTypeDirectory): ExtractPropTypes<typeof articleCardProps> {
+    return {
+      name: item.title,
+      date: item.time,
+      tags: item.tags,
+      cate: item.categories
+    }
+  }
+  return {
+    handleTagClick,
+    handleCateClick,
+    handleArticleClick,
+    getProps
+  }
 }
 
 export default defineComponent({
@@ -29,32 +57,18 @@ export default defineComponent({
   setup() {
     const store = useStore<StoreArticleModuleState>()
     store.dispatch('article/fetchAllContents')
-    let testArticleObj = ref<{ body: string } | articleType>({ body: '' })
-    let directoryIndex = ref<number>(0)
-    onBeforeMount(async () => {
-      const res = await useGetArticleDetail(store, store.state.article.directory[directoryIndex.value])
-      res && (testArticleObj.value = res)
-      watch(directoryIndex, async (newVal) => {
-        let res!: articleType | undefined
-        try {
-          res = await useGetArticleDetail(store, store.state.article.directory[newVal])
-        } catch (e) {}
-        res && (testArticleObj.value = res)
-        if (!res) {
-          directoryIndex.value = 0
-        } else {
-          testArticleObj.value = res
-        }
-      })
+    const page = ref(1)
+    const directory = store.state.article.directory
+    const pageDirectory = computed(() => {
+      return directory.slice(0, PAGE_SIZE * page.value)
     })
-    const loadNextPageArticle = (page: Ref<number>) => {
-      console.log(page.value)
-    }
+
+    const useArticleCard = useBlogHomeArticleCard()
     return {
       store,
-      directoryIndex,
-      testArticleObj,
-      loadNextPageArticle
+      useArticleCard,
+      page,
+      pageDirectory
     }
   }
 })
@@ -62,6 +76,6 @@ export default defineComponent({
 
 <style lang="scss">
 .raw-markdown-html {
-  @import '@/assets/style/markdown/index.scss';
+  @import "@/assets/style/markdown/index.scss";
 }
 </style>

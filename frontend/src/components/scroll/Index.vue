@@ -5,21 +5,23 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, onUnmounted } from 'vue'
+import { defineComponent, onMounted, onUnmounted, toRefs } from 'vue'
 import throttle from 'lodash/throttle'
+import ScrollProps from '@/components/scroll/props'
 
 export default defineComponent({
   name: 'Scroll',
+  props: ScrollProps,
+  emits: ['update:page'],
   setup(props, { emit }) {
-    const page = ref(1)
+    const { page } = toRefs(props)
 
     const handleWindowScroll = throttle(() => {
       if (
         document.documentElement.scrollHeight <
         document.documentElement.scrollTop + document.documentElement.clientHeight + 100
       ) {
-        page.value += 1
-        emit('load-next-page', page)
+        emit('update:page', page.value + 1)
       }
     }, 500)
     onMounted(() => {
@@ -28,9 +30,6 @@ export default defineComponent({
     onUnmounted(() => {
       window.removeEventListener('scroll', handleWindowScroll)
     })
-    return {
-      page
-    }
   }
 })
 </script>
