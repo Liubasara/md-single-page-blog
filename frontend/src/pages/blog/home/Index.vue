@@ -1,13 +1,13 @@
 <template>
   <div>
-    <Scroll v-model:page="page">
-      <template v-for="(item, index) in pageDirectory" :key="index">
+    <Scroll v-model:page="pageInstance.page.value">
+      <template v-for="(item, index) in pageInstance.pageDirectory.value" :key="index">
         <BlogHomeArticleCard
-          v-bind="useArticleCard.getProps(item)"
-          @cate-click="cate => useArticleCard.handleCateClick(cate, item)"
-          @tag-click="tag => useArticleCard.handleTagClick(tag, item)"
-          @name-click="useArticleCard.handleArticleClick(item)"
-          @date-click="useArticleCard.handleArticleClick(item)"
+          v-bind="articleCardInstance.getProps(item)"
+          @cate-click="cate => articleCardInstance.handleCateClick(cate, item)"
+          @tag-click="tag => articleCardInstance.handleTagClick(tag, item)"
+          @name-click="articleCardInstance.handleArticleClick(item)"
+          @date-click="articleCardInstance.handleArticleClick(item)"
         />
       </template>
     </Scroll>
@@ -51,24 +51,30 @@ function useBlogHomeArticleCard() {
   }
 }
 
+function usePage(directory: Array<articleTypeDirectory>) {
+  const page = ref(1)
+  const pageDirectory = computed(() => {
+    return directory.slice(0, PAGE_SIZE * page.value)
+  })
+  return {
+    page,
+    pageDirectory
+  }
+}
+
 export default defineComponent({
   name: 'BlogHome',
   components: { Scroll, BlogHomeArticleCard },
   setup() {
     const store = useStore<StoreArticleModuleState>()
     store.dispatch('article/fetchAllContents')
-    const page = ref(1)
-    const directory = store.state.article.directory
-    const pageDirectory = computed(() => {
-      return directory.slice(0, PAGE_SIZE * page.value)
-    })
 
-    const useArticleCard = useBlogHomeArticleCard()
+    const articleCardInstance = useBlogHomeArticleCard()
+    const pageInstance = usePage(store.state.article.directory)
     return {
       store,
-      useArticleCard,
-      page,
-      pageDirectory
+      articleCardInstance,
+      pageInstance
     }
   }
 })
