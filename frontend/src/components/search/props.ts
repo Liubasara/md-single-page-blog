@@ -1,5 +1,4 @@
-import { ref } from 'vue'
-import type { PropType, Ref, ComputedRef } from 'vue'
+import type { PropType } from 'vue'
 import type {
   GetAllCatesFnReturn,
   GetAllTagsFnReturn
@@ -7,37 +6,36 @@ import type {
 
 const searchProps = {
   articleItems: {
-    type: Object as PropType<
-      ComputedRef<Array<articleTypeDirectory> | Array<articleType>>
-    >,
+    type: Array as PropType<Array<articleTypeDirectory> | Array<articleType>>,
     default: () => <Array<articleTypeDirectory> | Array<articleType>>[]
   },
   articleItemsIsLoading: {
-    type: Object as PropType<ComputedRef<boolean>>,
-    default: () => ref(true)
+    type: Boolean as PropType<boolean>,
+    default: true
   },
   tagItems: {
-    type: Object as PropType<ComputedRef<GetAllTagsFnReturn['allTags']>>,
+    type: Array as PropType<GetAllTagsFnReturn['allTags']>,
     default: () => <GetAllTagsFnReturn['allTags']>[]
   },
   cateItems: {
-    type: Object as PropType<ComputedRef<GetAllCatesFnReturn['allCates']>>,
+    type: Array as PropType<GetAllCatesFnReturn['allCates']>,
     default: () => <GetAllCatesFnReturn['allCates']>[]
   },
-  keywordRef: {
-    type: Object as PropType<Ref<string>>,
-    default: () => ref('')
+  keyword: {
+    type: String as PropType<string>,
+    default: ''
   },
   searchPlaceHolder: {
-    type: Object as PropType<Ref<string>>,
-    default: () => ref('')
+    type: String as PropType<string>,
+    default: ''
   }
 }
 
 export type SearchEventHandler = {
-  onTagClick: Function,
-  onArticleClick: Function,
+  onTagClick: Function
+  onArticleClick: Function
   onCateClick: Function,
+  onSearch: Function
 }
 
 export default searchProps

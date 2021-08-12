@@ -1,7 +1,7 @@
 import createPopover from '@/components/popover/index'
 import Search from '@/components/search/Search.vue'
 import SearchProps from '@/components/search/props'
-import { ref, computed } from 'vue'
+import { reactive, ref, toRefs } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
 import {
@@ -22,15 +22,17 @@ Search.install = function (_Vue: App) {
   _Vue.component(Search.name, Search)
 }
 
+// type SearchPropsType = ExtractPropTypes<typeof SearchProps> & SearchEventHandler
+
 export const getSearchProps = <T extends StoreArticleModuleState>(
   store: Store<T>,
   route: RouteLocationNormalizedLoaded,
   router: Router,
   instance: Ref<PopoverInstance>
-): SearchEventHandler & ExtractPropTypes<typeof SearchProps> => {
-  const searchKeyWord = ref('')
+) => {
+  const keyword = ref('')
   const searchPlaceHolder = ref('')
-  const searchArticleItems = computed(() => {
+  function getArticleItems() {
     let allContents: Array<articleType> = store.state.article.allContents
     if (route.name === 'BlogTags') {
       const decodeTags = decodeURIComponent((route.query?.tags as string) || '')
@@ -42,10 +44,10 @@ export const getSearchProps = <T extends StoreArticleModuleState>(
       if (routeTags.length !== 0) {
         return getAllPostBySearch(
           getAllPostsByTags(allContents, routeTags),
-          searchKeyWord.value
+          keyword.value
         )
       }
-      return getAllPostBySearch(allContents, searchKeyWord.value)
+      return getAllPostBySearch(allContents, keyword.value)
     } else if (route.name === 'BlogCate') {
       const routeCate = decodeURIComponent((route.query?.cate as string) || '')
       searchPlaceHolder.value = !routeCate.trim()
@@ -54,46 +56,57 @@ export const getSearchProps = <T extends StoreArticleModuleState>(
       if (routeCate.trim()) {
         return getAllPostBySearch(
           getAllPostsByCate(allContents, routeCate),
-          searchKeyWord.value
+          keyword.value
         )
       }
-      return getAllPostBySearch(allContents, searchKeyWord.value)
+      return getAllPostBySearch(allContents, keyword.value)
     } else {
       searchPlaceHolder.value = ''
-      if (!searchKeyWord.value.trim()) {
+      if (!keyword.value.trim()) {
         // 文章限定初始只显示 3 个
         return store.state.article.directory.slice(0, 3)
       }
-      return getAllPostBySearch(allContents, searchKeyWord.value)
+      return getAllPostBySearch(allContents, keyword.value)
     }
-  })
-  const searchTagItems = computed(() => {
+  }
+  const articleItems = ref(getArticleItems())
+
+  function getTagItems() {
     if (route.name === 'BlogTags' || route.name === 'BlogCate') {
       return []
     }
-    if (!searchKeyWord.value.trim()) {
+    if (!keyword.value.trim()) {
       return store.state.article.tags.allTags
     }
-    return getAllTagsBySearch(
-      store.state.article.directory,
-      searchKeyWord.value
-    ).allTags
-  })
-  const searchArticleItemsIsLoading = computed(
-    () => !store.state.article.allContentsLoaded
-  )
-  const searchCateItems = computed(() => {
+    return getAllTagsBySearch(store.state.article.directory, keyword.value)
+      .allTags
+  }
+  const tagItems = ref(getTagItems())
+
+  function getArticleItemsIsLoading() {
+    return !store.state.article.allContentsLoaded
+  }
+  const articleItemsIsLoading = ref(getArticleItemsIsLoading())
+
+  function getCateItems() {
     if (route.name === 'BlogTags' || route.name === 'BlogCate') {
       return []
     }
-    if (!searchKeyWord.value.trim()) {
+    if (!keyword.value.trim()) {
       return store.state.article.cates.allCates
     }
-    return getAllCatesBySearch(
-      store.state.article.directory,
-      searchKeyWord.value
-    ).allCates
-  })
+    return getAllCatesBySearch(store.state.article.directory, keyword.value)
+      .allCates
+  }
+  const cateItems = ref(getCateItems())
+
+  const onSearch = (key: string) => {
+    keyword.value = key
+    articleItems.value = getArticleItems()
+    tagItems.value = getTagItems()
+    articleItemsIsLoading.value = getArticleItemsIsLoading()
+    cateItems.value = getCateItems()
+  }
   const onArticleClick = (data: articleType | articleTypeDirectory) => {
     router.push({ name: 'BlogPost', params: { name: data.name } })
     instance.value?.remove?.()
@@ -106,16 +119,18 @@ export const getSearchProps = <T extends StoreArticleModuleState>(
     router.push({ name: 'BlogCate', query: { cate: encodeURIComponent(data) } })
     instance.value?.remove?.()
   }
+
   return {
-    articleItems: searchArticleItems,
-    tagItems: searchTagItems,
-    keywordRef: searchKeyWord,
-    cateItems: searchCateItems,
-    articleItemsIsLoading: searchArticleItemsIsLoading,
-    searchPlaceHolder: searchPlaceHolder,
+    keyword,
+    searchPlaceHolder,
+    articleItems,
+    articleItemsIsLoading,
+    tagItems,
+    cateItems,
     onArticleClick,
     onTagClick,
-    onCateClick
+    onCateClick,
+    onSearch
   }
 }
 
@@ -125,21 +140,18 @@ export function useSearch() {
   const route = useRoute()
   const router = useRouter()
   store.dispatch('article/fetchAllContents')
-  const searchProps = getSearchProps(store, route, router, instance)
-  const { keywordRef, searchPlaceHolder } = searchProps
 
   const createSearch = createPopover(Search, {
     // 自定义点击遮罩层的方法, 入参 done 为关闭弹出层函数
     customOnPopoverMaskClick: (done: Function) => {},
     // 自定义关闭函数
     customCloseFunc: (done: Function) => {
-      keywordRef?.value && (keywordRef.value = '')
-      searchPlaceHolder?.value && (searchPlaceHolder.value = '')
       done()
     }
   })
 
-  const showSearchDialog = async () => {
+  const showSearchDialog = () => {
+    const searchProps = getSearchProps(store, route, router, instance)
     instance.value = createSearch(searchProps)
   }
   function handleSearchClick(evt: Event) {

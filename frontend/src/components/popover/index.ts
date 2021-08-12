@@ -1,4 +1,4 @@
-import { createApp } from 'vue'
+import { createApp, reactive } from 'vue'
 import PopoverConstructor from '@/components/popover/Index.vue'
 import DialogProps from '@/components/popover/props'
 import type { Component, ComponentPublicInstance, ExtractPropTypes } from 'vue'
@@ -43,10 +43,10 @@ export default function createPopover(
     }
     const app = createApp(PopoverConstructor, {
       componentOpts: opt,
-      componentBind: {
+      componentBind: reactive({
         onClose: remove,
         ...componentProps
-      },
+      }),
       ..._dialogProps
     })
     $inst = app.mount(mountNode)

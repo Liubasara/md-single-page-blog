@@ -2,18 +2,29 @@
   <div class="search-wrapper">
     <div class="search-input-wrapper" ref="searchInputRef">
       <div class="search-input-container">
-        <input type="text" :placeholder="searchPlaceHolder || '想要查找什么...'" v-model="keyword" @input="onSearchInput" />
+        <input
+          type="text"
+          :placeholder="searchPlaceHolder || '想要查找什么...'"
+          v-model="inputKeyword"
+          @input="onSearchInput"
+        />
         <button type="button" class="close-btn" @click="close">x</button>
       </div>
     </div>
     <div class="ins-section-container" v-if="ifShowSearchRes">
       <section class="ins-section" v-if="articleItems.length > 0">
         <header class="ins-section-header">文章</header>
-        <div class="ins-search-item" v-for="(item, index) in articleItems" :key="index" @click="$emit('article-click', item)">
-          <header><Icon type="file" class="mg-r-8"></Icon>{{ item.title }}</header>
-          <p class="ins-search-preview" v-if="!!item.info.trim()">
-            {{ item.info }}
-          </p>
+        <div
+          class="ins-search-item"
+          v-for="(item, index) in articleItems"
+          :key="index"
+          @click="onArticleClick(item)"
+        >
+          <header>
+            <Icon type="file" class="mg-r-8"></Icon>
+            {{ item.title }}
+          </header>
+          <p class="ins-search-preview" v-if="!!item.info.trim()">{{ item.info }}</p>
         </div>
       </section>
       <section class="ins-section" v-if="articleItems.length === 0 && articleItemsIsLoading">
@@ -24,14 +35,30 @@
       </section>
       <section class="ins-section" v-if="tagItems.length > 0">
         <header class="ins-section-header">标签</header>
-        <div class="ins-search-item" v-for="(item, index) in tagItems" :key="index" @click="$emit('tag-click', item)">
-          <header><Icon type="tag" class="mg-r-8"></Icon>{{ item }}</header>
+        <div
+          class="ins-search-item"
+          v-for="(item, index) in tagItems"
+          :key="index"
+          @click="onTagClick(item)"
+        >
+          <header>
+            <Icon type="tag" class="mg-r-8"></Icon>
+            {{ item }}
+          </header>
         </div>
       </section>
       <section class="ins-section" v-if="cateItems.length > 0">
         <header class="ins-section-header">分类</header>
-        <div class="ins-search-item" v-for="(item, index) in cateItems" :key="index" @click="$emit('cate-click', item)">
-          <header><Icon type="Category" class="mg-r-8"></Icon>{{ item }}</header>
+        <div
+          class="ins-search-item"
+          v-for="(item, index) in cateItems"
+          :key="index"
+          @click="onCateClick(item)"
+        >
+          <header>
+            <Icon type="Category" class="mg-r-8"></Icon>
+            {{ item }}
+          </header>
         </div>
       </section>
     </div>
@@ -39,7 +66,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from 'vue'
+import { defineComponent, ref, computed, toRefs } from 'vue'
 import searchProps from '@/components/search/props'
 import Icon from '@/components/icon/Index.vue'
 import debounce from 'lodash/debounce'
@@ -50,11 +77,18 @@ export default defineComponent({
   components: {
     Icon
   },
+  emits: ['close', 'article-click', 'tag-click', 'cate-click', 'search'],
   setup(props, { emit }) {
-    const { articleItems, keywordRef, cateItems, tagItems, articleItemsIsLoading, searchPlaceHolder } = props
-    const onSearchInput = debounce(function () {
-      console.log('search', keywordRef.value)
-    }, 500)
+    const { keyword, articleItems, cateItems, tagItems, articleItemsIsLoading, searchPlaceHolder } = toRefs(props)
+    const inputKeyword = ref(keyword.value)
+    const emitSearch = debounce(function () {
+      emit('search', inputKeyword.value)
+    }, 200)
+    const onSearchInput = function ($evt: Event) {
+      if ($evt instanceof InputEvent) {
+        emitSearch()
+      }
+    }
     const close = () => {
       emit('close')
     }
@@ -70,8 +104,18 @@ export default defineComponent({
         articleItemsIsLoading.value
       )
     })
+    const onArticleClick = (item: articleTypeDirectory | articleType) => {
+      emit('article-click', item)
+    }
+    const onTagClick = (item: string) => {
+      emit('tag-click', item)
+    }
+    const onCateClick = (item: string) => {
+      emit('cate-click', item)
+    }
+
     return {
-      keyword: keywordRef,
+      inputKeyword,
       onSearchInput,
       close,
       searchInputRef,
@@ -81,7 +125,10 @@ export default defineComponent({
       tagItems,
       ifShowSearchRes,
       articleItemsIsLoading,
-      searchPlaceHolder
+      searchPlaceHolder,
+      onArticleClick,
+      onTagClick,
+      onCateClick
     }
   }
 })
@@ -115,7 +162,8 @@ export default defineComponent({
     line-height: 20px;
     padding: 12px 28px 12px 20px;
     border-bottom: 1px solid #e2e2e2;
-    font-family: 'Microsoft Yahei Light', 'Microsoft Yahei', Helvetica, Arial, sans-serif;
+    font-family: "Microsoft Yahei Light", "Microsoft Yahei", Helvetica, Arial,
+      sans-serif;
   }
   .close-btn {
     text-transform: none;
