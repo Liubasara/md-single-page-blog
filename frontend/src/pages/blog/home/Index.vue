@@ -16,16 +16,18 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import Scroll from '@/components/scroll/Index.vue'
 import BlogHomeArticleCard from '@/pages/blog/home/components/articleCard/Index.vue'
 import articleCardProps from '@/pages/blog/home/components/articleCard/props'
 import type { ExtractPropTypes } from 'vue'
+import type { Router } from 'vue-router'
 import type { StoreArticleModuleState } from '@/store/modules/article/index'
 
 const PAGE_SIZE = 20
 
-function useBlogHomeArticleCard() {
+function useBlogHomeArticleCard(router: Router) {
   function handleCateClick(cate: string, item: articleTypeDirectory) {
     console.log(cate, item)
   }
@@ -33,7 +35,7 @@ function useBlogHomeArticleCard() {
     console.log(tag, item)
   }
   function handleArticleClick(item: articleTypeDirectory) {
-    console.log(item)
+    router.push({ name: 'BlogPost', params: { name: item.name } })
   }
   function getProps(item: articleTypeDirectory): ExtractPropTypes<typeof articleCardProps> {
     return {
@@ -67,9 +69,10 @@ export default defineComponent({
   components: { Scroll, BlogHomeArticleCard },
   setup() {
     const store = useStore<StoreArticleModuleState>()
+    const router = useRouter()
     store.dispatch('article/fetchAllContents')
 
-    const articleCardInstance = useBlogHomeArticleCard()
+    const articleCardInstance = useBlogHomeArticleCard(router)
     const pageInstance = usePage(store.state.article.directory)
     return {
       store,

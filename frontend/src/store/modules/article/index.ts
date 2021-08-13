@@ -18,8 +18,8 @@ const cates: ReturnType<typeof getAllCates> = getAllCates(directory)
 export interface ArticleStateInterface {
   directory: Array<articleTypeDirectory>
   allContents: Array<articleType>
-  allContentsLoaded: boolean,
-  tags: typeof tags,
+  allContentsLoaded: boolean
+  tags: typeof tags
   cates: typeof cates
 }
 
@@ -38,10 +38,11 @@ async function parseArticleBody(article: articleType): Promise<string> {
   return decodedBody
 }
 
-const getArticleDetailFunc: ArticleModuleGetter = (
-  state,
-  getters,
-  rootState
+const getArticleDetailFunc = (
+  state: ArticleStateInterface,
+  getters: any,
+  rootState: RootStateInterface,
+  rootGetters: any
 ) => async (articleObj: articleTypeDirectory) => {
   let currentContent!: articleType | undefined
   if (state.allContentsLoaded) {
@@ -60,6 +61,8 @@ const getArticleDetailFunc: ArticleModuleGetter = (
     })
   return currentContent
 }
+
+export type articleGettersFuncType = ReturnType<typeof getArticleDetailFunc>
 
 const allArticleContentsWithSearch: ArticleModuleGetter = (
   state,
