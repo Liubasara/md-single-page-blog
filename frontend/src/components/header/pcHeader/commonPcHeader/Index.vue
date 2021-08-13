@@ -39,14 +39,14 @@
 import Icon from '@/components/icon/Index.vue'
 import { defineComponent } from 'vue'
 import headerProps from '@/components/header/props'
-import { useSearch } from '@/components/search/index'
+import { useSearchInSetup } from '@/components/search/index'
 
 export default defineComponent({
   name: 'CommonPcHeader',
   components: { Icon },
   props: headerProps,
   setup(props) {
-    const { handleSearchClick } = useSearch()
+    const { handleSearchClick } = useSearchInSetup()
     return {
       props,
       handleSearchClick

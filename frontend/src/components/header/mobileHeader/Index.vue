@@ -40,7 +40,7 @@
 <script lang="ts">
 import { defineComponent, ref, reactive, computed, onMounted, nextTick } from 'vue'
 import Icon from '@/components/icon/Index.vue'
-import { useSearch } from '@/components/search/index'
+import { useSearchInSetup } from '@/components/search/index'
 import { useRouter } from 'vue-router'
 
 function useMenuNavbar() {
@@ -87,7 +87,7 @@ export default defineComponent({
     Icon
   },
   setup() {
-    const { handleSearchClick } = useSearch()
+    const { handleSearchClick } = useSearchInSetup()
     const menuNavBar = useMenuNavbar()
     const router = useRouter()
     const routerPush = (path: string) => {

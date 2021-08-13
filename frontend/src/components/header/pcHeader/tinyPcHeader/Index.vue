@@ -16,7 +16,7 @@
 <script lang="ts">
 import { defineComponent, reactive } from 'vue'
 import { useRouter } from 'vue-router'
-import { useSearch } from '@/components/search/index'
+import { useSearchInSetup } from '@/components/search/index'
 import Icon from '@/components/icon/Index.vue'
 
 export default defineComponent({
@@ -26,7 +26,7 @@ export default defineComponent({
   },
   setup() {
     const router = useRouter()
-    const { handleSearchClick, instance: searchInstance } = useSearch()
+    const { handleSearchClick } = useSearchInSetup()
     const icons = reactive([
       { type: 'home', action: () => router.push({ path: '/blog/home' }) },
       {

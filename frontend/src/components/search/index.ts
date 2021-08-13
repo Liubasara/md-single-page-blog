@@ -1,7 +1,7 @@
 import createPopover from '@/components/popover/index'
 import Search from '@/components/search/Search.vue'
 import SearchProps from '@/components/search/props'
-import { reactive, ref, toRefs } from 'vue'
+import { ref } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
 import {
@@ -22,14 +22,19 @@ Search.install = function (_Vue: App) {
   _Vue.component(Search.name, Search)
 }
 
-// type SearchPropsType = ExtractPropTypes<typeof SearchProps> & SearchEventHandler
+type SearchPropsType = {
+  [P in keyof ExtractPropTypes<typeof SearchProps>]: Ref<
+    ExtractPropTypes<typeof SearchProps>[P]
+  >
+} &
+  SearchEventHandler
 
 export const getSearchProps = <T extends StoreArticleModuleState>(
   store: Store<T>,
   route: RouteLocationNormalizedLoaded,
   router: Router,
   instance: Ref<PopoverInstance>
-) => {
+): SearchPropsType => {
   const keyword = ref('')
   const searchPlaceHolder = ref('')
   function getArticleItems() {
@@ -134,7 +139,7 @@ export const getSearchProps = <T extends StoreArticleModuleState>(
   }
 }
 
-export function useSearch() {
+export function useSearchInSetup() {
   const instance = ref<PopoverInstance>()
   const store = useStore()
   const route = useRoute()
