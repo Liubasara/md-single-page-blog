@@ -57,7 +57,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/style/zIndex.scss';
+@import '@/assets/style/commonVar.scss';
 @import '@/assets/style/screenMixins.scss';
 
 .dialog-wrapper {

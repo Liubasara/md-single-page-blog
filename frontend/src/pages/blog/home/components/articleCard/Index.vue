@@ -5,34 +5,24 @@
         <a @click.prevent.stop="nameClick">{{ name }}</a>
       </h1>
     </div>
-    <p class="article-meta">
-      <span class="article-date">
-        <Icon type="rili"></Icon>
-        <a @click.prevent.stop="dateClick">{{ date }}</a>
-      </span>
-      <span class="article-tag">
-        <Icon type="tag"></Icon>
-        <template v-for="(tag, index) in tags" :key="index">
-          <a @click.prevent.stop="tagClick(tag)">{{ tag }}</a>
-        </template>
-      </span>
-      <span class="article-category">
-        <Icon type="Category"></Icon>
-        <a @click.prevent.stop="cateClick(cate)">{{ cate }}</a>
-      </span>
-    </p>
+    <ArticleMeta
+      :categories="cate"
+      :tags="tags"
+      :time="date"
+      v-on="onMetaClick"
+    ></ArticleMeta>
   </article>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
-import Icon from '@/components/icon/Index.vue'
+import { defineComponent, reactive } from 'vue'
+import ArticleMeta from '@/components/articleMeta/Index.vue'
 import articleCardProps from '@/pages/blog/home/components/articleCard/props'
 
 export default defineComponent({
   name: 'BlogHomeArticleCard',
   components: {
-    Icon
+    ArticleMeta
   },
   props: articleCardProps,
   emits: {
@@ -51,7 +41,7 @@ export default defineComponent({
     const nameClick = () => {
       emit('nameClick')
     }
-    const dateClick = () => {
+    const timeClick = () => {
       emit('dateClick')
     }
     const tagClick = (tag: string) => {
@@ -60,15 +50,18 @@ export default defineComponent({
     const cateClick = (cate: string) => {
       emit('cateClick', cate)
     }
+    const onMetaClick = reactive({
+      onTimeClick: timeClick,
+      onTagClick: tagClick,
+      onCateClick: cateClick
+    })
     return {
       name,
       date,
       tags,
       cate,
       nameClick,
-      dateClick,
-      tagClick,
-      cateClick
+      onMetaClick
     }
   }
 })
@@ -76,7 +69,7 @@ export default defineComponent({
 
 
 <style lang="scss" scoped>
-$hoverColor: #0a6ebd;
+@import '@/assets/style/commonVar.scss';
 @mixin hoverLink {
   cursor: pointer;
   &:hover {
@@ -93,28 +86,5 @@ $hoverColor: #0a6ebd;
   font-size: 18px;
   margin: 21px 0 10.5px;
   @include hoverLink;
-}
-.article-date,
-.article-category {
-  @include hoverLink;
-}
-.article-tag {
-  a {
-    @include hoverLink;
-    &:not(:last-child)::after {
-      content: ", ";
-    }
-  }
-}
-.article-meta {
-  font-size: 13px;
-  color: #999;
-  margin: 0 0 10.5px;
-  span + span {
-    margin-left: 10px;
-  }
-  a {
-    margin-left: 3px;
-  }
 }
 </style>

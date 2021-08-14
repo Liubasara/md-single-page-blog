@@ -17,7 +17,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 @import '@/assets/style/screenMixins.scss';
-@import '@/assets/style/zIndex.scss';
+@import '@/assets/style/commonVar.scss';
 .wrapper {
   .header {
     position: fixed;
