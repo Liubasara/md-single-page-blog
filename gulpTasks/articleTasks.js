@@ -41,6 +41,46 @@ function generateArticleToJsTask(cb) {
     console.log('getMarkdown', allArticlePaths)
 
     const rendererMD = new marked.Renderer()
+    // 生成标题锚点
+    // https://github.com/nodejs/nodejs.org/blob/d24e6a85e5/scripts/plugins/anchor-markdown-headings.js
+    const ANCHOR_COMMENTREG = /<!--\x20?([\w\x20-]+)\x20?-->/
+    rendererMD.heading = function anchorMarkdownHeadings(
+      text,
+      level,
+      raw,
+      slugger
+    ) {
+      let anchorTitle = null
+
+      // If we've checked the title has a comment symbol,
+      // we reguard it as the forcely-assigned anchor link name
+      // for titles with non-English characters
+      const anchorTitleArray = ANCHOR_COMMENTREG.exec(raw)
+      if (anchorTitleArray !== null) {
+        anchorTitle = anchorTitleArray[1]
+      } else {
+        anchorTitle = raw
+      }
+
+      // anchorTitle = anchorTitle
+      //   .replace(/(\[([^\]]+)]\([^)]+\))/g, '$2')
+      //   .replace(/[^\w]+/g, '-')
+      //   .replace(/[\x20]+/g, '-')
+      //   .replace(/-{2,}/g, '-')
+      //   .replace(/(^-|-$)/g, '')
+
+      if (!anchorTitle) {
+        return `<h${level}>${text}</h${level}>`
+      }
+
+      anchorTitle = anchorTitle.toLowerCase()
+
+      const anchorId = `${slugger ? slugger.slug(anchorTitle) : anchorTitle}`
+      const headerId = `header-${anchorId}`
+
+      // return `<h${level} id="${headerId}">${text}<a id="${anchorId}" class="anchor" href="#${anchorId}"></a></h${level}>`
+      return `<h${level} id="${headerId}" class="anchor-header"><a id="${anchorId}" class="anchor">#</a>${text}</h${level}>`
+    }
     marked.setOptions({
       renderer: rendererMD,
       highlight: function (code, language) {
@@ -118,9 +158,9 @@ function generateArticleImgTask(cb) {
   async function start() {
     const allArticleImgPaths = await getAllArticleImgPaths(ARTICLE_PATH)
     console.log('getMarkdownImage', allArticleImgPaths)
-    src(allArticleImgPaths, { base: ARTICLE_PATH }).pipe(
-      dest(ALL_ARTICLE_PKG_TARGET_PATH)
-    ).on('end', cb)
+    src(allArticleImgPaths, { base: ARTICLE_PATH })
+      .pipe(dest(ALL_ARTICLE_PKG_TARGET_PATH))
+      .on('end', cb)
   }
 }
 
