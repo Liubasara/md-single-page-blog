@@ -35,6 +35,11 @@ const routes: RouteRecordRaw[] = [
         path: '/blog/cate',
         name: 'BlogCate',
         component: () => import('@/pages/blog/cate/Index.vue')
+      },
+      {
+        path: '/blog/tar',
+        name: 'BlogTar',
+        component: () => import('@/pages/blog/tar/Index.vue')
       }
     ]
   }

@@ -6,6 +6,10 @@ const props = {
   introduction: {
     type: String,
     default: ''
+  },
+  location: {
+    type: String,
+    default: ''
   }
 }
 

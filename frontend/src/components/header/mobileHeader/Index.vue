@@ -20,17 +20,22 @@
       <div class="navbar-container" ref="navbarContainer">
         <a class="menu-item" @click.prevent.stop="routerPush('/blog/home')">
           <Icon type="home"></Icon>
-          <span class="route-name">Home</span>
+          <span class="route-name">首页</span>
         </a>
 
         <a class="menu-item" @click.prevent.stop="routerPush('/blog/tags')">
           <Icon type="tag"></Icon>
-          <span class="route-name">Tags</span>
+          <span class="route-name">标签</span>
         </a>
 
         <a class="menu-item" @click.prevent.stop="routerPush('/blog/cate')">
           <Icon type="Category"></Icon>
-          <span class="route-name">Cate</span>
+          <span class="route-name">分类</span>
+        </a>
+
+        <a class="menu-item" @click.prevent.stop="routerPush('/blog/cate')">
+          <Icon type="rili"></Icon>
+          <span class="route-name">归档</span>
         </a>
       </div>
     </div>

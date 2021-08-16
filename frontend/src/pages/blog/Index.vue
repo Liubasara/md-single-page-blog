@@ -27,7 +27,8 @@ import type { StoreArticleModuleState } from '@/store/modules/article'
 function useHeaderInSetup() {
   const data = reactive<ExtractPropTypes<typeof HeaderProps>>({
     name: 'Liubasara',
-    introduction: 'Web Developer & Designer'
+    introduction: 'Web Developer & Designer',
+    location: 'GuangZhou, China'
   })
   return {
     data

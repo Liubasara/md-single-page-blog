@@ -8,9 +8,9 @@
       </div>
       <p class="name">{{ props.name }}</p>
       <p class="introduction">{{ props.introduction }}</p>
-      <small class="location">
+      <small class="location" v-if="props.location">
         <Icon type="location" as="span"></Icon>
-        <span>GuangZhou, China</span>
+        <span>{{ props.location }}</span>
       </small>
     </div>
     <div class="search-container">
@@ -21,16 +21,20 @@
     </div>
     <router-link class="link menu-item" :to="{ path: '/blog/home' }">
       <Icon type="home"></Icon>
-      <span class="route-name">Home</span>
+      <span class="route-name">首页</span>
     </router-link>
     <!-- <router-link class="link" :to="{ path: `/blog/post/${'test'}` }">Post</router-link> -->
     <router-link class="link menu-item" :to="{ path: '/blog/tags' }">
       <Icon type="tag"></Icon>
-      <span class="route-name">Tags</span>
+      <span class="route-name">标签</span>
     </router-link>
     <router-link class="link menu-item" :to="{ path: '/blog/cate' }">
       <Icon type="Category"></Icon>
-      <span class="route-name">Cate</span>
+      <span class="route-name">分类</span>
+    </router-link>
+    <router-link class="link menu-item" :to="{ path: '/blog/tar' }">
+      <Icon type="rili"></Icon>
+      <span class="route-name">归档</span>
     </router-link>
   </div>
 </template>

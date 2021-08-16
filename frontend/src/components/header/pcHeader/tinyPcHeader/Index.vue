@@ -36,7 +36,8 @@ export default defineComponent({
         }
       },
       { type: 'tag', action: () => router.push({ path: '/blog/tags' }) },
-      { type: 'Category', action: () => router.push({ path: '/blog/cate' }) }
+      { type: 'Category', action: () => router.push({ path: '/blog/cate' }) },
+      { type: 'rili', action: () => router.push({ path: '/blog/tar' }) }
     ])
     return {
       icons
