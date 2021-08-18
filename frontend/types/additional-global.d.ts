@@ -1,6 +1,10 @@
 export {}
-// import type { Ref, ComputedRef } from 'vue'
+import type { SetupContext, ExtractPropTypes } from 'vue'
 declare global {
+  type setupContextType = SetupContext<Record<string, any>>
+  type setupPropsType<T> = Readonly<
+    LooseRequired<Readonly<ExtractPropTypes<T>>>
+  >
   // type typeOrRef<T> = T | Ref<T> | ComputedRef<T>
 
   /**

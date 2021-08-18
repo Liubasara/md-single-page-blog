@@ -3,13 +3,15 @@
     <div class="header-container">
       <div class="profile-container">
         <router-link class="avatar-link" :to="{ path: '/' }">
-          <img src="@/assets/img/avatar.jpeg" alt="avatar"
-        /></router-link>
+          <img src="@/assets/img/avatar.jpeg" alt="avatar" />
+        </router-link>
       </div>
       <div class="search-container">
         <div class="input-group" @mousedown="handleSearchClick($event)">
           <input type="text" placeholder="搜索" />
-          <div class="search-btn"><Icon type="search" :size="16"></Icon></div>
+          <div class="search-btn">
+            <Icon type="search" :size="16"></Icon>
+          </div>
         </div>
       </div>
       <div :class="[{ 'transform-rotate': isExpandMenu }, 'menu-container']" @click="menuClick">
@@ -18,24 +20,14 @@
     </div>
     <div :class="navBarClasses">
       <div class="navbar-container" ref="navbarContainer">
-        <a class="menu-item" @click.prevent.stop="routerPush('/blog/home')">
-          <Icon type="home"></Icon>
-          <span class="route-name">首页</span>
-        </a>
-
-        <a class="menu-item" @click.prevent.stop="routerPush('/blog/tags')">
-          <Icon type="tag"></Icon>
-          <span class="route-name">标签</span>
-        </a>
-
-        <a class="menu-item" @click.prevent.stop="routerPush('/blog/cate')">
-          <Icon type="Category"></Icon>
-          <span class="route-name">分类</span>
-        </a>
-
-        <a class="menu-item" @click.prevent.stop="routerPush('/blog/cate')">
-          <Icon type="rili"></Icon>
-          <span class="route-name">归档</span>
+        <a
+          v-for="(item, index) in headerRoutesRef"
+          :key="index"
+          class="menu-item"
+          @click.prevent.stop="routerPush(item.routerParams.path)"
+        >
+          <Icon :type="item.iconType"></Icon>
+          <span class="route-name">{{ item.name }}</span>
         </a>
       </div>
     </div>
@@ -43,69 +35,19 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, reactive, computed, onMounted, nextTick } from 'vue'
+import { defineComponent } from 'vue'
 import Icon from '@/components/icon/Index.vue'
-import { useSearchInSetup } from '@/components/search/index'
-import { useRouter } from 'vue-router'
-
-function useMenuNavbar() {
-  const isExpandMenu = ref(false)
-  const closeMenu = () => {
-    isExpandMenu.value = false
-  }
-  const expandMenu = () => {
-    isExpandMenu.value = true
-  }
-  const menuClick = () => {
-    isExpandMenu.value = !isExpandMenu.value
-  }
-  const navBarClasses = reactive({
-    collapsing: true,
-    'navbar-wrapper': true,
-    'navbar-container-in': computed(() => !isExpandMenu.value),
-    'navbar-container-out': computed(() => isExpandMenu.value)
-  })
-
-  const navbarContainer = ref<HTMLDivElement>()
-  const navbarContainerHeight = ref('0px')
-  const resizeObserver = new ResizeObserver(() => {
-    navbarContainerHeight.value = navbarContainer.value ? getComputedStyle(navbarContainer.value).height : '0px'
-  })
-  onMounted(() => {
-    resizeObserver.observe(navbarContainer.value as HTMLDivElement)
-  })
-
-  return {
-    isExpandMenu,
-    navbarContainer,
-    navBarClasses,
-    navbarContainerHeight,
-    menuClick,
-    closeMenu,
-    expandMenu
-  }
-}
+import headerProps from '@/components/header/props'
+import { useMobileHeaderInSetup } from '@/components/header/logic/index'
 
 export default defineComponent({
   name: 'MobileHeader',
   components: {
     Icon
   },
-  setup() {
-    const { handleSearchClick } = useSearchInSetup()
-    const menuNavBar = useMenuNavbar()
-    const router = useRouter()
-    const routerPush = (path: string) => {
-      router.push(path)
-      nextTick(() => {
-        menuNavBar.isExpandMenu.value = false
-      })
-    }
-    return {
-      handleSearchClick,
-      ...menuNavBar,
-      routerPush
-    }
+  props: headerProps,
+  setup(props) {
+    return useMobileHeaderInSetup(props)
   }
 })
 </script>

@@ -9,8 +9,8 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import CommonPcHeader from '@/components/header/pcHeader/commonPcHeader/Index.vue'
-import TinyPcHeader from '@/components/header/pcHeader/tinyPcHeader/Index.vue'
+import CommonPcHeader from '@/components/header/template/pcHeader/commonPcHeader/Index.vue'
+import TinyPcHeader from '@/components/header/template/pcHeader/tinyPcHeader/Index.vue'
 
 export default defineComponent({
   name: 'PCHeader',

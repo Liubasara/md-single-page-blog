@@ -1,3 +1,13 @@
+import type { PropType } from 'vue'
+
+type HeaderRoutesType = {
+  name: string
+  iconType: string
+  routerParams: {
+    path: string
+  }
+}
+
 const props = {
   name: {
     type: String,
@@ -10,6 +20,10 @@ const props = {
   location: {
     type: String,
     default: ''
+  },
+  headerRoutes: {
+    type: Array as PropType<Array<HeaderRoutesType>>,
+    default: () => []
   }
 }
 

@@ -7,41 +7,28 @@
     </div>
     <div class="menu">
       <div class="clearfix-bfc" v-for="(item, index) in icons" :key="index">
-        <div class="menu-item" @click="item.action($event)"><Icon :type="item.type"></Icon></div>
+        <div class="menu-item" @click="item.action($event)">
+          <Icon :type="item.type"></Icon>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue'
-import { useRouter } from 'vue-router'
-import { useSearchInSetup } from '@/components/search/index'
+import { defineComponent } from 'vue'
 import Icon from '@/components/icon/Index.vue'
+import { useTinyPcHeaderInSetup } from '@/components/header/logic/index'
+import headerProps from '@/components/header/props'
 
 export default defineComponent({
   name: 'TinyPcHeader',
   components: {
     Icon
   },
-  setup() {
-    const router = useRouter()
-    const { handleSearchClick } = useSearchInSetup()
-    const icons = reactive([
-      { type: 'home', action: () => router.push({ path: '/blog/home' }) },
-      {
-        type: 'search',
-        action: ($evt: Event) => {
-          handleSearchClick($evt)
-        }
-      },
-      { type: 'tag', action: () => router.push({ path: '/blog/tags' }) },
-      { type: 'Category', action: () => router.push({ path: '/blog/cate' }) },
-      { type: 'rili', action: () => router.push({ path: '/blog/tar' }) }
-    ])
-    return {
-      icons
-    }
+  props: headerProps,
+  setup(props) {
+    return useTinyPcHeaderInSetup(props)
   }
 })
 </script>
@@ -49,11 +36,11 @@ export default defineComponent({
 <style lang="scss" scoped>
 .clearfix-bfc {
   &::before {
-    content: '';
+    content: "";
     display: table;
   }
   &::after {
-    content: '';
+    content: "";
     display: table;
     clear: both;
   }

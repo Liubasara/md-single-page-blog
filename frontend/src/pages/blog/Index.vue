@@ -28,7 +28,13 @@ function useHeaderInSetup() {
   const data = reactive<ExtractPropTypes<typeof HeaderProps>>({
     name: 'Liubasara',
     introduction: 'Web Developer & Designer',
-    location: 'GuangZhou, China'
+    location: 'GuangZhou, China',
+    headerRoutes: [
+      { name: '首页', iconType: 'home', routerParams: { path: '/blog/home' } },
+      { name: '标签', iconType: 'tag', routerParams: { path: '/blog/tags' } },
+      { name: '分类', iconType: 'Category', routerParams: { path: '/blog/cate' } },
+      { name: '归档', iconType: 'rili', routerParams: { path: '/blog/tar' } }
+    ]
   })
   return {
     data

@@ -16,25 +16,19 @@
     <div class="search-container">
       <div class="input-group" @mousedown="handleSearchClick($event)">
         <input type="text" placeholder="搜索" />
-        <div class="search-btn"><Icon type="search"></Icon></div>
+        <div class="search-btn">
+          <Icon type="search"></Icon>
+        </div>
       </div>
     </div>
-    <router-link class="link menu-item" :to="{ path: '/blog/home' }">
-      <Icon type="home"></Icon>
-      <span class="route-name">首页</span>
-    </router-link>
-    <!-- <router-link class="link" :to="{ path: `/blog/post/${'test'}` }">Post</router-link> -->
-    <router-link class="link menu-item" :to="{ path: '/blog/tags' }">
-      <Icon type="tag"></Icon>
-      <span class="route-name">标签</span>
-    </router-link>
-    <router-link class="link menu-item" :to="{ path: '/blog/cate' }">
-      <Icon type="Category"></Icon>
-      <span class="route-name">分类</span>
-    </router-link>
-    <router-link class="link menu-item" :to="{ path: '/blog/tar' }">
-      <Icon type="rili"></Icon>
-      <span class="route-name">归档</span>
+    <router-link
+      class="link menu-item"
+      v-for="(item, index) in headerRoutesRef"
+      :key="index"
+      :to="item.routerParams"
+    >
+      <Icon :type="item.iconType"></Icon>
+      <span class="route-name">{{ item.name }}</span>
     </router-link>
   </div>
 </template>
@@ -43,24 +37,20 @@
 import Icon from '@/components/icon/Index.vue'
 import { defineComponent } from 'vue'
 import headerProps from '@/components/header/props'
-import { useSearchInSetup } from '@/components/search/index'
+import { useCommonPcHeaderInSetup } from '@/components/header/logic/index'
 
 export default defineComponent({
   name: 'CommonPcHeader',
   components: { Icon },
   props: headerProps,
   setup(props) {
-    const { handleSearchClick } = useSearchInSetup()
-    return {
-      props,
-      handleSearchClick
-    }
+    return useCommonPcHeaderInSetup(props)
   }
 })
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/style/screenMixins.scss';
+@import "@/assets/style/screenMixins.scss";
 
 .header-container {
   height: 100%;

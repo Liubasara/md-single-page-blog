@@ -9,8 +9,8 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import PCHeader from '@/components/header/pcHeader/Index.vue'
-import MobileHeader from '@/components/header/mobileHeader/Index.vue'
+import PCHeader from '@/components/header/template/pcHeader/Index.vue'
+import MobileHeader from '@/components/header/template/mobileHeader/Index.vue'
 
 export default defineComponent({
   name: 'Header',

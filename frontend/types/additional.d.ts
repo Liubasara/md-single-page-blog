@@ -36,3 +36,7 @@ declare module 'articleDist/allContents/allContents.json' {
   const value: Array<articleType>
   export default value
 }
+
+declare type LooseRequired<T> = {
+  [P in string & keyof T]: T[P];
+};
