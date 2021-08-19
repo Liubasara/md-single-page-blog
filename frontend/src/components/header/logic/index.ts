@@ -2,13 +2,20 @@ import { reactive, nextTick, ref, computed, onMounted, toRefs } from 'vue'
 import { useRouter } from 'vue-router'
 import HeaderProps from '@/components/header/props'
 import { useSearchInSetup } from '@/components/search/index'
+// import type { SetupContext } from 'vue'
 
 type HeaderSetupPropType = setupPropsType<typeof HeaderProps>
-type HeaderSetupContextType = setupContextType<typeof HeaderProps>
+// type HeaderSetupContextType = SetupContext<Array<string>>
+// type HeaderSetupContextType = SetupContext<['headerMounted']>
 
 export const useHeaderBasicInSetup = (
   props: HeaderSetupPropType
+  // context?: HeaderSetupContextType
 ) => {
+  // const { emit } = context || {}
+  // onMounted(() => {
+  //   emit?.('headerMounted')
+  // })
   const { handleSearchClick } = useSearchInSetup()
   const { headerRoutes: headerRoutesRef } = toRefs(props)
   return {

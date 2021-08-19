@@ -16,8 +16,6 @@ declare global {
   >
   type setupPropsType<PropType> = getSetupParamsType<PropType>[0]
 
-  type setupContextType<PropType> = getSetupParamsType<PropType>[1]
-
   /**
    * 根据 Props 定义的 defaults 来推断其属性生成输入 props 的对应类型
    */
