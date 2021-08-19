@@ -27,9 +27,7 @@ export default defineComponent({
     Icon
   },
   props: headerProps,
-  setup(props) {
-    return useTinyPcHeaderInSetup(props)
-  }
+  setup: useTinyPcHeaderInSetup
 })
 </script>
 

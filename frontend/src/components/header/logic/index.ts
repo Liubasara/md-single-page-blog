@@ -4,8 +4,11 @@ import HeaderProps from '@/components/header/props'
 import { useSearchInSetup } from '@/components/search/index'
 
 type HeaderSetupPropType = setupPropsType<typeof HeaderProps>
+type HeaderSetupContextType = setupContextType<typeof HeaderProps>
 
-export const useHeaderBasicInSetup = (props: HeaderSetupPropType) => {
+export const useHeaderBasicInSetup = (
+  props: HeaderSetupPropType
+) => {
   const { handleSearchClick } = useSearchInSetup()
   const { headerRoutes: headerRoutesRef } = toRefs(props)
   return {
@@ -27,10 +30,12 @@ export const useTinyPcHeaderInSetup = (props: HeaderSetupPropType) => {
   const { headerRoutesRef } = basicAction
   const router = useRouter()
   const { handleSearchClick } = basicAction
-  const icons = reactive(headerRoutesRef.value.map(item => ({
-    type: item.iconType,
-    action: (() => router.push(item.routerParams)) as (...args: any[]) => any
-  })))
+  const icons = reactive(
+    headerRoutesRef.value.map((item) => ({
+      type: item.iconType,
+      action: (() => router.push(item.routerParams)) as (...args: any[]) => any
+    }))
+  )
   icons.splice(1, 0, {
     type: 'search',
     action: ($evt: Event) => {

@@ -43,9 +43,7 @@ export default defineComponent({
   name: 'CommonPcHeader',
   components: { Icon },
   props: headerProps,
-  setup(props) {
-    return useCommonPcHeaderInSetup(props)
-  }
+  setup: useCommonPcHeaderInSetup
 })
 </script>
 

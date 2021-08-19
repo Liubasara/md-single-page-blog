@@ -1,11 +1,22 @@
 export {}
-import type { SetupContext, ExtractPropTypes } from 'vue'
+import type { ExtractPropTypes, ComponentOptions } from 'vue'
 declare global {
-  type setupContextType = SetupContext<Record<string, any>>
-  type setupPropsType<T> = Readonly<
-    LooseRequired<Readonly<ExtractPropTypes<T>>>
+  type getSetupTypeByProps<PropType> = Exclude<
+    ComponentOptions<ExtractPropTypes<PropType>>['setup'],
+    undefined
   >
-  // type typeOrRef<T> = T | Ref<T> | ComputedRef<T>
+  type releaseProsAndContextTypeFromSetupType<T> = T extends (
+    a: infer V,
+    b: infer U
+  ) => any
+    ? [V, U]
+    : any
+  type getSetupParamsType<PropType> = releaseProsAndContextTypeFromSetupType<
+    getSetupTypeByProps<PropType>
+  >
+  type setupPropsType<PropType> = getSetupParamsType<PropType>[0]
+
+  type setupContextType<PropType> = getSetupParamsType<PropType>[1]
 
   /**
    * 根据 Props 定义的 defaults 来推断其属性生成输入 props 的对应类型

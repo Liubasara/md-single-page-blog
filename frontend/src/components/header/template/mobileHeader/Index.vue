@@ -46,9 +46,7 @@ export default defineComponent({
     Icon
   },
   props: headerProps,
-  setup(props) {
-    return useMobileHeaderInSetup(props)
-  }
+  setup: useMobileHeaderInSetup
 })
 </script>
 
