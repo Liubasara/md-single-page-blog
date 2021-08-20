@@ -4,12 +4,12 @@ import HeaderProps from '@/components/header/props'
 import { useSearchInSetup } from '@/components/search/index'
 // import type { SetupContext } from 'vue'
 
-type HeaderSetupPropType = setupPropsType<typeof HeaderProps>
+type HeaderSetupPropsType = setupPropsType<typeof HeaderProps>
 // type HeaderSetupContextType = SetupContext<Array<string>>
 // type HeaderSetupContextType = SetupContext<['headerMounted']>
 
 export const useHeaderBasicInSetup = (
-  props: HeaderSetupPropType
+  props: HeaderSetupPropsType
   // context?: HeaderSetupContextType
 ) => {
   // const { emit } = context || {}
@@ -24,7 +24,7 @@ export const useHeaderBasicInSetup = (
   }
 }
 
-export const useCommonPcHeaderInSetup = (props: HeaderSetupPropType) => {
+export const useCommonPcHeaderInSetup = (props: HeaderSetupPropsType) => {
   const basicAction = useHeaderBasicInSetup(props)
   return {
     ...basicAction,
@@ -32,7 +32,7 @@ export const useCommonPcHeaderInSetup = (props: HeaderSetupPropType) => {
   }
 }
 
-export const useTinyPcHeaderInSetup = (props: HeaderSetupPropType) => {
+export const useTinyPcHeaderInSetup = (props: HeaderSetupPropsType) => {
   const basicAction = useHeaderBasicInSetup(props)
   const { headerRoutesRef } = basicAction
   const router = useRouter()
@@ -55,7 +55,7 @@ export const useTinyPcHeaderInSetup = (props: HeaderSetupPropType) => {
   }
 }
 
-export const useMobileHeaderInSetup = (props: HeaderSetupPropType) => {
+export const useMobileHeaderInSetup = (props: HeaderSetupPropsType) => {
   const basicAction = useHeaderBasicInSetup(props)
   const menuNavBar = useMenuNavbar()
   const router = useRouter()
