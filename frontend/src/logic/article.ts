@@ -1,4 +1,7 @@
+import cloneDeep from 'lodash/cloneDeep'
+import { getTimeSnapsByType } from '@/utils/date'
 import type { Router } from 'vue-router'
+import type { splitType } from '@/utils/date'
 
 export const navigateToArticle = (name: string, router: Router) => {
   router.push({ name: 'BlogPost', params: { name: name } })
@@ -222,4 +225,57 @@ export const getAllPostBySearch = (
     // ~item.categories.indexOf(str) // 分类
   })
   return contentResult
+}
+
+/**
+ *
+ * @param {Array<allArticleType>} allPosts
+ * @param {splitType} type
+ */
+export const getAllTimesByType = (
+  allPosts: Array<allArticleType>,
+  type: splitType = 'month'
+) => {
+  /**
+   * 1. 遍历 allPosts, 找出最小时间(minTime)和最大时间(maxTime), 并将 articles 按照时间从小到大进行排序
+   * 2. 创建一个工具函数，输入最小时间和最大时间，输出一个数组 timeSnaps: Array<string>，包含以 月/日/年 作为间隔的从小到大的时间戳
+   * 3. 定义一个 map: {}, 两个指针p1 p2, 一个位于 articles[p1] , 一个位于 timeSnaps[p2]
+   *    while p1 < articles.length && p2 < timeSnaps.length:
+   *      - 当 articles[p1].time < timeSnaps[p2], map[timeSnaps[p2]] = articles[p1], p1++
+   *      - 当 articles[p1].time > timeSnaps[p2], p2++
+   * 4. 将 map 按照 key 的大小进行排序，转换为数组
+   * 5. 返回 map 和 timeSnaps
+   */
+  const copyAllPosts = cloneDeep(allPosts)
+  copyAllPosts.sort((a, b) => +new Date(a.time) - +new Date(b.time)) // 小到大排序
+  const minTime = copyAllPosts[0].time
+  const maxTime = copyAllPosts.slice(-1)[0].time
+  const timeSnaps = getTimeSnapsByType(minTime, maxTime, type)
+  const targetMap: {
+    [key in string | number]: Array<allArticleType>
+  } = {}
+  let p1 = 0
+  let p2 = 0
+  while (p1 < copyAllPosts.length && p2 < timeSnaps.length) {
+    if (+new Date(copyAllPosts[p1].time) <= +timeSnaps[p2]) {
+      if (targetMap[+timeSnaps[p2]]) {
+        targetMap[+timeSnaps[p2]].push(copyAllPosts[p1])
+      } else {
+        targetMap[+timeSnaps[p2]] = [copyAllPosts[p1]]
+      }
+      p1++
+    } else {
+      p2++
+    }
+  }
+  const sortedPostTimeSnap = Object.keys(targetMap).sort((a, b) => +a - +b)
+  // 完成归档的所有时间戳
+  const tarPosts = sortedPostTimeSnap.map((timeSnap) => ({
+    time: timeSnap,
+    objs: targetMap[timeSnap]
+  }))
+  return {
+    timeSnaps: sortedPostTimeSnap,
+    tarPosts: tarPosts
+  }
 }
