@@ -227,14 +227,15 @@ export const getAllPostBySearch = (
   return contentResult
 }
 
-/**
- *
- * @param {Array<allArticleType>} allPosts
- * @param {splitType} type
- */
 export const getAllTimesByType = (
   allPosts: Array<allArticleType>,
-  type: splitType = 'month'
+  {
+    type = 'month',
+    reverse = false
+  }: {
+    type?: splitType
+    reverse?: boolean
+  } = {}
 ) => {
   /**
    * 1. 遍历 allPosts, 找出最小时间(minTime)和最大时间(maxTime), 并将 articles 按照时间从小到大进行排序
@@ -259,7 +260,9 @@ export const getAllTimesByType = (
   while (p1 < copyAllPosts.length && p2 < timeSnaps.length) {
     if (+new Date(copyAllPosts[p1].time) <= +timeSnaps[p2]) {
       if (targetMap[+timeSnaps[p2]]) {
-        targetMap[+timeSnaps[p2]].push(copyAllPosts[p1])
+        reverse
+          ? targetMap[+timeSnaps[p2]].unshift(copyAllPosts[p1])
+          : targetMap[+timeSnaps[p2]].push(copyAllPosts[p1])
       } else {
         targetMap[+timeSnaps[p2]] = [copyAllPosts[p1]]
       }
@@ -268,7 +271,9 @@ export const getAllTimesByType = (
       p2++
     }
   }
-  const sortedPostTimeSnap = Object.keys(targetMap).sort((a, b) => +a - +b)
+  const sortedPostTimeSnap = Object.keys(targetMap).sort((a, b) =>
+    reverse ? +b - +a : +a - +b
+  )
   // 完成归档的所有时间戳
   const tarPosts = sortedPostTimeSnap.map((timeSnap) => ({
     time: timeSnap,

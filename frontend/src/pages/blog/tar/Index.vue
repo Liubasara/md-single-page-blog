@@ -1,7 +1,5 @@
 <template>
-  <div>
-    tar
-  </div>
+  <div>tar</div>
 </template>
 
 <script lang="ts">
@@ -15,7 +13,7 @@ export default defineComponent({
   setup() {
     const store = useStore<StoreArticleModuleState>()
     const directory = store.state.article.directory
-    console.log(getAllTimesByType(directory))
+    console.log(getAllTimesByType(directory, { reverse: true }))
   }
 })
 </script>
