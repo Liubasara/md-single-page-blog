@@ -2,7 +2,7 @@ import type { PropType } from 'vue'
 import type {
   GetAllCatesFnReturn,
   GetAllTagsFnReturn
-} from '@/utils/articleUtils'
+} from '@/logic/article'
 
 const searchProps = {
   articleItems: {

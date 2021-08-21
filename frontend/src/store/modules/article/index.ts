@@ -10,7 +10,7 @@ import {
   getAllPostBySearch,
   getAllCates,
   getAllTags
-} from '@/utils/articleUtils'
+} from '@/logic/article'
 
 const directory = getArticleDirectory()
 const tags: ReturnType<typeof getAllTags> = getAllTags(directory)

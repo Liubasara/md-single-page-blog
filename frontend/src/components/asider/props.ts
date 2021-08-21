@@ -1,4 +1,4 @@
-import type { GetAllCatesFnReturn, GetAllTagsFnReturn } from '@/utils/articleUtils'
+import type { GetAllCatesFnReturn, GetAllTagsFnReturn } from '@/logic/article'
 import type { PropType } from 'vue'
 
 const props = {

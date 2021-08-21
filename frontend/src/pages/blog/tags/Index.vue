@@ -9,7 +9,7 @@
 <script lang="ts">
 import { defineComponent, reactive } from 'vue'
 import { useStore } from 'vuex'
-import { getAllTags, getPostsByTagsMaps, getAllPostsByTags } from '@/utils/articleUtils'
+import { getAllTags, getPostsByTagsMaps, getAllPostsByTags } from '@/logic/article'
 import performanceTest from '@/utils/performanceTest'
 import type { Store } from 'vuex'
 

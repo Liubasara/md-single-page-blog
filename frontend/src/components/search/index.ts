@@ -10,7 +10,7 @@ import {
   getAllCatesBySearch,
   getAllPostsByTags,
   getAllPostsByCate
-} from '@/utils/articleUtils'
+} from '@/logic/article'
 import type { PopoverInstance } from '@/components/popover/index'
 import type { SearchEventHandler } from '@/components/search/props'
 import type { App, Ref, ExtractPropTypes } from 'vue'

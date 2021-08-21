@@ -8,7 +8,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive } from 'vue'
-import { getAllCates, getAllPostsByCate, getPostsByCatesMaps } from '@/utils/articleUtils'
+import { getAllCates, getAllPostsByCate, getPostsByCatesMaps } from '@/logic/article'
 import performanceTest from '@/utils/performanceTest'
 import { useStore } from 'vuex'
 import type { Store } from 'vuex'
