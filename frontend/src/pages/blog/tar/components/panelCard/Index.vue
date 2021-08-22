@@ -6,7 +6,7 @@
         <span class="text">{{ props.title }}</span>
       </div>
     </div>
-    <Collapse :isExpand="isExpand">
+    <Collapse :isExpand="isExpand" :transitionSec="0.4">
       <div class="panel-body">
         <div
           class="collection-item"

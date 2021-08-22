@@ -8,7 +8,12 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref, watch, toRef } from 'vue'
 import type { Ref } from 'vue'
-function useCollapseHeight<T extends Element>(collapseRef: Ref<T> | Ref<undefined>, elementRef: Ref<T> | Ref<undefined>, isExpand: Ref<Boolean>) {
+function useCollapseHeight<T extends Element>(
+  collapseRef: Ref<HTMLDivElement> | Ref<undefined>,
+  elementRef: Ref<T> | Ref<undefined>,
+  isExpand: Ref<Boolean>,
+  transitionSec: Ref<number>
+) {
   const elementRefHeightRef = ref('0px')
   const resizeObserver = new ResizeObserver(() => {
     elementRefHeightRef.value = elementRef.value
@@ -17,9 +22,13 @@ function useCollapseHeight<T extends Element>(collapseRef: Ref<T> | Ref<undefine
   })
   onMounted(() => {
     elementRef.value && resizeObserver.observe(elementRef.value)
+    setTimeout(() => {
+      collapseRef.value && (collapseRef.value.style.transition = `${transitionSec.value}s ease-in-out`)
+    }, 0)
   })
-  watch(isExpand, newVal => {
-    if (newVal) {
+  watch([isExpand, collapseRef], newVal => {
+    const [isExpandNewVal] = newVal
+    if (isExpandNewVal) {
       collapseRef.value?.classList.remove('in')
       collapseRef.value?.classList.add('out')
     } else {
@@ -35,13 +44,18 @@ export default defineComponent({
     isExpand: {
       type: Boolean,
       default: false
+    },
+    transitionSec: {
+      type: Number,
+      default: 0.3
     }
   },
   setup(props) {
     const isExpand = toRef(props, 'isExpand')
+    const transitionSec = toRef(props, 'transitionSec')
     const collapseContainer = ref<HTMLDivElement>()
     const slotBodyContainer = ref<HTMLDivElement>()
-    const collapseHeight = useCollapseHeight(collapseContainer, slotBodyContainer, isExpand)
+    const collapseHeight = useCollapseHeight(collapseContainer, slotBodyContainer, isExpand, transitionSec)
     return {
       collapseContainer,
       slotBodyContainer,
@@ -53,13 +67,10 @@ export default defineComponent({
 <style lang="scss" scoped>
 .collapse {
   overflow: hidden;
-  height: v-bind(collapseHeight);
   &.in {
-    transition: 0.3s ease;
     height: 0;
   }
   &.out {
-    transition: 0.3s ease;
     height: v-bind(collapseHeight);
   }
 }
