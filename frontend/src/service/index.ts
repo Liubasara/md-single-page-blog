@@ -25,8 +25,22 @@ export const getAllContents = async () => {
   // })
 }
 
+function stringToRegExpHelper(args: TemplateStringsArray, rawStr: string) {
+  const specialStr = [`[`, '\\', '^', '$', '.', '|', '?', '*', '+', '(', ')']
+  const strArr = rawStr.split('')
+  for (let i = 0; i < strArr.length; i++) {
+    const str = strArr[i]
+    if (~specialStr.indexOf(str)) {
+      strArr[i] = '\\' + str
+    }
+  }
+  return strArr.join('')
+}
+
 export const getResourceDetail = async (url: string) => {
-  const resourceModuleKey = moduleKeys.find((key) => new RegExp(url).test(key))
+  const resourceModuleKey = moduleKeys.find((key) =>
+    new RegExp(stringToRegExpHelper`${url}`).test(key)
+  )
   if (!resourceModuleKey) return
   let resource!: unknown
   try {
