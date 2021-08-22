@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 2682471 */
-  src: url('iconfont.woff2?t=1628521046878') format('woff2'),
-       url('iconfont.woff?t=1628521046878') format('woff'),
-       url('iconfont.ttf?t=1628521046878') format('truetype');
+  src: url('iconfont.woff2?t=1629603919406') format('woff2'),
+       url('iconfont.woff?t=1629603919406') format('woff'),
+       url('iconfont.ttf?t=1629603919406') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,14 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-calendar-plus:before {
+  content: "\f27e";
+}
+
+.icon-calendar-minus:before {
+  content: "\e812";
 }
 
 .icon-comment:before {

@@ -6,6 +6,20 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "5634944",
+      "name": "calendar-plus",
+      "font_class": "calendar-plus",
+      "unicode": "f27e",
+      "unicode_decimal": 62078
+    },
+    {
+      "icon_id": "12692952",
+      "name": "calendar-minus",
+      "font_class": "calendar-minus",
+      "unicode": "e812",
+      "unicode_decimal": 59410
+    },
+    {
       "icon_id": "10246125",
       "name": "comment",
       "font_class": "comment",
