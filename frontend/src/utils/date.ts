@@ -114,10 +114,13 @@ export function getTimeSnapsByType(
 
 export function formatTimeToStringByType(
   dt: string | number | Date,
-  type: splitType = 'month'
+  {
+    type = 'month',
+    useChineseMonth = false
+  }: { type?: splitType; useChineseMonth?: boolean } = {}
 ) {
   const time = dateFormatHelper(dt)
-  enum month {
+  enum monthMap {
     '一',
     '二',
     '三',
@@ -131,10 +134,23 @@ export function formatTimeToStringByType(
     '十一',
     '十二'
   }
+  let month: number | string = time.getMonth()
+  let date: number | string = time.getDate()
+  if (useChineseMonth) {
+    month = monthMap[month]
+  } else {
+    month += 1
+    if (month < 10) {
+      month = '0' + month
+    }
+    if (date < 10) {
+      date = '0' + date
+    }
+  }
   const handlerMaps = {
-    day: () => time.getFullYear() + '/' + month[time.getMonth()] + '/' + time.getDate(),
-    month: () => time.getFullYear() + ' ' + month[time.getMonth()],
-    year: () => time.getFullYear()
+    day: () => time.getFullYear() + '-' + month + '-' + date,
+    month: () => time.getFullYear() + ' ' + month,
+    year: () => time.getFullYear() + ''
   }
   return handlerMaps[type]()
 }

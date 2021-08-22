@@ -1,6 +1,6 @@
 import type { PropType } from 'vue'
 
-interface ListItem {
+export interface ListItem {
   time: string;
   title: string;
 }

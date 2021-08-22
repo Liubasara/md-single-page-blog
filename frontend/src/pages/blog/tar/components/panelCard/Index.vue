@@ -12,7 +12,7 @@
           class="collection-item"
           v-for="(item, index) in props.list"
           :key="index"
-          @click="handleItemClick"
+          @click="handleItemClick(item, index)"
         >
           <time>{{ item.time }}</time>
           <span>&nbsp;&nbsp;&nbsp;</span>
@@ -27,18 +27,20 @@ import { defineComponent, ref } from 'vue'
 import Icon from '@/components/icon/Index.vue'
 import Collapse from '@/components/collapse/Index.vue'
 import panelCardProps from '@/pages/blog/tar/components/panelCard/props'
+import type { ListItem } from '@/pages/blog/tar/components/panelCard/props'
 
 export default defineComponent({
   name: 'tarPanel',
   props: panelCardProps,
   components: { Icon, Collapse },
+  emits: ['itemClick'],
   setup(props, { emit }) {
     const isExpand = ref(true)
     const changeExpand = () => {
       isExpand.value = !isExpand.value
     }
-    const handleItemClick = () => {
-      emit('itemClick')
+    const handleItemClick = (item: ListItem, index: number) => {
+      emit('itemClick', { item, index })
     }
     return {
       props,
