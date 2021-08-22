@@ -117,10 +117,24 @@ export function formatTimeToStringByType(
   type: splitType = 'month'
 ) {
   const time = dateFormatHelper(dt)
+  enum month {
+    '一',
+    '二',
+    '三',
+    '四',
+    '五',
+    '六',
+    '七',
+    '八',
+    '九',
+    '十',
+    '十一',
+    '十二'
+  }
   const handlerMaps = {
-    day: () => time.getFullYear() + '/' + time.getMonth() + 1 + '/' + time.getDate(),
-    month: () => time.getFullYear() + '/' + time.getMonth() + 1 + '/' + time.getDate(),
-    year: () => time.getFullYear() + '/' + time.getMonth() + 1 + '/' + time.getDate()
+    day: () => time.getFullYear() + '/' + month[time.getMonth()] + '/' + time.getDate(),
+    month: () => time.getFullYear() + ' ' + month[time.getMonth()],
+    year: () => time.getFullYear()
   }
   return handlerMaps[type]()
 }
