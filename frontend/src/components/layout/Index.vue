@@ -1,8 +1,14 @@
 <template>
   <div class="wrapper">
-    <header class="header"><slot name="header"></slot></header>
-    <main class="main"><slot></slot></main>
-    <aside class="asider"><slot name="asider"></slot></aside>
+    <header class="header">
+      <slot name="header"></slot>
+    </header>
+    <main class="main">
+      <slot></slot>
+    </main>
+    <aside class="asider">
+      <slot name="asider"></slot>
+    </aside>
   </div>
 </template>
 
@@ -11,13 +17,13 @@ import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'Layout',
-  setup() {}
+  setup() { }
 })
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/style/screenMixins.scss';
-@import '@/assets/style/commonVar.scss';
+@import "@/assets/style/screenMixins.scss";
+@import "@/assets/style/commonVar.scss";
 .wrapper {
   .header {
     position: fixed;
@@ -30,7 +36,10 @@ export default defineComponent({
     overflow-y: auto;
     width: 16.66667%;
     min-width: 16.66667%;
-    transition: .5s ease;
+    transition: 0.5s ease;
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
   .asider {
     width: 21%;
@@ -44,16 +53,19 @@ export default defineComponent({
     padding: 0;
     overflow-x: hidden;
     overflow-y: auto;
-    transition: .5s ease;
+    transition: 0.5s ease;
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
   .main {
+    box-sizing: border-box;
     min-height: 100vh;
     padding: 15px;
     margin-left: 16.66667%;
     margin-right: 21%;
     word-break: break-all;
     white-space: normal;
-    transition: .5s ease;
   }
   @include desktopLargeScreen {
   }
@@ -79,7 +91,7 @@ export default defineComponent({
     .header {
       width: 4.16667%;
       min-width: 4.16667%;
-      transition: .5s ease reverse;
+      transition: 0.5s ease reverse;
     }
     .asider {
       width: 25%;
