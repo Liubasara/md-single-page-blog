@@ -6,7 +6,7 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, onMounted, ref, watch, toRef } from 'vue'
+import { defineComponent, onMounted, ref, watch, toRefs, computed } from 'vue'
 import type { Ref } from 'vue'
 function useCollapseHeight<T extends Element>(
   collapseRef: Ref<HTMLDivElement> | Ref<undefined>,
@@ -48,18 +48,23 @@ export default defineComponent({
     transitionSec: {
       type: Number,
       default: 0.3
+    },
+    minHeight: {
+      type: Number,
+      default: 0
     }
   },
   setup(props) {
-    const isExpand = toRef(props, 'isExpand')
-    const transitionSec = toRef(props, 'transitionSec')
+    const { isExpand, transitionSec, minHeight } = toRefs(props)
     const collapseContainer = ref<HTMLDivElement>()
     const slotBodyContainer = ref<HTMLDivElement>()
     const collapseHeight = useCollapseHeight(collapseContainer, slotBodyContainer, isExpand, transitionSec)
+    const computeMinHeight = computed(() => minHeight.value + 'px')
     return {
       collapseContainer,
       slotBodyContainer,
-      collapseHeight
+      collapseHeight,
+      computeMinHeight
     }
   }
 })
@@ -68,7 +73,7 @@ export default defineComponent({
 .collapse {
   overflow: hidden;
   &.in {
-    height: 0;
+    height: v-bind(computeMinHeight);
   }
   &.out {
     height: v-bind(collapseHeight);
