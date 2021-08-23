@@ -3,11 +3,25 @@
     <div class="clearfix-bfc">
       <h3 class="title">标签</h3>
       <ul class="tag-list">
-        <li class="tag-list-item" v-for="(item, index) in allTags" :key="index">
-          <a :class="['tag-list-link', { active: isTagActive(item) }]" @click.prevent.stop="tagClick(item)">{{
-            item
-          }}</a>
-          <span class="tag-list-count">{{ tagsMap[item].num }}</span>
+        <Collapse :is-expand="isTagListExpand" :min-height="45">
+          <li class="tag-list-item" v-for="(item, index) in allTags" :key="index">
+            <a
+              :class="['tag-list-link', { active: isTagActive(item) }]"
+              @click.prevent.stop="tagClick(item)"
+            >
+              {{
+                item
+              }}
+            </a>
+            <span class="tag-list-count">{{ tagsMap[item].num }}</span>
+          </li>
+        </Collapse>
+        <li>
+          <span
+            v-if="showTagListExpandBtn"
+            class="tag-list-link active"
+            @click="expandTagList"
+          >{{ tagListExpandText }}</span>
         </li>
       </ul>
     </div>
@@ -15,11 +29,25 @@
     <div class="clearfix-bfc">
       <h3 class="title">分类</h3>
       <ul class="cate-list">
-        <li class="cate-list-item" v-for="(item, index) in allCates" :key="index">
-          <a :class="['cate-list-link', { active: isCateActive(item) }]" @click.prevent.stop="cateClick(item)">{{
-            item
-          }}</a>
-          <span class="cate-list-count">{{ catesMap[item].num }}</span>
+        <Collapse :is-expand="isCateListExpand" :min-height="45">
+          <li class="cate-list-item" v-for="(item, index) in allCates" :key="index">
+            <a
+              :class="['cate-list-link', { active: isCateActive(item) }]"
+              @click.prevent.stop="cateClick(item)"
+            >
+              {{
+                item
+              }}
+            </a>
+            <span class="cate-list-count">{{ catesMap[item].num }}</span>
+          </li>
+        </Collapse>
+        <li>
+          <span
+            v-if="showCateListExpandBtn"
+            class="cate-list-link active"
+            @click="expandCateList"
+          >{{ cateListExpandText }}</span>
         </li>
       </ul>
     </div>
@@ -27,26 +55,57 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { computed, defineComponent, ref, toRef, toRefs } from 'vue'
 import AsiderProps from '@/components/asider/props'
+import Collapse from '@/components/collapse/Index.vue'
 
+const LIMIT_COLLAPSE_NUM = 10
+
+// TODO: 组件逻辑待重构（添加 Asider-item）, 并添加 归档
 export default defineComponent({
   name: 'Asider',
   props: AsiderProps,
+  components: {
+    Collapse
+  },
   setup(props) {
-    const { allTags, tagsMap } = props.tags
-    const { allCates, catesMap } = props.cates
+    const { allTags, tagsMap } = toRefs(toRef(props, 'tags').value)
+    const { allCates, catesMap } = toRefs(toRef(props, 'cates').value)
     const { tagClick, cateClick, isTagActive, isCateActive } = props
 
+    const showTagListExpandBtn = computed(() => allTags.value.length > LIMIT_COLLAPSE_NUM)
+    const isTagListExpand = ref(!showTagListExpandBtn.value)
+    const expandTagList = () => {
+      isTagListExpand.value = !isTagListExpand.value
+    }
+    const tagListExpandText = computed(() => isTagListExpand.value ? '收缩' : '展开')
+
+    const showCateListExpandBtn = computed(() => allCates.value.length > LIMIT_COLLAPSE_NUM)
+    const isCateListExpand = ref(!showCateListExpandBtn.value)
+    const expandCateList = () => {
+      isCateListExpand.value = !isCateListExpand.value
+    }
+    const cateListExpandText = computed(() => isCateListExpand.value ? '收缩' : '展开')
+
     return {
+      // tag
+      tagClick,
       allTags,
       tagsMap,
+      isTagActive,
+      isTagListExpand,
+      expandTagList,
+      tagListExpandText,
+      showTagListExpandBtn,
+      // cate
+      cateClick,
       allCates,
       catesMap,
-      tagClick,
-      isTagActive,
-      cateClick,
-      isCateActive
+      isCateActive,
+      isCateListExpand,
+      expandCateList,
+      cateListExpandText,
+      showCateListExpandBtn
     }
   }
 })
@@ -59,11 +118,11 @@ export default defineComponent({
 }
 .clearfix-bfc {
   &::before {
-    content: '';
+    content: "";
     display: table;
   }
   &::after {
-    content: '';
+    content: "";
     display: table;
     clear: both;
   }
@@ -87,7 +146,7 @@ export default defineComponent({
   &::before {
     box-sizing: border-box;
     color: #ccc;
-    content: '▪';
+    content: "▪";
     font-size: 12px;
     margin-right: 6px;
     -webkit-transition: 0.2s ease;
@@ -112,10 +171,10 @@ export default defineComponent({
   color: #999;
   font-size: 0.85em;
   &::before {
-    content: '(';
+    content: "(";
   }
   &::after {
-    content: ')';
+    content: ")";
   }
 }
 </style>
