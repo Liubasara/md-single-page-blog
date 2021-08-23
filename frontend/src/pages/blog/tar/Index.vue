@@ -6,18 +6,26 @@
       v-for="(item, index) in tarDirectoryByYear.tarPosts"
       :key="index"
       :title="getPanelCardProp(item).title"
-      :list="getPanelCardProp(item).list"
-      @item-click="(params) => handlePanelCardClick(params, item)"
-    ></PanelCard>
+    >
+      <PanelCardItem
+        v-for="(obj, index) in item.objs"
+        :key="index"
+        :time="getPanelCardItemProp(obj).time"
+        :title="getPanelCardItemProp(obj).title"
+        @click="handlePanelCardItemClick(obj)"
+      ></PanelCardItem>
+    </PanelCard>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { useStore } from 'vuex'
-import { getAllTimesByType } from '@/logic/article'
+import { getAllTimesByType, navigateToArticle } from '@/logic/article'
 import PanelCard from '@/pages/blog/tar/components/panelCard/Index.vue'
 import panelCardProps from '@/pages/blog/tar/components/panelCard/props'
+import PanelCardItem from '@/pages/blog/tar/components/panelCardItem/Index.vue'
+import PanelCardItemProps from '@/pages/blog/tar/components/panelCardItem/props'
 import { formatTimeToStringByType } from '@/utils/date'
 import type { StoreArticleModuleState } from '@/store/modules/article/index'
 import type { ExtractPropTypes } from 'vue'
@@ -25,7 +33,7 @@ import { useRouter } from 'vue-router'
 
 export default defineComponent({
   name: 'blogTar',
-  components: { PanelCard },
+  components: { PanelCard, PanelCardItem },
   setup() {
     const store = useStore<StoreArticleModuleState>()
     const router = useRouter()
@@ -33,20 +41,22 @@ export default defineComponent({
     const tarDirectoryByYear = getAllTimesByType(directory, { reverse: true, type: 'year' })
     type PanelItemType = typeof tarDirectoryByYear.tarPosts extends Array<infer V> ? V : undefined
     const getPanelCardProp = (item: PanelItemType): ExtractPropTypes<typeof panelCardProps> => ({
-      title: formatTimeToStringByType(+item.time, { type: 'year' }),
-      list: item.objs.map(obj => ({
-        time: formatTimeToStringByType(obj.time, { type: 'day' }),
-        title: obj.title
-      }))
+      title: formatTimeToStringByType(+item.time, { type: 'year' })
     })
-    const handlePanelCardClick = ({ index }: { index: number }, item: PanelItemType) => {
-      router.push({ name: 'BlogPost', params: { name: item.objs[index].name } })
+    const getPanelCardItemProp = (obj: articleType | articleTypeDirectory): ExtractPropTypes<typeof PanelCardItemProps> => ({
+      time: formatTimeToStringByType(obj.time, { type: 'day' }),
+      title: obj.title
+    })
+    const handlePanelCardItemClick = (item: articleType | articleTypeDirectory) => {
+      navigateToArticle(item.name, router)
+      // router.push({ name: 'BlogPost', params: { name: item.name } })
     }
     return {
       directory,
       tarDirectoryByYear,
       getPanelCardProp,
-      handlePanelCardClick
+      handlePanelCardItemClick,
+      getPanelCardItemProp
     }
   }
 })
