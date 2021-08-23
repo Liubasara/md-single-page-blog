@@ -6,11 +6,7 @@ import {
   getResourceDetail
 } from '@/service'
 import URIJS from 'urijs'
-import {
-  getAllPostBySearch,
-  getAllCates,
-  getAllTags
-} from '@/logic/article'
+import { getAllPostBySearch, getAllCates, getAllTags } from '@/logic/article'
 
 const directory = getArticleDirectory()
 const tags: ReturnType<typeof getAllTags> = getAllTags(directory)
@@ -86,23 +82,30 @@ async function handleImgs(decodedBody: string, article: articleType) {
 
   const imgs = Array.from(tmpParentElm?.querySelectorAll?.('img') || [])
   const loadAllImgPromises = imgs.map(async (elm) => {
-    // 组合 elm 的 URL
-    const srcAttribute = elm.getAttribute('src')
-    if (
-      article.dirUrl &&
-      srcAttribute &&
-      !/^(http|https):\/\//.test(srcAttribute) // 非相对路径的图片才需要进行处理
-    ) {
-      const relativeUrl = decodeURIComponent(
-        URIJS(article.dirUrl + '/' + srcAttribute)
-          .absoluteTo('/')
-          .toString()
-      )
-      const imgResource = (await getResourceDetail(relativeUrl)) as string
-      elm.setAttribute('src', imgResource)
-      return imgResource
+    async function dealwithElmUrl() {
+      // 组合 elm 的 URL
+      const srcAttribute = elm.getAttribute('src')
+      if (
+        article.dirUrl &&
+        srcAttribute &&
+        !/^(http|https):\/\//.test(srcAttribute) // 非相对路径的图片才需要进行处理
+      ) {
+        const relativeUrl = decodeURIComponent(
+          URIJS(article.dirUrl + '/' + srcAttribute)
+            .absoluteTo('/')
+            .toString()
+        )
+        const imgResource = (await getResourceDetail(relativeUrl)) as string
+        elm.setAttribute('src', imgResource)
+        return imgResource
+      }
     }
-    return srcAttribute
+    function dealWithElmPosition() {
+      const parentElm = elm.parentElement
+      parentElm && (parentElm.style.textAlign = 'center')
+    }
+    dealWithElmPosition()
+    return dealwithElmUrl()
   })
   await Promise.all(loadAllImgPromises)
   return tmpParentElm.innerHTML
