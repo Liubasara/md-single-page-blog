@@ -81,7 +81,7 @@ function useCates(props: setupPropsType<typeof AsiderProps>) {
   })
 }
 
-// TODO: 组件逻辑待重构（添加 Asider-item）, 并添加 归档
+// 组件逻辑待重构（添加 Asider-item）, 并添加 归档
 export default defineComponent({
   name: 'Asider',
   props: AsiderProps,

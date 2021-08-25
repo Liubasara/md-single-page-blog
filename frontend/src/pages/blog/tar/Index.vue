@@ -10,8 +10,7 @@
       <PanelCardItem
         v-for="(obj, index) in item.objs"
         :key="index"
-        :time="getPanelCardItemProp(obj).time"
-        :title="getPanelCardItemProp(obj).title"
+        v-bind="getPanelCardItemProp(obj)"
         @click="handlePanelCardItemClick(obj)"
       ></PanelCardItem>
     </PanelCard>
@@ -49,7 +48,6 @@ export default defineComponent({
     })
     const handlePanelCardItemClick = (item: articleType | articleTypeDirectory) => {
       navigateToArticle(item.name, router)
-      // router.push({ name: 'BlogPost', params: { name: item.name } })
     }
     return {
       directory,
