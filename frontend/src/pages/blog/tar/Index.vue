@@ -1,9 +1,9 @@
 <template>
   <div class="tar-container">
     <h1 class="title">归档</h1>
-    <p class="text-muted">共 {{ directory.length }} 篇文章</p>
+    <p class="text-muted">共 {{ tarDirectory.nums }} 篇文章</p>
     <PanelCard
-      v-for="(item, index) in tarDirectoryByYear.tarPosts"
+      v-for="(item, index) in tarDirectory.tarPosts"
       :key="index"
       :title="getPanelCardProp(item).title"
     >
@@ -18,17 +18,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import { getAllTimesByType, navigateToArticle } from '@/logic/article'
 import PanelCard from '@/pages/blog/tar/components/panelCard/Index.vue'
 import panelCardProps from '@/pages/blog/tar/components/panelCard/props'
 import PanelCardItem from '@/pages/blog/tar/components/panelCardItem/Index.vue'
 import PanelCardItemProps from '@/pages/blog/tar/components/panelCardItem/props'
-import { formatTimeToStringByType } from '@/utils/date'
+import { formatTimeToStringByType, getFirstDateOfMonth } from '@/utils/date'
+import { useRoute, useRouter } from 'vue-router'
 import type { StoreArticleModuleState } from '@/store/modules/article/index'
 import type { ExtractPropTypes } from 'vue'
-import { useRouter } from 'vue-router'
 
 export default defineComponent({
   name: 'blogTar',
@@ -36,11 +36,28 @@ export default defineComponent({
   setup() {
     const store = useStore<StoreArticleModuleState>()
     const router = useRouter()
+    const route = useRoute()
+    const tarType = ref<'year' | 'month' | 'day'>('year')
     const directory = store.state.article.directory
-    const tarDirectoryByYear = getAllTimesByType(directory, { reverse: true, type: 'year' })
-    type PanelItemType = typeof tarDirectoryByYear.tarPosts extends Array<infer V> ? V : undefined
+    const tarDirectory = ref<ReturnType<typeof getAllTimesByType>>({
+      timeSnaps: [],
+      tarPosts: [],
+      nums: 0
+    })
+    watch(route, newRoute => {
+      const routeParamsTime = +newRoute.params.time
+      tarType.value = routeParamsTime ? 'month' : 'year'
+      if (routeParamsTime) {
+        tarDirectory.value = getAllTimesByType(directory, { reverse: true, type: tarType.value, maxTime: routeParamsTime, minTime: getFirstDateOfMonth(routeParamsTime) })
+      } else {
+        tarDirectory.value = getAllTimesByType(directory, { reverse: true, type: tarType.value })
+      }
+    }, {
+      immediate: true
+    })
+    type PanelItemType = typeof tarDirectory.value.tarPosts extends Array<infer V> ? V : undefined
     const getPanelCardProp = (item: PanelItemType): ExtractPropTypes<typeof panelCardProps> => ({
-      title: formatTimeToStringByType(+item.time, { type: 'year' })
+      title: formatTimeToStringByType(+item.time, { type: tarType.value, useChineseMonth: !!+route.params.time })
     })
     const getPanelCardItemProp = (obj: articleType | articleTypeDirectory): ExtractPropTypes<typeof PanelCardItemProps> => ({
       time: formatTimeToStringByType(obj.time, { type: 'day' }),
@@ -50,8 +67,7 @@ export default defineComponent({
       navigateToArticle(item.name, router)
     }
     return {
-      directory,
-      tarDirectoryByYear,
+      tarDirectory,
       getPanelCardProp,
       handlePanelCardItemClick,
       getPanelCardItemProp

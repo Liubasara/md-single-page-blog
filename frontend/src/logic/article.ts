@@ -231,10 +231,14 @@ export const getAllTimesByType = (
   allPosts: Array<allArticleType>,
   {
     type = 'month',
-    reverse = false
+    reverse = false,
+    minTime,
+    maxTime
   }: {
     type?: splitType
     reverse?: boolean
+    minTime?: undefined | Date | number | string
+    maxTime?: undefined | Date | number | string
   } = {}
 ) => {
   /**
@@ -249,16 +253,22 @@ export const getAllTimesByType = (
    */
   const copyAllPosts = cloneDeep(allPosts)
   copyAllPosts.sort((a, b) => +new Date(a.time) - +new Date(b.time)) // 小到大排序
-  const minTime = copyAllPosts[0].time
-  const maxTime = copyAllPosts.slice(-1)[0].time
-  const timeSnaps = getTimeSnapsByType(minTime, maxTime, type)
+  const _minTime = minTime || copyAllPosts[0].time
+  const _maxTime = maxTime || copyAllPosts.slice(-1)[0].time
+  const timeSnaps = getTimeSnapsByType(_minTime, _maxTime, type)
   const targetMap: {
     [key in string | number]: Array<allArticleType>
   } = {}
   let p1 = 0
   let p2 = 0
-  while (p1 < copyAllPosts.length && p2 < timeSnaps.length) {
-    if (+new Date(copyAllPosts[p1].time) <= +timeSnaps[p2]) {
+  while (p1 < copyAllPosts.length && p2 < timeSnaps.length - 1) {
+    const postTime = +new Date(copyAllPosts[p1].time)
+    if (postTime < +timeSnaps[p2]) {
+      p1++
+    } else if (
+      postTime >= +timeSnaps[p2] &&
+      postTime < +timeSnaps[p2 + 1]
+    ) {
       if (targetMap[+timeSnaps[p2]]) {
         reverse
           ? targetMap[+timeSnaps[p2]].unshift(copyAllPosts[p1])
@@ -267,7 +277,7 @@ export const getAllTimesByType = (
         targetMap[+timeSnaps[p2]] = [copyAllPosts[p1]]
       }
       p1++
-    } else {
+    } else if (postTime > +timeSnaps[p2 + 1]) {
       p2++
     }
   }
@@ -281,6 +291,7 @@ export const getAllTimesByType = (
   }))
   return {
     timeSnaps: sortedPostTimeSnap,
-    tarPosts: tarPosts
+    tarPosts: tarPosts,
+    nums: p1
   }
 }

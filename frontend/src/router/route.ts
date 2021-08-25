@@ -40,6 +40,12 @@ const routes: RouteRecordRaw[] = [
         path: '/blog/tar',
         name: 'BlogTar',
         component: () => import('@/pages/blog/tar/Index.vue')
+      },
+      {
+        // 根据指定月份归档
+        path: '/blog/tar/:time',
+        name: 'BlogTarByTime',
+        component: () => import('@/pages/blog/tar/Index.vue')
       }
     ]
   }

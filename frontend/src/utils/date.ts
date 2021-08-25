@@ -5,8 +5,6 @@ function dateFormatHelper(time: string | number | Date) {
 
 /**
  * 获取当月最后一天
- * @param curDate
- * @returns
  */
 export function getLastDateOfMonth(curDate: string | number | Date) {
   const endDate = dateFormatHelper(curDate)
@@ -29,9 +27,21 @@ export function getLastDateOfMonth(curDate: string | number | Date) {
 }
 
 /**
+ * 获取上个月月底日期
+ */
+export function getLastDateOfBeforeMonth(curDate: string | number | Date) {
+  const endDate = dateFormatHelper(curDate)
+  let year = endDate.getFullYear()
+  let month = endDate.getMonth()
+  if (month == 0) {
+    month = 11
+    year = year - 1
+  }
+  return new Date(year, month, 0)
+}
+
+/**
  * 获取当月第一天
- * @param curDate
- * @returns
  */
 export function getFirstDateOfMonth(curDate: string | number | Date) {
   const endDate = dateFormatHelper(curDate)
@@ -42,8 +52,6 @@ export function getFirstDateOfMonth(curDate: string | number | Date) {
 
 /**
  * 获取下个月的第一天
- * @param curDate
- * @returns
  */
 export function getFirstDateOfNextMonth(curDate: string | number | Date) {
   const endDate = dateFormatHelper(curDate)
@@ -55,7 +63,6 @@ export function getFirstDateOfNextMonth(curDate: string | number | Date) {
 
 /**
  * 获取当月的时间间隔
- * @param curDate
  */
 export function getIntervalByMonth(curDate: string | number | Date) {
   const endDate = dateFormatHelper(curDate)
@@ -87,6 +94,7 @@ export function getTimeSnapsByType(
         snaps.push(tmpDate)
         tmpDate = getFirstDateOfNextMonth(snaps.slice(-1)[0])
       }
+      snaps.push(tmpDate)
     },
     day() {
       const oneDay = 1000 * 60 * 60 * 24
@@ -98,6 +106,7 @@ export function getTimeSnapsByType(
         snaps.push(tmpDate)
         tmpDate = new Date(+snaps.slice(-1)[0] + oneDay)
       }
+      snaps.push(tmpDate)
     },
     year() {
       snaps.push(new Date(minTime.getFullYear(), minTime.getMonth()))
@@ -106,6 +115,7 @@ export function getTimeSnapsByType(
         snaps.push(tmpDate)
         tmpDate = getFirstDateOfNextYear(+snaps.slice(-1)[0])
       }
+      snaps.push(tmpDate)
     }
   }
   handlerMaps[type]()
@@ -121,18 +131,18 @@ export function formatTimeToStringByType(
 ) {
   const time = dateFormatHelper(dt)
   enum monthMap {
-    '一',
-    '二',
-    '三',
-    '四',
-    '五',
-    '六',
-    '七',
-    '八',
-    '九',
-    '十',
-    '十一',
-    '十二'
+    '一月',
+    '二月',
+    '三月',
+    '四月',
+    '五月',
+    '六月',
+    '七月',
+    '八月',
+    '九月',
+    '十月',
+    '十一月',
+    '十二月'
   }
   let month: number | string = time.getMonth()
   let date: number | string = time.getDate()
