@@ -8,8 +8,8 @@
       <ListItem
         v-for="(item, index) in tag.allTags"
         :key="index"
-        :is-active="isTagActive(item)"
-        @item-click="tagClick(item)"
+        :is-active="tag.isTagActive(item)"
+        @item-click="tag.tagClick(item)"
         :name="item"
         :num="tag.tagsMap[item].num"
       ></ListItem>
@@ -23,10 +23,25 @@
       <ListItem
         v-for="(item, index) in cate.allCates"
         :key="index"
-        :is-active="isCateActive(item)"
-        @item-click="cateClick(item)"
+        :is-active="cate.isCateActive(item)"
+        @item-click="cate.cateClick(item)"
         :name="item"
         :num="cate.catesMap[item].num"
+      ></ListItem>
+    </ListCard>
+
+    <ListCard
+      title="归档"
+      v-model:is-list-expand="tar.tarCard.isListExpand"
+      :show-list-expand-btn="tar.tarCard.showListExpandBtn"
+    >
+      <ListItem
+        v-for="(item, index) in tar.allTars"
+        :key="index"
+        :is-active="tar.isTarActive(item.time)"
+        @item-click="tar.tarClick(item.time)"
+        :name="tar.formatTime(item.time)"
+        :num="item.objs.length"
       ></ListItem>
     </ListCard>
   </div>
@@ -38,6 +53,7 @@ import AsiderProps from '@/components/asider/props'
 import Collapse from '@/components/collapse/Index.vue'
 import ListCard from '@/components/asider/components/listCard/Index.vue'
 import ListItem from '@/components/asider/components/listItem/Index.vue'
+import { formatTimeToStringByType } from '@/utils/date'
 import type { Ref } from 'vue'
 
 const LIMIT_COLLAPSE_NUM = 10
@@ -45,13 +61,13 @@ const LIMIT_COLLAPSE_NUM = 10
 function useListCard(datas: Ref<string[]>) {
   const showListExpandBtn = computed(() => datas.value.length > LIMIT_COLLAPSE_NUM)
   const isListExpand = ref(!showListExpandBtn.value)
-  const expandTagList = () => {
+  const expandList = () => {
     isListExpand.value = !isListExpand.value
   }
   return reactive({
     showListExpandBtn,
     isListExpand,
-    expandTagList
+    expandList
   })
 }
 
@@ -81,6 +97,19 @@ function useCates(props: setupPropsType<typeof AsiderProps>) {
   })
 }
 
+function useTars(props: setupPropsType<typeof AsiderProps>) {
+  const { tarPosts, timeSnaps } = toRefs(toRef(props, 'tars').value)
+  const { tarClick, isTarActive } = props
+  const tarCard = useListCard(timeSnaps)
+  return reactive({
+    allTars: tarPosts,
+    tarClick,
+    isTarActive,
+    tarCard,
+    formatTime: (time: string) => formatTimeToStringByType(+time, { useChineseMonth: true })
+  })
+}
+
 // 组件逻辑待重构（添加 Asider-item）, 并添加 归档
 export default defineComponent({
   name: 'Asider',
@@ -93,12 +122,15 @@ export default defineComponent({
   setup(props) {
     const tag = useTags(props)
     const cate = useCates(props)
+    const tar = useTars(props)
 
     return {
       // tag
       tag,
       // cate
-      cate
+      cate,
+      // tar
+      tar
     }
   }
 })

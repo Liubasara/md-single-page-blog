@@ -1,4 +1,8 @@
-import type { GetAllCatesFnReturn, GetAllTagsFnReturn } from '@/logic/article'
+import type {
+  GetAllCatesFnReturn,
+  GetAllTagsFnReturn,
+  GetAllTimesByTypeFnReturn
+} from '@/logic/article'
 import type { PropType } from 'vue'
 
 const props = {
@@ -22,6 +26,28 @@ const props = {
       return !!obj.allCates && !!obj.catesMap
     }
   },
+  tars: {
+    type: Object as PropType<GetAllTimesByTypeFnReturn>,
+    default: () => ({
+      timeSnaps: [],
+      tarPosts: [],
+      nums: 0
+    }),
+    validator: (
+      obj: GetAllTimesByTypeFnReturn
+    ): obj is GetAllTimesByTypeFnReturn => {
+      return !!obj.timeSnaps && !!obj.tarPosts
+    }
+  },
+  tarClick: {
+    type: Function,
+    default: () => {}
+  },
+  isTarActive: {
+    require: true,
+    type: Function as PropType<(...args: Array<string>) => boolean>,
+    default: () => false
+  },
   tagClick: {
     type: Function,
     default: () => {}
@@ -39,7 +65,7 @@ const props = {
     require: true,
     type: Function as PropType<(...args: Array<string>) => boolean>,
     default: () => false
-  },
+  }
 }
 
 export default props

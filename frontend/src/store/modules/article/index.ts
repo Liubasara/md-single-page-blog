@@ -6,17 +6,19 @@ import {
   getResourceDetail
 } from '@/service'
 import URIJS from 'urijs'
-import { getAllPostBySearch, getAllCates, getAllTags } from '@/logic/article'
+import { getAllPostBySearch, getAllCates, getAllTags, getAllTimesByType } from '@/logic/article'
 
 const directory = getArticleDirectory()
-const tags: ReturnType<typeof getAllTags> = getAllTags(directory)
-const cates: ReturnType<typeof getAllCates> = getAllCates(directory)
+const tags = getAllTags(directory)
+const cates = getAllCates(directory)
+const tars = getAllTimesByType(directory)
 export interface ArticleStateInterface {
   directory: Array<articleTypeDirectory>
   allContents: Array<articleType>
   allContentsLoaded: boolean
   tags: typeof tags
-  cates: typeof cates
+  cates: typeof cates,
+  tars: typeof tars
 }
 
 export type StoreArticleModuleState = {
@@ -117,6 +119,7 @@ const module: ArticleModule = {
     directory,
     tags,
     cates,
+    tars,
     allContents: [],
     allContentsLoaded: false
   },

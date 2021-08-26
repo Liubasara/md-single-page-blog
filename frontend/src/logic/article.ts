@@ -227,6 +227,8 @@ export const getAllPostBySearch = (
   return contentResult
 }
 
+export type GetAllTimesByTypeFnReturn = ReturnType<typeof getAllTimesByType>
+
 export const getAllTimesByType = (
   allPosts: Array<allArticleType>,
   {
@@ -277,7 +279,7 @@ export const getAllTimesByType = (
         targetMap[+timeSnaps[p2]] = [copyAllPosts[p1]]
       }
       p1++
-    } else if (postTime > +timeSnaps[p2 + 1]) {
+    } else if (postTime >= +timeSnaps[p2 + 1]) {
       p2++
     }
   }

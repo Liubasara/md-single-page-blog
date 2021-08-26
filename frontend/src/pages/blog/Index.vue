@@ -21,6 +21,7 @@ import Asider from '@/components/asider/Index.vue'
 import AsiderProps from '@/components/asider/props'
 import { navigateToTagsPage, isTagActive } from '@/logic/tags'
 import { navigateToCatesPage, isCateActive } from '@/logic/cates'
+import { navigateToTarsDetailPage, isTarActive } from '@/logic/tars'
 import type { ExtractPropTypes } from 'vue'
 import type { StoreArticleModuleState } from '@/store/modules/article'
 
@@ -51,17 +52,26 @@ function useAsiderInSetup() {
   const cateClick = (cate: string) => {
     navigateToCatesPage(cate, router)
   }
+  const tarClick = (tar: string) => {
+    navigateToTarsDetailPage(tar, router)
+  }
   const _isTagActive = (tag: string): boolean => {
     return isTagActive(tag, route)
   }
   const _isCateActive = (cate: string): boolean => {
     return isCateActive(cate, route)
   }
+  const _isTarActive = (tar: string): boolean => {
+    return isTarActive(tar, route)
+  }
   const data = reactive<ExtractPropTypes<typeof AsiderProps>>({
     tags: store.state.article.tags,
     cates: store.state.article.cates,
+    tars: store.state.article.tars,
     tagClick,
     cateClick,
+    tarClick,
+    isTarActive: _isTarActive,
     isTagActive: _isTagActive,
     isCateActive: _isCateActive
   })
