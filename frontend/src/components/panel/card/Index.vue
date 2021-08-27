@@ -2,7 +2,9 @@
   <div>
     <div class="panel-heading" @click="changeExpand">
       <div class="panel-title">
-        <Icon :type="isExpand ? 'calendar-minus' : 'calendar-plus'"></Icon>
+        <slot name="icon" :expand="isExpand">
+          <Icon :type="isExpand ? 'folderopen' : 'folder'"></Icon>
+        </slot>
         <span class="text">{{ props.title }}</span>
       </div>
     </div>
@@ -17,17 +19,17 @@
 import { defineComponent, ref } from 'vue'
 import Icon from '@/components/icon/Index.vue'
 import Collapse from '@/components/collapse/Index.vue'
-import panelCardProps from '@/pages/blog/tar/components/panelCard/props'
+import panelCardProps from '@/components/panel/card/props'
 
 export default defineComponent({
-  name: 'TarPanelCard',
+  name: 'PanelCard',
   props: panelCardProps,
   components: { Icon, Collapse },
-  emits: ['itemClick'],
-  setup(props) {
-    const isExpand = ref(true)
+  setup(props, { emit }) {
+    const isExpand = ref(props.expand)
     const changeExpand = () => {
       isExpand.value = !isExpand.value
+      emit('update:expand', isExpand.value)
     }
     return {
       props,

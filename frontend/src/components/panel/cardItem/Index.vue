@@ -7,10 +7,10 @@
 </template>
 <script lang="ts">
 import { defineComponent, toRefs } from 'vue'
-import panelCardItemProps from '@/pages/blog/tar/components/panelCardItem/props'
+import panelCardItemProps from '@/components/panel/cardItem/props'
 
 export default defineComponent({
-  name: 'TarPanelCardItem',
+  name: 'PanelCardItem',
   props: panelCardItemProps,
   setup(props) {
     const { time, title } = toRefs(props)

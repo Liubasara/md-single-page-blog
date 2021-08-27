@@ -6,6 +6,20 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "1410351",
+      "name": "folder",
+      "font_class": "folder",
+      "unicode": "e672",
+      "unicode_decimal": 58994
+    },
+    {
+      "icon_id": "929350",
+      "name": "folder-open",
+      "font_class": "folderopen",
+      "unicode": "e6f9",
+      "unicode_decimal": 59129
+    },
+    {
       "icon_id": "5634944",
       "name": "calendar-plus",
       "font_class": "calendar-plus",
@@ -53,13 +67,6 @@
       "font_class": "location",
       "unicode": "e640",
       "unicode_decimal": 58944
-    },
-    {
-      "icon_id": "17964137",
-      "name": "folder",
-      "font_class": "folder",
-      "unicode": "e66e",
-      "unicode_decimal": 58990
     },
     {
       "icon_id": "21730726",

@@ -5,8 +5,12 @@
     <PanelCard
       v-for="(item, index) in tarDirectory.tarPosts"
       :key="index"
-      :title="getPanelCardProp(item).title"
+      v-bind="getPanelCardProp(item)"
+      @update:expand="(val) => handleCardExpandUpdate(val, item)"
     >
+      <template v-slot:icon="{ expand }">
+        <Icon :type="expand ? 'calendar-minus' : 'calendar-plus'"></Icon>
+      </template>
       <PanelCardItem
         v-for="(obj, index) in item.objs"
         :key="index"
@@ -21,10 +25,11 @@
 import { defineComponent, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import { getAllTimesByType, navigateToArticle } from '@/logic/article'
-import PanelCard from '@/pages/blog/tar/components/panelCard/Index.vue'
-import panelCardProps from '@/pages/blog/tar/components/panelCard/props'
-import PanelCardItem from '@/pages/blog/tar/components/panelCardItem/Index.vue'
-import PanelCardItemProps from '@/pages/blog/tar/components/panelCardItem/props'
+import PanelCard from '@/components/panel/card/Index.vue'
+import panelCardProps from '@/components/panel/card/props'
+import PanelCardItem from '@/components/panel/cardItem/Index.vue'
+import PanelCardItemProps from '@/components/panel/cardItem/props'
+import Icon from '@/components/icon/Index.vue'
 import { formatTimeToStringByType, getFirstDateOfMonth } from '@/utils/date'
 import { useRoute, useRouter } from 'vue-router'
 import type { StoreArticleModuleState } from '@/store/modules/article/index'
@@ -32,14 +37,15 @@ import type { ExtractPropTypes } from 'vue'
 
 export default defineComponent({
   name: 'blogTar',
-  components: { PanelCard, PanelCardItem },
+  components: { PanelCard, PanelCardItem, Icon },
   setup() {
     const store = useStore<StoreArticleModuleState>()
     const router = useRouter()
     const route = useRoute()
     const tarType = ref<'year' | 'month' | 'day'>('year')
     const directory = store.state.article.directory
-    const tarDirectory = ref<ReturnType<typeof getAllTimesByType>>({
+    type tarPostsObjWithExpandType = ReturnType<typeof getAllTimesByType>['tarPosts'] extends Array<infer V> ? Array<V & { expand?: boolean }> : void;
+    const tarDirectory = ref<Overwrite<ReturnType<typeof getAllTimesByType>, { tarPosts: tarPostsObjWithExpandType }>>({
       timeSnaps: [],
       tarPosts: [],
       nums: 0
@@ -57,7 +63,8 @@ export default defineComponent({
     })
     type PanelItemType = typeof tarDirectory.value.tarPosts extends Array<infer V> ? V : undefined
     const getPanelCardProp = (item: PanelItemType): ExtractPropTypes<typeof panelCardProps> => ({
-      title: formatTimeToStringByType(+item.time, { type: tarType.value, useChineseMonth: !!+route.params.time })
+      title: formatTimeToStringByType(+item.time, { type: tarType.value, useChineseMonth: !!+route.params.time }),
+      expand: true
     })
     const getPanelCardItemProp = (obj: articleType | articleTypeDirectory): ExtractPropTypes<typeof PanelCardItemProps> => ({
       time: formatTimeToStringByType(obj.time, { type: 'day' }),
@@ -66,10 +73,14 @@ export default defineComponent({
     const handlePanelCardItemClick = (item: articleType | articleTypeDirectory) => {
       navigateToArticle(item.name, router)
     }
+    const handleCardExpandUpdate = (val: boolean | undefined, item: PanelItemType) => {
+      item.expand = val
+    }
     return {
       tarDirectory,
       getPanelCardProp,
       handlePanelCardItemClick,
+      handleCardExpandUpdate,
       getPanelCardItemProp
     }
   }
