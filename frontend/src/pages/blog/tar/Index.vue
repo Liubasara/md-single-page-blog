@@ -6,6 +6,7 @@
       v-for="(item, index) in tarDirectory.tarPosts"
       :key="index"
       v-bind="getPanelCardProp(item)"
+      @update:expand="(val) => handlePanelExpandUpdate(val, item)"
     >
       <template v-slot:icon="{ expand }">
         <Icon :type="expand ? 'calendar-minus' : 'calendar-plus'"></Icon>
@@ -61,13 +62,16 @@ export default defineComponent({
       immediate: true
     })
     type PanelItemType = typeof tarDirectory.value.tarPosts extends Array<infer V> ? V : undefined
-    const getPanelCardProp = (item: PanelItemType): ExtractPropTypes<typeof panelCardProps> & { 'onUpdate:expand'?: Function } => ({
+    const getPanelCardProp = (item: PanelItemType): ExtractPropTypes<typeof panelCardProps> => ({
       title: formatTimeToStringByType(+item.time, { type: tarType.value, useChineseMonth: !!+route.params.time }),
       expand: true,
-      'onUpdate:expand': (val: boolean) => {
-        item.expand = val
-      }
+      // 'onUpdate:expand': (val: boolean) => {
+      //   item.expand = val
+      // }
     })
+    const handlePanelExpandUpdate = (val: boolean, item: PanelItemType) => {
+      item.expand = val
+    }
     const getPanelCardItemProp = (obj: articleType | articleTypeDirectory): ExtractPropTypes<typeof PanelCardItemProps> => ({
       time: formatTimeToStringByType(obj.time, { type: 'day' }),
       title: obj.title
@@ -79,6 +83,7 @@ export default defineComponent({
       tarDirectory,
       getPanelCardProp,
       handlePanelCardItemClick,
+      handlePanelExpandUpdate,
       getPanelCardItemProp
     }
   }

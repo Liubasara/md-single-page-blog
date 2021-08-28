@@ -25,6 +25,11 @@ export default defineComponent({
   name: 'PanelCard',
   props: panelCardProps,
   components: { Icon, Collapse },
+  emits: {
+    'update:expand': (val: boolean) => {
+      return true
+    }
+  },
   setup(props, { emit }) {
     const isExpand = ref(props.expand)
     const changeExpand = () => {
