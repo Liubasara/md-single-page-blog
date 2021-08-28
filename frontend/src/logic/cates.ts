@@ -1,10 +1,7 @@
 import { computed } from 'vue'
 import type { Router, RouteLocationNormalizedLoaded } from 'vue-router'
 
-export const navigateToCatesPage = (
-  cate: string,
-  router: Router
-) => {
+export const navigateToCatesPage = (cate: string, router: Router) => {
   const cateQuery = encodeURIComponent(cate) || undefined
   router.push({ name: 'BlogCate', query: { cate: cateQuery } })
 }

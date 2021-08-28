@@ -27,6 +27,7 @@ export default defineComponent({
   padding: 8px 0;
   cursor: pointer;
   user-select: none;
+  font-size: 14px;
   &:hover {
     color: #333;
   }

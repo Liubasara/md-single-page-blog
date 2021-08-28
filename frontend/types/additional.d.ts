@@ -20,6 +20,8 @@ type articleTypeDirectory = {
 
 type articleType = articleTypeDirectory & { body: string }
 
+type allArticleType = articleType | articleTypeDirectory
+
 declare module 'articleDist/*.json' {
   const value: {
     [key: string]: any
