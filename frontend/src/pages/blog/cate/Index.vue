@@ -13,6 +13,8 @@
       v-for="(item) in cate.catePanelCards"
       :key="item + 'cate-panel-card'"
       :title="item"
+      :showMuted="true"
+      :mutedText="`（${cate.getArticleArray(item).length} 篇）`"
     >
       <PanelCardItem
         v-for="(article, index) in cate.getArticleArray(item)"

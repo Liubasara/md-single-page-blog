@@ -62,7 +62,7 @@ export default defineComponent({
       immediate: true
     })
     type PanelItemType = typeof tarDirectory.value.tarPosts extends Array<infer V> ? V : undefined
-    const getPanelCardProp = (item: PanelItemType): ExtractPropTypes<typeof panelCardProps> => ({
+    const getPanelCardProp = (item: PanelItemType): Partial<ExtractPropTypes<typeof panelCardProps>> => ({
       title: formatTimeToStringByType(+item.time, { type: tarType.value, useChineseMonth: !!+route.params.time }),
       expand: true,
       // 'onUpdate:expand': (val: boolean) => {

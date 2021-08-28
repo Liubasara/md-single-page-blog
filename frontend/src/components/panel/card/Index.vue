@@ -6,6 +6,7 @@
           <Icon :type="isExpand ? 'folderopen' : 'folder'"></Icon>
         </slot>
         <span class="text">{{ props.title }}</span>
+        <span class="text-muted" v-if="props.showMuted">{{ props.mutedText }}</span>
       </div>
     </div>
     <Collapse :isExpand="isExpand" :transitionSec="0.4">
@@ -60,5 +61,10 @@ export default defineComponent({
 }
 .panel-body {
   padding: 15px 0;
+}
+.text-muted {
+  font-size: 85%;
+  margin-left: 5px;
+  color: #777;
 }
 </style>
