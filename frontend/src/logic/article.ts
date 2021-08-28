@@ -263,6 +263,7 @@ export const getAllTimesByType = (
   } = {}
   let p1 = 0
   let p2 = 0
+  let nums = 0
   while (p1 < copyAllPosts.length && p2 < timeSnaps.length - 1) {
     const postTime = +new Date(copyAllPosts[p1].time)
     if (postTime < +timeSnaps[p2]) {
@@ -278,6 +279,7 @@ export const getAllTimesByType = (
       } else {
         targetMap[+timeSnaps[p2]] = [copyAllPosts[p1]]
       }
+      nums++
       p1++
     } else if (postTime >= +timeSnaps[p2 + 1]) {
       p2++
@@ -294,6 +296,6 @@ export const getAllTimesByType = (
   return {
     timeSnaps: sortedPostTimeSnap,
     tarPosts: tarPosts,
-    nums: p1
+    nums
   }
 }
