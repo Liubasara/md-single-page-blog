@@ -20,6 +20,8 @@ import { useStore } from 'vuex'
 import ArticleMeta from '@/components/articleMeta/Index.vue'
 import { navigateToTagsPage } from '@/logic/tags'
 import { navigateToCatesPage } from '@/logic/cates'
+import { navigateToTarsDetailPage } from '@/logic/tars'
+import { getFirstDateOfMonth } from '@/utils/date'
 import type { Ref } from 'vue'
 import type { articleGettersFuncType, StoreArticleModuleState } from '@/store/modules/article/index'
 import type { RouteLocationNormalizedLoaded, Router } from 'vue-router'
@@ -95,7 +97,7 @@ export default defineComponent({
     const { articleDetail, articleObj, isArticleLoaded } = useArticleDeatil(route, directory, store.getters['article/getArticleDetailFunc'])
     useAnchorScrollBehaviorInHashMode(route, isArticleLoaded, router)
     const onMetaClick = reactive({
-      onTimeClick: (time: string) => console.log(time),
+      onTimeClick: (time: string) => navigateToTarsDetailPage(+getFirstDateOfMonth(time) + '', router),
       onTagClick: (tag: string) => navigateToTagsPage(tag, router, route),
       onCateClick: (cate: string) => navigateToCatesPage(cate, router)
     })
