@@ -1,16 +1,16 @@
 <template>
   <p class="article-meta">
-    <span class="article-date">
+    <span class="article-date" v-if="time">
       <Icon type="rili"></Icon>
       <a @click.prevent.stop="onTimeClick(time)">{{ time }}</a>
     </span>
-    <span class="article-tag">
+    <span class="article-tag" v-if="tags && tags.length > 0">
       <Icon type="tag"></Icon>
       <template v-for="(tag, index) in tags" :key="index">
         <a @click.prevent.stop="onTagClick(tag)">{{ tag }}</a>
       </template>
     </span>
-    <span class="article-category">
+    <span class="article-category" v-if="categories">
       <Icon type="Category"></Icon>
       <a @click.prevent.stop="onCateClick(categories)">{{ categories }}</a>
     </span>

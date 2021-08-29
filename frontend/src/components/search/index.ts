@@ -45,7 +45,8 @@ export const getSearchProps = <T extends StoreArticleModuleState>(
       searchPlaceHolder.value =
         routeTags.length === 0
           ? '在所有标签的文章中进行搜索'
-          : `在标签含有 ${routeTags.join(',')} 的文章中搜索`
+          // : `在标签含有 ${routeTags.join(',')} 的文章中搜索`
+          : `在包含已选择标签的文章中进行搜索`
       if (routeTags.length !== 0) {
         return getAllPostBySearch(
           getAllPostsByTags(allContents, routeTags),

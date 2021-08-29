@@ -18,6 +18,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .nav-item {
   margin-right: 15px;
+  margin-bottom: 5px;
   cursor: pointer;
   user-select: none;
   color: #2e2e33;

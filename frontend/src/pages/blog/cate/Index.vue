@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TitleWithCount title="分类" :count="cate.getArticleArray(cate.curCates[0]).length">
+    <TitleWithCount :title="cate.curTitle" :count="cate.getArticleArray(cate.curCates[0]).length">
       <template v-if="cate.curCates.length !== 1" v-slot:count>共 {{ cate.curCates.length }} 个分类</template>
     </TitleWithCount>
     <NavList>
@@ -65,9 +65,11 @@ function useCate(store: Store<StoreArticleModuleState>) {
     const routeCate = decodeURIComponent((route.query?.cate as string) || '')
     return routeCate ? [routeCate] : data.allCates
   })
+  const curTitle = computed(() => curCates.value.length === 1 ? `分类: ${curCates.value[0]}` : '分类')
   return reactive({
     data,
     curCates,
+    curTitle,
     isCateActive: (cate: string) => isCateActive(cate, route),
     navigateToCatesPage: (cate: string) => navigateToCatesPage(cate, router),
     getArticleArray,

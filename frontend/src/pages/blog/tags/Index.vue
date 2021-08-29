@@ -1,30 +1,64 @@
 <template>
   <div>
+    <TitleWithCount title="标签">
+      <template v-slot:count>共 {{ tag.data.allTags.length }} 个标签</template>
+    </TitleWithCount>
     <NavList>
-      <NavListItem>All</NavListItem>
+      <NavListItem @click="tag.navigateToTagsPage('')">All</NavListItem>
+      <NavListItem
+        v-for="(item, index) in tag.data.allTags"
+        :key="index + 'nav-tag'"
+        :isActive="tag.isTagActive(item)"
+        @click="tag.navigateToTagsPage(item)"
+      >{{ item }}</NavListItem>
     </NavList>
+    <div class="flex-wrap-box">
+      <TagCard
+        v-for="(item, index) in tag.articleWithTags"
+        :key="index + 'tag-card'"
+        :title="item.title"
+        :time="item.time"
+        :tags="item.tags"
+      ></TagCard>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue'
+import { computed, defineComponent, reactive } from 'vue'
 import { useStore } from 'vuex'
-import { getAllTags } from '@/logic/article'
+import { getAllTags, getPostsByTagsMaps } from '@/logic/article'
+import { navigateToTagsPage, isTagActive } from '@/logic/tags'
 import NavList from '@/components/nav/list/Index.vue'
 import NavListItem from '@/components/nav/item/Index.vue'
 import TitleWithCount from '@/components/titleWithCount/Index.vue'
-import type { Store } from 'vuex'
+import TagCard from '@/pages/blog/tags/components/tagCard/Index.vue'
 import type { StoreArticleModuleState } from '@/store/modules/article/index'
+import { useRoute, useRouter } from 'vue-router'
 
-function useTags(store: Store<StoreArticleModuleState>) {
+function useTagsInSetup() {
+  const store = useStore<StoreArticleModuleState>()
+  const router = useRouter()
+  const route = useRoute()
   const { allTags, tagsMap } = getAllTags(store.state.article.directory)
+  const articleWithTags = computed(() => {
+    const routeTags = decodeURIComponent((route.query?.tags as string) || '')
+    const routeTagsArr =
+      routeTags !== '' && routeTags.split(',').length > 0
+        ? routeTags.split(',')
+        : []
+    return routeTagsArr.length === 0 ? store.state.article.directory : getPostsByTagsMaps(tagsMap, routeTagsArr)
+  })
   const data = reactive({
     allTags,
     tagsMap
   })
-  return {
-    data
-  }
+  return reactive({
+    data,
+    articleWithTags,
+    navigateToTagsPage: (tag: string) => navigateToTagsPage(tag, router, route),
+    isTagActive: (tag: string) => isTagActive(tag, route),
+  })
 }
 
 export default defineComponent({
@@ -32,18 +66,21 @@ export default defineComponent({
   components: {
     TitleWithCount,
     NavList,
-    NavListItem
+    NavListItem,
+    TagCard
   },
   setup() {
-    const store = useStore()
-    const tagInstancee = useTags(store)
-
+    const tagInstance = useTagsInSetup()
     return {
-      tag: tagInstancee.data
+      tag: tagInstance
     }
   }
 })
 </script>
 
 <style lang="scss" scoped>
+.flex-wrap-box {
+  display: flex;
+  flex-wrap: wrap;
+}
 </style>

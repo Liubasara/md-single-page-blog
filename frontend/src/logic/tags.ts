@@ -6,6 +6,10 @@ export const navigateToTagsPage = (
   router: Router,
   route: RouteLocationNormalizedLoaded
 ) => {
+  if (!tag) {
+    router.push({ name: 'BlogTags' })
+    return
+  }
   const routeTags = computed(() =>
     decodeURIComponent((route.query?.tags as string) || '')
   )
