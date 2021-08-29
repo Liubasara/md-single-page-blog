@@ -15,5 +15,11 @@ export default defineComponent({
   display: flex;
   flex-wrap: wrap;
   font-size: 14px;
+  justify-content: space-between;
+  &::after {
+    content: '';
+    display: block;
+    flex-grow: 1;
+  }
 }
 </style>
