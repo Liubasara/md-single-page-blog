@@ -22,9 +22,11 @@ export default defineComponent({
   cursor: pointer;
   user-select: none;
   color: #2e2e33;
-  &.active,
   &:hover {
-    color: #0a6ebd;
+    color: #2196f3;
+  }
+  &.active {
+    color: #0073ce;
   }
 }
 </style>
