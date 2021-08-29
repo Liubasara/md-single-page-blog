@@ -84,7 +84,7 @@ export const getPostsByTagsMaps = <T extends tagsMapType, K extends keyof T>(
   const allSelectedTagsArticle: Array<allArticleType> = []
   for (let tag of tags) {
     const { articles } = tagsMaps[tag]
-    allSelectedTagsArticle.push(...articles)
+    allSelectedTagsArticle.unshift(...articles)
   }
   return Array.from(new Set(allSelectedTagsArticle))
 }
