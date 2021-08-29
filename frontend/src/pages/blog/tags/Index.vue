@@ -19,6 +19,9 @@
         :title="item.title"
         :time="item.time"
         :tags="item.tags"
+        @time-click="tag.navigateToTarsDetailPage(item.time)"
+        @title-click="tag.navigateToArticle(item.name)"
+        @tag-click="(val) => tag.navigateToTagsPage(val, true)"
       ></TagCard>
     </div>
   </div>
@@ -27,8 +30,9 @@
 <script lang="ts">
 import { computed, defineComponent, reactive } from 'vue'
 import { useStore } from 'vuex'
-import { getAllTags, getPostsByTagsMaps } from '@/logic/article'
+import { getAllTags, getPostsByTagsMaps, navigateToArticle } from '@/logic/article'
 import { navigateToTagsPage, isTagActive } from '@/logic/tags'
+import { navigateToTarsDetailPage } from '@/logic/tars'
 import NavList from '@/components/nav/list/Index.vue'
 import NavListItem from '@/components/nav/item/Index.vue'
 import TitleWithCount from '@/components/titleWithCount/Index.vue'
@@ -56,8 +60,10 @@ function useTagsInSetup() {
   return reactive({
     data,
     articleWithTags,
-    navigateToTagsPage: (tag: string) => navigateToTagsPage(tag, router, route),
+    navigateToTagsPage: (tag: string, cover: boolean = false) => navigateToTagsPage(tag, router, route, { cover }),
     isTagActive: (tag: string) => isTagActive(tag, route),
+    navigateToTarsDetailPage: (time: string) => navigateToTarsDetailPage(+new Date(time) + '', router),
+    navigateToArticle: (name: string) => navigateToArticle(name, router)
   })
 }
 
