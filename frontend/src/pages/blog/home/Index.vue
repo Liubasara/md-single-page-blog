@@ -6,6 +6,7 @@
           v-bind="articleCardInstance.getProps(item)"
           @cate-click="cate => articleCardInstance.handleCateClick(cate)"
           @tag-click="tag => articleCardInstance.handleTagClick(tag)"
+          @time-click="time => articleCardInstance.handleTimeClick(time)"
           @name-click="articleCardInstance.handleArticleClick(item)"
         />
       </template>
@@ -23,6 +24,7 @@ import articleCardProps from '@/pages/blog/home/components/articleCard/props'
 import { navigateToTagsPage } from '@/logic/tags'
 import { navigateToCatesPage } from '@/logic/cates'
 import { navigateToArticle } from '@/logic/article'
+import { navigateToTarsDetailPage } from '@/logic/tars'
 import type { ExtractPropTypes } from 'vue'
 import type { Router, RouteLocationNormalizedLoaded } from 'vue-router'
 import type { StoreArticleModuleState } from '@/store/modules/article/index'
@@ -39,6 +41,9 @@ function useBlogHomeArticleCard(router: Router, route: RouteLocationNormalizedLo
   function handleArticleClick(item: articleTypeDirectory) {
     navigateToArticle(item.name, router)
   }
+  function handleTimeClick(time: string) {
+    navigateToTarsDetailPage(+new Date(time) + '', router)
+  }
   function getProps(item: articleTypeDirectory): ExtractPropTypes<typeof articleCardProps> {
     return {
       name: item.title,
@@ -51,6 +56,7 @@ function useBlogHomeArticleCard(router: Router, route: RouteLocationNormalizedLo
     handleTagClick,
     handleCateClick,
     handleArticleClick,
+    handleTimeClick,
     getProps
   }
 }

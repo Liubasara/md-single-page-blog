@@ -63,6 +63,7 @@ export default defineComponent({
   padding: 15px 0;
 }
 .text-muted {
+  margin-top: 1px;
   font-size: 85%;
   margin-left: 5px;
   color: #777;

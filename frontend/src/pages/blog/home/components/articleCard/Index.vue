@@ -27,9 +27,9 @@ export default defineComponent({
   props: articleCardProps,
   emits: {
     nameClick: null,
-    dateClick: null,
-    tagClick: null,
-    cateClick: null
+    timeClick: (val: string) => true,
+    tagClick: (val: string) => true,
+    cateClick: (val: string) => true
   },
   setup(props, { emit }) {
     const {
@@ -41,8 +41,8 @@ export default defineComponent({
     const nameClick = () => {
       emit('nameClick')
     }
-    const timeClick = () => {
-      emit('dateClick')
+    const timeClick = (time: string) => {
+      emit('timeClick', time)
     }
     const tagClick = (tag: string) => {
       emit('tagClick', tag)
