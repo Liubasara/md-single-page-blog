@@ -1,14 +1,14 @@
 <template>
   <div>
-    <div class="nav-list">
-      <div class="nav-item" @click="cate.navigateToCatesPage('')">All</div>
-      <div
+    <NavList>
+      <NavListItem @click="cate.navigateToCatesPage('')">All</NavListItem>
+      <NavListItem
         v-for="(item, index) in cate.data.allCates"
         :key="index + 'nav-item'"
-        :class="['nav-item', { active: cate.isCateActive(item) }]"
+        :isActive="cate.isCateActive(item)"
         @click="cate.navigateToCatesPage(item)"
-      >{{ item }}</div>
-    </div>
+      >{{ item }}</NavListItem>
+    </NavList>
     <PanelCard
       v-for="(item) in cate.catePanelCards"
       :key="item + 'cate-panel-card'"
@@ -33,6 +33,8 @@ import { useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router'
 import PanelCard from '@/components/panel/card/Index.vue'
 import PanelCardItem from '@/components/panel/cardItem/Index.vue'
+import NavList from '@/components/nav/list/Index.vue'
+import NavListItem from '@/components/nav/item/Index.vue'
 import { formatTimeToStringByType } from '@/utils/date'
 import type { Store } from 'vuex'
 import type { StoreArticleModuleState } from '@/store/modules/article/index'
@@ -72,6 +74,8 @@ function useCate(store: Store<StoreArticleModuleState>) {
 export default defineComponent({
   name: 'blogCate',
   components: {
+    NavList,
+    NavListItem,
     PanelCard,
     PanelCardItem
   },
@@ -86,20 +90,5 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.nav-list {
-  margin-bottom: 15px;
-  display: flex;
-  flex-wrap: wrap;
-  font-size: 14px;
-}
-.nav-item {
-  margin-right: 15px;
-  cursor: pointer;
-  user-select: none;
-  color: #2e2e33;
-  &.active,
-  &:hover {
-    color: #0a6ebd;
-  }
-}
+
 </style>
