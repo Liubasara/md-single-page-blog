@@ -11,7 +11,7 @@ export default defineComponent({
 </script>
 <style lang="scss" scoped>
 .nav-list {
-  margin-bottom: 15px;
+  margin: 15px 0;
   display: flex;
   flex-wrap: wrap;
   font-size: 14px;

@@ -1,5 +1,8 @@
 <template>
   <div>
+    <TitleWithCount title="分类" :count="cate.getArticleArray(cate.curCates[0]).length">
+      <template v-if="cate.curCates.length !== 1" v-slot:count>共 {{ cate.curCates.length }} 个分类</template>
+    </TitleWithCount>
     <NavList>
       <NavListItem @click="cate.navigateToCatesPage('')">All</NavListItem>
       <NavListItem
@@ -10,7 +13,7 @@
       >{{ item }}</NavListItem>
     </NavList>
     <PanelCard
-      v-for="(item) in cate.catePanelCards"
+      v-for="(item) in cate.curCates"
       :key="item + 'cate-panel-card'"
       :title="item"
       :showMuted="true"
@@ -31,6 +34,7 @@ import { getAllCates, navigateToArticle } from '@/logic/article'
 import { isCateActive, navigateToCatesPage } from '@/logic/cates'
 import { useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router'
+import TitleWithCount from '@/components/titleWithCount/Index.vue'
 import PanelCard from '@/components/panel/card/Index.vue'
 import PanelCardItem from '@/components/panel/cardItem/Index.vue'
 import NavList from '@/components/nav/list/Index.vue'
@@ -57,13 +61,13 @@ function useCate(store: Store<StoreArticleModuleState>) {
       onClick: () => navigateToArticle(article.name, router)
     }
   }
-  const catePanelCards = computed(() => {
+  const curCates = computed(() => {
     const routeCate = decodeURIComponent((route.query?.cate as string) || '')
     return routeCate ? [routeCate] : data.allCates
   })
   return reactive({
     data,
-    catePanelCards,
+    curCates,
     isCateActive: (cate: string) => isCateActive(cate, route),
     navigateToCatesPage: (cate: string) => navigateToCatesPage(cate, router),
     getArticleArray,
@@ -74,6 +78,7 @@ function useCate(store: Store<StoreArticleModuleState>) {
 export default defineComponent({
   name: 'blogCate',
   components: {
+    TitleWithCount,
     NavList,
     NavListItem,
     PanelCard,
@@ -90,5 +95,4 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-
 </style>

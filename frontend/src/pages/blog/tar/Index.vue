@@ -1,7 +1,6 @@
 <template>
   <div class="tar-container">
-    <h1 class="title">归档</h1>
-    <p class="text-muted">共 {{ tarDirectory.nums }} 篇文章</p>
+    <TitleWithCount :title="'归档'" :count="tarDirectory.nums"></TitleWithCount>
     <PanelCard
       v-for="(item, index) in tarDirectory.tarPosts"
       :key="index"
@@ -28,6 +27,7 @@ import { getAllTimesByType, navigateToArticle } from '@/logic/article'
 import PanelCard from '@/components/panel/card/Index.vue'
 import panelCardProps from '@/components/panel/card/props'
 import PanelCardItem from '@/components/panel/cardItem/Index.vue'
+import TitleWithCount from '@/components/titleWithCount/Index.vue'
 import PanelCardItemProps from '@/components/panel/cardItem/props'
 import Icon from '@/components/icon/Index.vue'
 import { formatTimeToStringByType, getFirstDateOfMonth } from '@/utils/date'
@@ -37,7 +37,7 @@ import type { ExtractPropTypes } from 'vue'
 
 export default defineComponent({
   name: 'blogTar',
-  components: { PanelCard, PanelCardItem, Icon },
+  components: { PanelCard, PanelCardItem, Icon, TitleWithCount },
   setup() {
     const store = useStore<StoreArticleModuleState>()
     const router = useRouter()
@@ -94,16 +94,5 @@ export default defineComponent({
 .tar-container {
   font-size: 14px;
   padding: 0 15px;
-}
-.title {
-  margin-top: 21px;
-  margin-bottom: 10.5px;
-  font-weight: 500;
-  line-height: 1.1;
-  font-size: 30px;
-}
-.text-muted {
-  color: #777;
-  margin: 0 0 10.5px;
 }
 </style>

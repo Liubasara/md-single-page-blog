@@ -1,24 +1,23 @@
 <template>
   <div>
-    {{ $route.query.tags }}
-    <!-- <div>{{ tag.allTags }}</div>
-    <div>{{ tag.tagsMap }}</div> -->
+    <NavList>
+      <NavListItem>All</NavListItem>
+    </NavList>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive } from 'vue'
 import { useStore } from 'vuex'
-import { getAllTags, getPostsByTagsMaps, getAllPostsByTags } from '@/logic/article'
-import performanceTest from '@/utils/performanceTest'
+import { getAllTags } from '@/logic/article'
+import NavList from '@/components/nav/list/Index.vue'
+import NavListItem from '@/components/nav/item/Index.vue'
+import TitleWithCount from '@/components/titleWithCount/Index.vue'
 import type { Store } from 'vuex'
+import type { StoreArticleModuleState } from '@/store/modules/article/index'
 
-function useTags(store: Store<any>) {
+function useTags(store: Store<StoreArticleModuleState>) {
   const { allTags, tagsMap } = getAllTags(store.state.article.directory)
-  const someTagsArticles = performanceTest(getPostsByTagsMaps)(tagsMap, [allTags[0], allTags[1]])
-  console.log(someTagsArticles)
-  const someTagsArticles1 = performanceTest(getAllPostsByTags)(store.state.article.directory, [allTags[0], allTags[1]])
-  console.log(someTagsArticles1)
   const data = reactive({
     allTags,
     tagsMap
@@ -30,6 +29,11 @@ function useTags(store: Store<any>) {
 
 export default defineComponent({
   name: 'blogTags',
+  components: {
+    TitleWithCount,
+    NavList,
+    NavListItem
+  },
   setup() {
     const store = useStore()
     const tagInstancee = useTags(store)
