@@ -35,5 +35,10 @@ export const isTagActive = (
   const routeTags = computed(() =>
     decodeURIComponent((route.query?.tags as string) || '')
   )
-  return !!~routeTags.value.indexOf(tag)
+  const routeTagsArr =
+    routeTags.value !== '' && routeTags.value.split(',').length > 0
+      ? routeTags.value.split(',')
+      : []
+  // return !!~routeTags.value.indexOf(tag)
+  return !!~routeTagsArr.findIndex(itemTag => itemTag === tag)
 }
