@@ -85,6 +85,7 @@ export default defineComponent({
 .article-name {
   font-size: 18px;
   margin: 21px 0 10.5px;
+  line-height: 1.2;
   @include hoverLink;
 }
 </style>

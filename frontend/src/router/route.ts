@@ -1,4 +1,14 @@
 import type { RouteRecordRaw } from 'vue-router'
+import idle from '@/utils/idle'
+
+idle(function prefetchPage() {
+  return Promise.all([
+    import('@/pages/blog/post/Index.vue'),
+    import('@/pages/blog/tags/Index.vue'),
+    import('@/pages/blog/cate/Index.vue'),
+    import('@/pages/blog/tar/Index.vue')
+  ])
+})
 
 const routes: RouteRecordRaw[] = [
   {

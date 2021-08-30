@@ -64,11 +64,6 @@ export default defineComponent({
     color: $hoverColor;
   }
 }
-.article-name {
-  font-size: 18px;
-  margin: 21px 0 10.5px;
-  @include hoverLink;
-}
 .article-date,
 .article-category {
   @include hoverLink;
@@ -83,6 +78,7 @@ export default defineComponent({
 }
 .article-meta {
   font-size: 13px;
+  line-height: 1.5;
   color: #999;
   margin: 0 0 10.5px;
   span + span {
