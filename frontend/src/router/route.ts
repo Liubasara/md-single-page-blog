@@ -3,6 +3,7 @@ import idle from '@/utils/idle'
 
 idle(function prefetchPage() {
   return Promise.all([
+    import('@/pages/blog/home/Index.vue'),
     import('@/pages/blog/post/Index.vue'),
     import('@/pages/blog/tags/Index.vue'),
     import('@/pages/blog/cate/Index.vue'),
@@ -58,6 +59,11 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/pages/blog/tar/Index.vue')
       }
     ]
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    redirect: '/blog/home'
   }
 ]
 
