@@ -1,22 +1,19 @@
 const path = require('path')
 const { promisify } = require('util')
-const { writeFile, mkdir: mkdirSync } = require('fs')
+const { writeFile: writeFileSync, mkdir: mkdirSync } = require('fs')
 const mkdir = promisify(mkdirSync)
+const writeFile = promisify(writeFileSync)
 
 async function mkDirAndCreateFile(fileName, data) {
   await mkdir(path.dirname(fileName), { recursive: true })
-  writeFile(
-    fileName,
-    data,
-    {
+  try {
+    await writeFile(fileName, data, {
       encoding: 'utf-8',
       flag: 'w'
-    },
-    (err) => {
-      if (err) throw err
-      console.log(`The file ${fileName} has been created!`)
-    }
-  )
+    })
+  } catch (e) {
+    console.log(`The file ${fileName} has been created!`)
+  }
 }
 
 module.exports = mkDirAndCreateFile
