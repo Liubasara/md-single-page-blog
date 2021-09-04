@@ -15,7 +15,8 @@ export default defineConfig({
     html({
       inject: {
         data: {
-          blogTitle: process.env.blogTitle || 'blogTitle'
+          blogTitle: process.env.blogTitle || 'blogTitle',
+          blogFavIconPath: process.env.blogFavIconPath || '/favicon.ico'
         }
       },
       minify: true
