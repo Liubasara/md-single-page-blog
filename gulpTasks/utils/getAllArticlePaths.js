@@ -32,7 +32,7 @@ async function getAllArticlePaths(rootPath) {
         }
       }
       if (isDir) {
-        if (/\.git$/.test(filePath)) {
+        if (/(\.git|\.github)$/.test(filePath)) {
           console.log(`${filePath}是git文件夹, 不遍历`)
         } else {
           await recursionPath(filePath) // 递归，如果是文件夹，则继续遍历该文件夹
