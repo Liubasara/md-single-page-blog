@@ -1,3 +1,4 @@
+require('dotenv-flow').config()
 const { parallel, series } = require('gulp')
 const { frontendBuildTask, frontendDevTask } = require('./gulpTasks/frontendTasks')
 const { buildArticleTask, buildArticleTaskDev } = require('./gulpTasks/articleTasks')
