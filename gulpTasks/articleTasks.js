@@ -10,7 +10,8 @@ const {
   addRelativeUrl,
   changeBodyToBase64,
   addRelativeDirUrl,
-  ensureTimeExist
+  ensureTimeExist,
+  ensureRequireParamsExist
 } = require('./utils/addParamsToJsonPlugin')
 const { generateDelTask } = require('./helperTasks')
 const hljs = require('highlight.js')
@@ -122,7 +123,8 @@ function generateArticleToJsTask(cb) {
           addRelativeUrl, // 添加 url 属性
           changeBodyToBase64, // 将 body 属性修改为 base64 防止打包失败
           addRelativeDirUrl, // 添加 dirUrl 属性
-          ensureTimeExist // 确保 time 属性存在，若不存在则创建
+          ensureTimeExist, // 确保 time 属性存在，若不存在则创建
+          ensureRequireParamsExist // 确保所有必须属性都存在, 若不存在则报错
         )
       )
     const allContents = []

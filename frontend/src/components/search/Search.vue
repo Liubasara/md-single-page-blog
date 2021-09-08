@@ -24,7 +24,7 @@
             <Icon type="file" class="mg-r-8"></Icon>
             {{ item.title }}
           </header>
-          <p class="ins-search-preview" v-if="!!item.info.trim()">{{ item.info }}</p>
+          <p class="ins-search-preview" v-if="item.info && !!item.info.trim()">{{ item.info }}</p>
         </div>
       </section>
       <section class="ins-section" v-if="articleItems.length === 0 && articleItemsIsLoading">

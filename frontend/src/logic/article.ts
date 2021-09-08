@@ -202,7 +202,7 @@ export const getAllPostBySearch = (
     const contents = decodeURIComponent(window.atob(item.body))
     return (
       ~contents.indexOf(str) || // 内容
-      ~item.info.indexOf(str) || // 简介
+      (item.info && ~item.info.indexOf(str)) || // 简介
       ~item.title.indexOf(str)
     ) // 标题
     // ~item.tags.findIndex(tag => ~tag.indexOf(str)) || // 标签
@@ -252,10 +252,7 @@ export const getAllTimesByType = (
     const postTime = +new Date(copyAllPosts[p1].time)
     if (postTime < +timeSnaps[p2]) {
       p1++
-    } else if (
-      postTime >= +timeSnaps[p2] &&
-      postTime < +timeSnaps[p2 + 1]
-    ) {
+    } else if (postTime >= +timeSnaps[p2] && postTime < +timeSnaps[p2 + 1]) {
       if (targetMap[+timeSnaps[p2]]) {
         reverse
           ? targetMap[+timeSnaps[p2]].unshift(copyAllPosts[p1])

@@ -2,6 +2,7 @@
 const through2 = require('through2')
 const PluginError = require('plugin-error')
 const path = require('path')
+const chalk = require('chalk')
 
 /**
  *
@@ -28,6 +29,7 @@ function addParamsToJsonPlugin(...args) {
       this.push(input)
       callback()
     } catch (e) {
+      console.log(chalk.red(e))
       callback(new PluginError(e))
     }
   })
@@ -43,7 +45,9 @@ const addRelativeDirUrl = (fileObj, file) => {
 }
 
 const changeBodyToBase64 = (fileObj) => {
-  fileObj.body = Buffer.from(encodeURIComponent(fileObj.body)).toString('base64')
+  fileObj.body = Buffer.from(encodeURIComponent(fileObj.body)).toString(
+    'base64'
+  )
 }
 
 const ensureTimeExist = (fileObj) => {
@@ -51,10 +55,39 @@ const ensureTimeExist = (fileObj) => {
   fileObj.time = new Date().toLocaleDateString()
 }
 
+const ensureRequireParamsExist = (fileObj, file) => {
+  const paramsKeys = {
+    name: '',
+    title: '',
+    tags: [],
+    categories: '',
+    time: '',
+    url: '',
+    dirUrl: '',
+    body: ''
+    // info: '',
+    // desc: '',
+    // keywords: [],
+    // updatedAt: '',
+  }
+  let error = ''
+  Object.entries(paramsKeys).forEach(([key, type]) => {
+    if (fileObj[key] === undefined) {
+      error += `${file.path} 文件没有必须属性: ${key} \n`
+    } else if (typeof fileObj[key] !== typeof type) {
+      error += `${file.path} 文件必须的 ${key} 属性类型不为 ${typeof type}\n`
+    }
+  })
+  if (error) {
+    throw new Error(error)
+  }
+}
+
 module.exports = {
   addParamsToJsonPlugin,
   addRelativeUrl,
   addRelativeDirUrl,
   changeBodyToBase64,
-  ensureTimeExist
+  ensureTimeExist,
+  ensureRequireParamsExist
 }

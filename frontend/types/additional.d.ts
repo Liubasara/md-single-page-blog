@@ -2,20 +2,20 @@ declare interface Window {
   requestIdleCallback: <T extends Function>(callback: T, options?: object) => {}
 }
 
-type Overwrite<T, U> = Pick<T, Exclude<keyof T, keyof U>> & U;
+type Overwrite<T, U> = Pick<T, Exclude<keyof T, keyof U>> & U
 
 type articleTypeDirectory = {
   name: string
   title: string
   tags: string[]
   categories: string
-  info: string
   time: string
-  desc: string
-  keywords: string[]
-  updatedAt: string
   url: string
   dirUrl: string
+  info?: string
+  desc?: string
+  keywords?: string[]
+  updatedAt?: string
 }
 
 type articleType = articleTypeDirectory & { body: string }
@@ -40,5 +40,5 @@ declare module 'articleDist/allContents/allContents.json' {
 }
 
 declare type LooseRequired<T> = {
-  [P in string & keyof T]: T[P];
-};
+  [P in string & keyof T]: T[P]
+}
