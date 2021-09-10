@@ -3,6 +3,7 @@
     <div class="search-input-wrapper" ref="searchInputRef">
       <div class="search-input-container">
         <input
+          ref="searchInput"
           type="text"
           :placeholder="searchPlaceHolder || '想要查找什么...'"
           v-model="inputKeyword"
@@ -66,7 +67,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, toRefs } from 'vue'
+import { defineComponent, ref, computed, toRefs, onMounted } from 'vue'
 import searchProps from '@/components/search/props'
 import Icon from '@/components/icon/Index.vue'
 import debounce from 'lodash/debounce'
@@ -80,6 +81,10 @@ export default defineComponent({
   emits: ['close', 'article-click', 'tag-click', 'cate-click', 'search'],
   setup(props, { emit }) {
     const { keyword, articleItems, cateItems, tagItems, articleItemsIsLoading, searchPlaceHolder } = toRefs(props)
+    const searchInput = ref<HTMLInputElement>()
+    onMounted(() => {
+      searchInput.value?.focus()
+    })
     const inputKeyword = ref(keyword.value)
     const emitSearch = debounce(function () {
       emit('search', inputKeyword.value)
@@ -128,7 +133,8 @@ export default defineComponent({
       searchPlaceHolder,
       onArticleClick,
       onTagClick,
-      onCateClick
+      onCateClick,
+      searchInput
     }
   }
 })
