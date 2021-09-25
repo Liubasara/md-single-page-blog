@@ -3,6 +3,7 @@ import vue from '@vitejs/plugin-vue'
 import path from 'path'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import html from 'vite-plugin-html'
+import tplHtmlLoader from './src/plugins/tplHtmlLoader'
 
 const ROOT_PATH = path.resolve('..')
 const ARTICLE_DIST = path.resolve(ROOT_PATH, 'article', 'dist')
@@ -20,7 +21,8 @@ export default defineConfig({
         }
       },
       minify: true
-    })
+    }),
+    tplHtmlLoader()
   ],
   resolve: {
     alias: {
