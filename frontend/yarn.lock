@@ -879,10 +879,10 @@ entities@^2.0.0:
   resolved "https://registry.nlark.com/entities/download/entities-2.2.0.tgz#098dc90ebb83d8dffa089d55256b351d34c4da55"
   integrity sha1-CY3JDruD2N/6CJ1VJWs1HTTE2lU=
 
-esbuild@^0.12.8:
-  version "0.12.11"
-  resolved "https://registry.nlark.com/esbuild/download/esbuild-0.12.11.tgz#ab24f78cabf481e7dc747e7db15f9c5091beaa14"
-  integrity sha1-qyT3jKv0gefcdH59sV+cUJG+qhQ=
+esbuild@^0.12.17:
+  version "0.12.29"
+  resolved "https://registry.npmmirror.com/esbuild/download/esbuild-0.12.29.tgz#be602db7c4dc78944a9dbde0d1ea19d36c1f882d"
+  integrity sha1-vmAtt8TceJRKnb3g0eoZ02wfiC0=
 
 escalade@^3.1.1:
   version "3.1.1"
@@ -1229,10 +1229,20 @@ ms@2.1.2:
   resolved "https://registry.nlark.com/ms/download/ms-2.1.2.tgz#d09d1f357b443f493382a8eb3ccd183872ae6009"
   integrity sha1-0J0fNXtEP0kzgqjrPM0YOHKuYAk=
 
+nanocolors@^0.2.2:
+  version "0.2.3"
+  resolved "https://registry.npmmirror.com/nanocolors/download/nanocolors-0.2.3.tgz#3be3717544da25edf04931fc77ea103624a5f0f3"
+  integrity sha1-O+NxdUTaJe3wSTH8d+oQNiSl8PM=
+
 nanoid@^3.1.23:
   version "3.1.23"
   resolved "https://registry.nlark.com/nanoid/download/nanoid-3.1.23.tgz#f744086ce7c2bc47ee0a8472574d5c78e4183a81"
   integrity sha1-90QIbOfCvEfuCoRyV01ceOQYOoE=
+
+nanoid@^3.1.25:
+  version "3.1.25"
+  resolved "https://registry.nlark.com/nanoid/download/nanoid-3.1.25.tgz#09ca32747c0e543f0e1814b7d3793477f9c8e152"
+  integrity sha1-CcoydHwOVD8OGBS303k0d/nI4VI=
 
 no-case@^3.0.4:
   version "3.0.4"
@@ -1338,13 +1348,22 @@ postcss-value-parser@^4.1.0:
   resolved "https://registry.npm.taobao.org/postcss-value-parser/download/postcss-value-parser-4.1.0.tgz#443f6a20ced6481a2bda4fa8532a6e55d789a2cb"
   integrity sha1-RD9qIM7WSBor2k+oUypuVdeJoss=
 
-postcss@^8.1.10, postcss@^8.3.4:
+postcss@^8.1.10:
   version "8.3.5"
   resolved "https://registry.nlark.com/postcss/download/postcss-8.3.5.tgz?cache=0&sync_timestamp=1623900592848&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fpostcss%2Fdownload%2Fpostcss-8.3.5.tgz#982216b113412bc20a86289e91eb994952a5b709"
   integrity sha1-mCIWsRNBK8IKhiiekeuZSVKltwk=
   dependencies:
     colorette "^1.2.2"
     nanoid "^3.1.23"
+    source-map-js "^0.6.2"
+
+postcss@^8.3.6:
+  version "8.3.8"
+  resolved "https://registry.npmmirror.com/postcss/download/postcss-8.3.8.tgz?cache=0&sync_timestamp=1632555896628&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fpostcss%2Fdownload%2Fpostcss-8.3.8.tgz#9ebe2a127396b4b4570ae9f7770e7fb83db2bac1"
+  integrity sha1-nr4qEnOWtLRXCun3dw5/uD2yusE=
+  dependencies:
+    nanocolors "^0.2.2"
+    nanoid "^3.1.25"
     source-map-js "^0.6.2"
 
 promise@^7.0.1:
@@ -1619,13 +1638,13 @@ vite-plugin-html@^2.1.0:
     fs-extra "^10.0.0"
     html-minifier-terser "^5.1.1"
 
-vite@2.3.8:
-  version "2.3.8"
-  resolved "https://registry.nlark.com/vite/download/vite-2.3.8.tgz#42e3e03953859fd410e4e6ab3d1cca0aab2adc3c"
-  integrity sha1-QuPgOVOFn9QQ5OarPRzKCqsq3Dw=
+vite@2.5.10:
+  version "2.5.10"
+  resolved "https://registry.npmmirror.com/vite/download/vite-2.5.10.tgz#c598e3b5a7e1956ffc52eb3b3420d177fc2ed2a5"
+  integrity sha1-xZjjtafhlW/8Uus7NCDRd/wu0qU=
   dependencies:
-    esbuild "^0.12.8"
-    postcss "^8.3.4"
+    esbuild "^0.12.17"
+    postcss "^8.3.6"
     resolve "^1.20.0"
     rollup "^2.38.5"
   optionalDependencies:
