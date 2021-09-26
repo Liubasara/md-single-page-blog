@@ -13,7 +13,7 @@ export default function resumeLoaderPlugin() {
   return {
     name: 'transform-resume-file',
     transform(src: string, id: string) {
-      const tplFileRegex = /\.tpl\.html$/
+      const tplFileRegex = /\.html\.tpl$/
       if (tplFileRegex.test(id)) {
         return {
           code: 'export default ' + `'${stripscript(src)}'`

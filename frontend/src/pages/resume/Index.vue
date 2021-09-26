@@ -9,9 +9,10 @@ import { useRouter } from 'vue-router'
 async function fetchResumeFile() {
   let resumeTpl = ''
   try {
-    const objs = await import.meta.glob('./resume.tpl.html')
-    if (objs['./resume.tpl.html']) {
-      resumeTpl = decodeURIComponent(window.atob((await objs['./resume.tpl.html']()).default))
+    const objs = await import.meta.glob('./resume.html.tpl')
+    const getResumeFn = objs['./resume.html.tpl']
+    if (!!getResumeFn) {
+      resumeTpl = decodeURIComponent(window.atob((await getResumeFn()).default))
     }
     // resumeTpl = decodeURIComponent(window.atob((await import('./resume.tpl.html')).default))
   } catch (e) {
