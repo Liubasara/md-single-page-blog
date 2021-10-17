@@ -49,7 +49,8 @@ function useBlogHomeArticleCard(router: Router, route: RouteLocationNormalizedLo
       name: item.title,
       date: item.time,
       tags: item.tags,
-      cate: item.categories
+      cate: item.categories,
+      info: item.info || ''
     }
   }
   return {

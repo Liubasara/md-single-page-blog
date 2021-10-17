@@ -33,11 +33,10 @@ export default defineConfig({
   esbuild: {
     jsxFactory: 'h',
     jsxFragment: 'Fragment'
+  },
+  server: {
+    fs: {
+      allow: ['../']
+    }
   }
-  // server: {
-  //   fsServe: {
-  //     strict: true,
-  //     root: ROOT_PATH
-  //   }
-  // }
 })

@@ -280,3 +280,42 @@ export const getAllTimesByType = (
     nums
   }
 }
+
+export const getContentSearch = (
+  contents: string,
+  search: string,
+  {
+    width = 10
+  }: {
+    width?: 10
+  } = {}
+) => {
+  const strArray: Array<{
+    hightlight: string
+    pre: string
+    after: string
+  }> = []
+  let index = contents.indexOf(search)
+  while (index > -1 && search && search.trim()) {
+    const pre = contents.slice(index - width < 0 ? 0 : index - width, index)
+    const after = contents.slice(
+      index + search.length,
+      index + width + search.length
+    )
+    strArray.push({ hightlight: search, pre, after })
+    index = contents.indexOf(search, index + 1)
+  }
+  return strArray
+}
+
+export const isArticleType = (x: any): x is articleType =>
+  x && x?.body !== undefined && x?.body !== null
+
+export const isArticleDirectoryType = (x: any): x is articleTypeDirectory =>
+  x && (x?.body === undefined || x?.body === null)
+
+export const getArticleText = (body: string): string => {
+  const text = decodeURIComponent(window.atob(body))
+  const noHtml = (_text: string) => _text.replace(/<\/?.+?>/g, '')
+  return noHtml(text).replaceAll(/\s/g, '') // 去除空格
+}

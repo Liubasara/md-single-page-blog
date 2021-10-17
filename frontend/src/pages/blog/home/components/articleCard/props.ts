@@ -9,6 +9,10 @@ const props = {
     type: String,
     default: ''
   },
+  info: {
+    type: String,
+    default: ''
+  },
   tags: {
     type: Array as PropType<Array<string>>,
     default: () => ([]) as Array<string>

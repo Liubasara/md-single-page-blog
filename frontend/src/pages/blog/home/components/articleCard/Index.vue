@@ -5,6 +5,9 @@
         <a @click.prevent.stop="nameClick">{{ name }}</a>
       </h1>
     </div>
+    <p class="article-info" v-if="info">
+      {{ info }}
+    </p>
     <ArticleMeta
       :categories="cate"
       :tags="tags"
@@ -15,7 +18,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue'
+import { defineComponent, reactive, toRefs } from 'vue'
 import ArticleMeta from '@/components/articleMeta/Index.vue'
 import articleCardProps from '@/pages/blog/home/components/articleCard/props'
 
@@ -36,8 +39,9 @@ export default defineComponent({
       name,
       date,
       tags,
-      cate
-    } = props
+      cate,
+      info
+    } = toRefs(props)
     const nameClick = () => {
       emit('nameClick')
     }
@@ -60,6 +64,7 @@ export default defineComponent({
       date,
       tags,
       cate,
+      info,
       nameClick,
       onMetaClick
     }
@@ -80,7 +85,12 @@ export default defineComponent({
   border-bottom: 1px solid #f2f2f2;
 }
 .article-header {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+}
+.article-info {
+  margin-bottom: 10px;
+  color: #454545;
+  font-size: 12px;
 }
 .article-name {
   font-size: 18px;

@@ -12,12 +12,18 @@
         <button type="button" class="close-btn" @click="close">x</button>
       </div>
     </div>
-    <div class="ins-section-container" v-if="ifShowSearchRes">
-      <section class="ins-section" v-if="articleItems.length > 0">
+    <div
+      v-if="ifShowSearchRes"
+      class="ins-section-container"
+      v-InfiniteScroll="pageInstance.loadNextPage"
+      infinite-scroll-immediate="true"
+      ref="searchRes"
+    >
+      <section v-if="articleItems.length > 0" class="ins-section" ref="articleSearchRes">
         <header class="ins-section-header">文章</header>
         <div
           class="ins-search-item"
-          v-for="(item, index) in articleItems"
+          v-for="(item, index) in pageInstance.pageArticleItems"
           :key="index"
           @click="onArticleClick(item)"
         >
@@ -26,6 +32,17 @@
             {{ item.title }}
           </header>
           <p class="ins-search-preview" v-if="item.info && !!item.info.trim()">{{ item.info }}</p>
+          <p
+            class="ins-search-preview search-res"
+            v-for="(searchInfo, searchInfoIndex) in getSearchInfo(index)"
+            :key="`searchInfo-${searchInfoIndex}`"
+          >
+            <template v-if="isObject(searchInfo)">
+              <span>{{ searchInfo.pre }}</span>
+              <span class="search-hightlight">{{ searchInfo.hightlight }}</span>
+              <span>{{ searchInfo.after }}</span>
+            </template>
+          </p>
         </div>
       </section>
       <section class="ins-section" v-if="articleItems.length === 0 && articleItemsIsLoading">
@@ -67,10 +84,71 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, toRefs, onMounted } from 'vue'
+import { defineComponent, ref, computed, toRefs, onMounted, reactive, watch, nextTick, onBeforeUnmount } from 'vue'
 import searchProps from '@/components/search/props'
 import Icon from '@/components/icon/Index.vue'
+import InfiniteScroll from '@/components/scroll/directives/infinite-scroll'
+import { getContentSearch, isArticleType, getArticleText } from '@/logic/article'
 import debounce from 'lodash/debounce'
+import isObject from 'lodash/isObject'
+import type { Ref } from 'vue'
+
+const PAGE_SIZE = 5
+
+function usePage(
+  articleItems: Ref<Array<allArticleType>>,
+  inputKeyword: Ref<string>,
+  searchRes: Ref<HTMLDivElement | undefined>,
+  articleSearchRes: Ref<HTMLDivElement | undefined>
+) {
+  const page = ref(1)
+  const pageArticleItems = computed(() => {
+    return articleItems.value.slice(0, PAGE_SIZE * page.value)
+  })
+  const nomore = computed(() => {
+    return !(page.value * PAGE_SIZE < articleItems.value.length)
+  })
+  const resetPage = () => {
+    page.value = 1
+  }
+  const loadNextPage = () => {
+    if (!nomore.value) {
+      page.value += 1
+    }
+  }
+  watch(inputKeyword, () => {
+    resetPage()
+  })
+  function handleScroll() {
+    nextTick(() => {
+      (searchRes as unknown as Ref<HTMLDivElement & { ElInfiniteScroll: any; } | undefined>).value?.ElInfiniteScroll?.onScroll?.()
+      const articleSearchResHeight = articleSearchRes.value?.offsetHeight || 0
+      const searchResHeight = searchRes.value?.offsetHeight || 0
+      if (articleSearchResHeight < searchResHeight && !nomore.value) {
+        loadNextPage()
+        return handleScroll()
+      }
+    })
+  }
+  watch(articleItems, () => {
+    handleScroll()
+  })
+  let observer: ResizeObserver | undefined;
+  onMounted(() => {
+    observer = new ResizeObserver(handleScroll)
+    searchRes.value && observer.observe(searchRes.value)
+  })
+  onBeforeUnmount(() => {
+    observer?.disconnect()
+  })
+  return {
+    page,
+    pageArticleItems,
+    resetPage,
+    loadNextPage,
+    nomore
+  }
+}
 
 export default defineComponent({
   name: 'Search',
@@ -78,14 +156,23 @@ export default defineComponent({
   components: {
     Icon
   },
-  emits: ['close', 'article-click', 'tag-click', 'cate-click', 'search'],
+  directives: {
+    InfiniteScroll
+  },
+  emits: ['close', 'article-click', 'tag-click', 'cate-click', 'search', 'update:articleItemsIsLoading'],
   setup(props, { emit }) {
     const { keyword, articleItems, cateItems, tagItems, articleItemsIsLoading, searchPlaceHolder } = toRefs(props)
     const searchInput = ref<HTMLInputElement>()
+    const searchRes = ref<HTMLDivElement>()
+    const articleSearchRes = ref<HTMLDivElement>()
     onMounted(() => {
       searchInput.value?.focus()
     })
     const inputKeyword = ref(keyword.value)
+    watch(inputKeyword, () => {
+      searchRes.value?.scrollTop && (searchRes.value.scrollTop = 0)
+    })
+    const pageInstance = reactive(usePage(articleItems, inputKeyword, searchRes, articleSearchRes))
     const emitSearch = debounce(function () {
       emit('search', inputKeyword.value)
     }, 200)
@@ -109,6 +196,16 @@ export default defineComponent({
         articleItemsIsLoading.value
       )
     })
+    const searchInfos = computed(() => {
+      const res = articleItems.value.map((article: articleTypeDirectory | articleType) => {
+        if (isArticleType(article)) {
+          return getContentSearch(getArticleText(article.body), inputKeyword.value)
+        }
+        return []
+      })
+      return res
+    })
+    const getSearchInfo = (index: number) => searchInfos.value[index]
     const onArticleClick = (item: articleTypeDirectory | articleType) => {
       emit('article-click', item)
     }
@@ -118,6 +215,7 @@ export default defineComponent({
     const onCateClick = (item: string) => {
       emit('cate-click', item)
     }
+
 
     return {
       inputKeyword,
@@ -134,7 +232,13 @@ export default defineComponent({
       onArticleClick,
       onTagClick,
       onCateClick,
-      searchInput
+      getSearchInfo,
+      searchInput,
+      searchInfos,
+      isObject,
+      pageInstance,
+      searchRes,
+      articleSearchRes
     }
   }
 })
@@ -228,11 +332,24 @@ export default defineComponent({
     white-space: nowrap;
     text-overflow: ellipsis;
   }
+  .search-res {
+    border-left: #9a9a9a solid 3px;
+    padding-left: 10px;
+    margin-bottom: 2px;
+    .search-hightlight {
+      background: #f9ff23;
+    }
+  }
   &:hover {
     color: #fff;
     background: #006bde;
     .ins-search-preview {
       color: #fff;
+    }
+    .search-res {
+      .search-hightlight {
+        background: #ccb81ef0;
+      }
     }
   }
 }
