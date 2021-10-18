@@ -317,5 +317,5 @@ export const isArticleDirectoryType = (x: any): x is articleTypeDirectory =>
 export const getArticleText = (body: string): string => {
   const text = decodeURIComponent(window.atob(body))
   const noHtml = (_text: string) => _text.replace(/<\/?.+?>/g, '')
-  return noHtml(text).replaceAll(/\s/g, '') // 去除空格
+  return noHtml(text).replace(/\s/g, '') // 去除空格
 }
