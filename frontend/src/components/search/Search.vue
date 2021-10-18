@@ -17,6 +17,7 @@
       class="ins-section-container"
       v-InfiniteScroll="pageInstance.loadNextPage"
       infinite-scroll-immediate="true"
+      infinite-scroll-distance="10"
       ref="searchRes"
     >
       <section v-if="articleItems.length > 0" class="ins-section" ref="articleSearchRes">
