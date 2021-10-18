@@ -11,3 +11,10 @@ app.use(router)
 app.use(store)
 
 app.mount('#app')
+
+if (import.meta.env.DEV) {
+  ;(async () => {
+    const eruda = (await import('eruda')).default
+    eruda.init()
+  })()
+}

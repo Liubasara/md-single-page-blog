@@ -879,6 +879,11 @@ entities@^2.0.0:
   resolved "https://registry.nlark.com/entities/download/entities-2.2.0.tgz#098dc90ebb83d8dffa089d55256b351d34c4da55"
   integrity sha1-CY3JDruD2N/6CJ1VJWs1HTTE2lU=
 
+eruda@^2.4.1:
+  version "2.4.1"
+  resolved "https://registry.npm.taobao.org/eruda/download/eruda-2.4.1.tgz#dedc9b78546feb827d6ccafbfd7dae480509d2a2"
+  integrity sha1-3tybeFRv64J9bMr7/X2uSAUJ0qI=
+
 esbuild@^0.12.17:
   version "0.12.29"
   resolved "https://registry.npmmirror.com/esbuild/download/esbuild-0.12.29.tgz#be602db7c4dc78944a9dbde0d1ea19d36c1f882d"
