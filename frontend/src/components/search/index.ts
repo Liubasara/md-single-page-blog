@@ -1,7 +1,7 @@
 import createPopover from '@/components/popover/index'
 import Search from '@/components/search/Search.vue'
 import SearchProps from '@/components/search/props'
-import { ref } from 'vue'
+import { ref, watchEffect } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
 import {
@@ -45,8 +45,8 @@ export const getSearchProps = <T extends StoreArticleModuleState>(
       searchPlaceHolder.value =
         routeTags.length === 0
           ? '在所有标签的文章中进行搜索'
-          // : `在标签含有 ${routeTags.join(',')} 的文章中搜索`
-          : `在包含已选择标签的文章中进行搜索`
+          : // : `在标签含有 ${routeTags.join(',')} 的文章中搜索`
+            `在包含已选择标签的文章中进行搜索`
       if (routeTags.length !== 0) {
         return getAllPostBySearch(
           getAllPostsByTags(allContents, routeTags),
@@ -75,6 +75,7 @@ export const getSearchProps = <T extends StoreArticleModuleState>(
       return getAllPostBySearch(allContents, keyword.value)
     }
   }
+
   const articleItems = ref(getArticleItems())
 
   function getTagItems() {
@@ -106,12 +107,18 @@ export const getSearchProps = <T extends StoreArticleModuleState>(
   }
   const cateItems = ref(getCateItems())
 
-  const onSearch = (key: string) => {
-    keyword.value = key
+  const refreshData = () => {
     articleItems.value = getArticleItems()
     tagItems.value = getTagItems()
     articleItemsIsLoading.value = getArticleItemsIsLoading()
     cateItems.value = getCateItems()
+  }
+
+  watchEffect(refreshData)
+
+  const onSearch = (key: string) => {
+    keyword.value = key
+    refreshData()
   }
   const onArticleClick = (data: articleType | articleTypeDirectory) => {
     router.push({ name: 'BlogPost', params: { name: data.name } })
@@ -142,7 +149,7 @@ export const getSearchProps = <T extends StoreArticleModuleState>(
 
 export function useSearchInSetup() {
   const instance = ref<PopoverInstance>()
-  const store = useStore()
+  const store = useStore<StoreArticleModuleState>()
   const route = useRoute()
   const router = useRouter()
   store.dispatch('article/fetchAllContents')
