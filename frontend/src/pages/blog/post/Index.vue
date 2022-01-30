@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, watch, reactive, nextTick } from 'vue'
+import { computed, defineComponent, ref, watch, reactive, nextTick, onMounted, onBeforeUnmount } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import ArticleMeta from '@/components/articleMeta/Index.vue'
@@ -131,16 +131,29 @@ function useArticleFooter(router: Router, route: RouteLocationNormalizedLoaded, 
   const onNextClick = () => {
     next.value && router.push({ name: 'BlogPost', params: { name: next.value.name } })
   }
-  const onFooterMenuChange = (type: string) => {
-    console.log(type)
+  const onArrowKeyup = (event: KeyboardEvent) => {
+    event = event || window.event;
+    if (event.key == 'ArrowLeft') {
+      // left arrow
+      onPrevClick()
+    }
+    else if (event.key == 'ArrowRight') {
+      // right arrow
+      onNextClick()
+    }
   }
+  onMounted(() => {
+    document.addEventListener('keyup', onArrowKeyup)
+  })
+  onBeforeUnmount(() => {
+    document.removeEventListener('keyup', onArrowKeyup)
+  })
   return {
     prev,
     next,
     footerSortType,
     onPrevClick,
-    onNextClick,
-    onFooterMenuChange
+    onNextClick
   }
 }
 
