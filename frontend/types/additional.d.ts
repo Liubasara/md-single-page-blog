@@ -39,6 +39,13 @@ declare module 'articleDist/allContents/allContents.json' {
   export default value
 }
 
+declare module 'click-outside-vue3' {
+  const value: {
+    directive: Object
+  }
+  export default value
+}
+
 declare type LooseRequired<T> = {
   [P in string & keyof T]: T[P]
 }

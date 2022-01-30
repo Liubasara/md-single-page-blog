@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@types/lodash": "^4.14.171",
+    "click-outside-vue3": "^4.0.1",
     "highlight.js": "^11.1.0",
     "lodash": "^4.17.21",
     "urijs": "^1.19.6",

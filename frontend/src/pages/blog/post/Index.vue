@@ -10,6 +10,13 @@
     <div class="content">
       <article v-html="articleDetail?.body" class="main-content"></article>
     </div>
+    <ArticleFooter
+      :hasNext="!!next"
+      :hasPrev="!!prev"
+      v-model:sortType="footerSortType"
+      @prev="onPrevClick"
+      @next="onNextClick"
+    ></ArticleFooter>
   </div>
 </template>
 
@@ -18,6 +25,8 @@ import { computed, defineComponent, ref, watch, reactive, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import ArticleMeta from '@/components/articleMeta/Index.vue'
+import ArticleFooter from './articleFooter/Index.vue'
+import { getAllPostsByCate } from '@/logic/article'
 import { navigateToTagsPage } from '@/logic/tags'
 import { navigateToCatesPage } from '@/logic/cates'
 import { navigateToTarsDetailPage } from '@/logic/tars'
@@ -86,9 +95,58 @@ function useAnchorScrollBehaviorInHashMode(route: RouteLocationNormalizedLoaded,
   })
 }
 
+function useArticleFooter(router: Router, route: RouteLocationNormalizedLoaded, directory: Array<articleTypeDirectory>) {
+  const footerSortType = ref<'time' | 'cate'>('time')
+  const directoryBySortType = computed(() => {
+    // 默认的 directory 为时间倒序排列
+    const reverseDirectory = directory.slice().reverse()
+    switch (footerSortType.value) {
+      case 'time':
+        return reverseDirectory
+      case 'cate':
+        const currentCate = directory.find(item => item.name === route.params.name)?.categories || ''
+        return getAllPostsByCate(reverseDirectory, currentCate)
+      default:
+        return reverseDirectory
+    }
+  })
+  const articleObjIdx = computed(() => {
+    return directoryBySortType.value.findIndex(item => item.name === route.params.name)
+  })
+  const prev = computed(() => {
+    if (articleObjIdx.value > 0) {
+      return directoryBySortType.value[articleObjIdx.value - 1]
+    }
+    return null
+  })
+  const next = computed(() => {
+    if (articleObjIdx.value < directoryBySortType.value.length - 1) {
+      return directoryBySortType.value[articleObjIdx.value + 1]
+    }
+    return null
+  })
+  const onPrevClick = () => {
+    prev.value && router.push({ name: 'BlogPost', params: { name: prev.value.name } })
+  }
+  const onNextClick = () => {
+    next.value && router.push({ name: 'BlogPost', params: { name: next.value.name } })
+  }
+  const onFooterMenuChange = (type: string) => {
+    console.log(type)
+  }
+  return {
+    prev,
+    next,
+    footerSortType,
+    onPrevClick,
+    onNextClick,
+    onFooterMenuChange
+  }
+}
+
 export default defineComponent({
   name: 'blogPost',
-  components: { ArticleMeta },
+  components: { ArticleMeta, ArticleFooter },
   setup() {
     const route = useRoute()
     const router = useRouter()
@@ -106,7 +164,8 @@ export default defineComponent({
       store,
       articleDetail,
       articleObj,
-      onMetaClick
+      onMetaClick,
+      ...useArticleFooter(router, route, directory)
     }
   }
 })
