@@ -91,6 +91,7 @@ export default defineComponent({
   margin-bottom: 10px;
   color: #454545;
   font-size: 12px;
+  line-height: 1.5;
 }
 .article-name {
   font-size: 18px;
