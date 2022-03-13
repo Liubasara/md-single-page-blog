@@ -5,6 +5,7 @@
         <ArticleMeta :time="$props.time" @on-time-click="$emit('time-click')"></ArticleMeta>
         <h3 class="body-title">
           <span @click="$emit('title-click')">{{ $props.title }}</span>
+          <p v-if="$props.info" :title="$props.info" class="info-container">{{ $props.info }}</p>
         </h3>
       </div>
       <div class="card-footer">
@@ -70,6 +71,18 @@ export default defineComponent({
   span:hover {
     color: $hoverColor;
   }
+}
+.info-container {
+  margin-top: 10px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #808080;
+  overflow: hidden;
+  height: 18px;
+  width: 100%;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  white-space: nowrap;
 }
 .card-footer {
   padding: 10px 15px;

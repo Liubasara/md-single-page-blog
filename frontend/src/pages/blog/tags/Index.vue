@@ -19,6 +19,7 @@
         :title="item.title"
         :time="item.time"
         :tags="item.tags"
+        :info="item.info || item.desc || ''"
         @time-click="tag.navigateToTarsDetailPage(item.time)"
         @title-click="tag.navigateToArticle(item.name)"
         @tag-click="(val) => tag.navigateToTagsPage(val, true)"

@@ -10,6 +10,9 @@ const props = {
   tags: {
     type: Array as PropType<Array<string>>,
     default: () => []
+  },
+  info: {
+    type: String
   }
 }
 
